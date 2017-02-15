@@ -1,0 +1,8 @@
+default:	a.exe
+
+a.exe:	cprolog.o Makefile.cprolog
+	gcc cprolog.o -L../lib/i386-win32 -lswipl -limagehlp -lm -lpthread -luxnt -ldbghelp -lwsock32 -lwinmm -lshell32
+
+cprolog.o: cprolog.c Makefile.cprolog
+	gcc -I../packages/cpp -I. -Wall -O2 -fno-strict-aliasing  -D__WINDOWS__ -DWIN32 -c cprolog.c
+

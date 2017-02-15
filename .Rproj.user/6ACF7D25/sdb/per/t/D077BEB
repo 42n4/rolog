@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : ".PHONY: all mylibs\n\nPKG_LIBS=-L$(R_LIBS_USER)/swipl/lib/swipl-7.3.35/lib/`sh swipl-uname.sh` -lswipl\n\nall: $(SHLIB)\n$(SHLIB): mylibs\n\nmylibs:\n\t(cd swipl-7.3.35/src; sh configure --prefix $(R_LIBS_USER)/swipl --disable-shared --enable-static --disable-gmp CFLAGS=-fPIC; $(MAKE); $(MAKE) install)\n",
+    "created" : 1487087597244.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "505945470",
+    "id" : "D077BEB",
+    "lastKnownWriteTime" : 1484869611,
+    "last_content_update" : 1484869611,
+    "path" : "~/rolog.old/rolog/src/Makevars",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "makefile"
+}

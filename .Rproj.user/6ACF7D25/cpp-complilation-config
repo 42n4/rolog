@@ -1,0 +1,14 @@
+{
+    "args" : [
+        "-I/usr/lib/rstudio/resources/libclang/builtin-headers/3.5",
+        "-I/usr/lib/rstudio/resources/libclang/builtin-headers/libc++/3.5",
+        "-I/home/matthias/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include",
+        "-I/usr/local/lib/R/include",
+        "-DNDEBUG",
+        "-I/usr/local/include",
+        "-fpic"
+    ],
+    "hash" : "148455913914870877931487023569",
+    "is_cpp" : true,
+    "pch" : "Rcpp"
+}

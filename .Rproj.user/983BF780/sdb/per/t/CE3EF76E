@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : ".PHONY: all mylibs\n\nPKG_LIBS=-Lswipl-7.5.1/lib/i386-win32 -lswipl -luxnt -ldbghelp -lws2_32 -lwsock32 -lwinmm -lshell32\nMY_prefix=../../../inst/swipl/lib\nMY_PLBASE=../../../inst/swipl/lib/swipl-7.5.1\n\nall: $(SHLIB)\n$(SHLIB): mylibs\n\nmylibs:\n\tmake -C swipl-7.5.1/src DEVPL=./swipl1.sh\n\tmake -C swipl-7.5.1/src install DEVPL=./swipl2.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)\n",
+    "created" : 1487088134806.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1736981060",
+    "id" : "CE3EF76E",
+    "lastKnownWriteTime" : 1487157102,
+    "last_content_update" : 1487157102872,
+    "path" : "~/Dropbox/rolog/rolog/src/Makevars.win",
+    "project_path" : "src/Makevars.win",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "makefile"
+}

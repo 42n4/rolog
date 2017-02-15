@@ -1,0 +1,9 @@
+.PHONY: all mylibs
+
+PKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.5.1/lib/`sh swipl-uname.sh` -lswipl
+
+all: $(SHLIB)
+$(SHLIB): mylibs
+
+mylibs:
+	cd swipl-7.5.1/src && ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC && make && make install

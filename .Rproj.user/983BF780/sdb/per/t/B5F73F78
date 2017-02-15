@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#!/bin/sh\n\n# This script is used to start Prolog in the development environment\n# when its shared libraries are not yet installed\n#\n# Typically, this must be done  using   LD_LIBRARY_PATH  on ELF systems.\n# Unfortunately, we use rpath=<path> to find libswipl.so, which sets the\n# ELF-symbol DT_RPATH, which overrules LD_LIBRARY_PATH.  What we want is\n# DT_RUNPATH, which is behind LD_LIBRARY_PATH  in the search-order. This\n# however cannot be set  directly  on   some  systems.  Therefore, where\n# available, we use chrpath -c in the  Makefile to convert DT_RPATH into\n# DT_RUNPATH. If this process fails,  you   may  have problems upgrading\n# SWI-Prolog from source because the version-being-built uses the shared\n# object from the installed version. If  the installed version is broken\n# or incompatible, your build will  fail.   There  are  two ways around:\n# install chrpath (if available) or remove   the installed system before\n# rebuilding.\n\nbdir=/homed/Dropbox/rolog/rolog/src/swipl-7.5.1/src\nlib=$bdir/../lib/i386-win32\nlibso=$lib/libswipl.dll\nsep=\":\"\n\nif [ \":\" != \":\" ]; then\n  lib=\"$(: -w $lib)\"\n  sep=\";\"\nfi\n\nif [ \"x$PATH\" = \"x\" ]; then\n  PATH=\"$lib\"\nelse\n  PATH=\"$lib$sep$PATH\"\nfi\n\nexport PATH\n\ncase \"$1\" in\n  -C) cd \"$2\"\n      shift\n      shift\n      ;;\n   *) ;;\nesac\n\n./bin/swipl.exe \"$@\" || exit 1\n",
+    "created" : 1487157119651.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2991124020",
+    "id" : "B5F73F78",
+    "lastKnownWriteTime" : 1487157127,
+    "last_content_update" : 1487157127367,
+    "path" : "~/Dropbox/rolog/rolog/src/swipl-7.5.1/src/swipl2.sh",
+    "project_path" : "src/swipl-7.5.1/src/swipl2.sh",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sh"
+}

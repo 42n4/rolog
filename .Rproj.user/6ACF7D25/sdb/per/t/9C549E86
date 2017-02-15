@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : ".PHONY: all mylibs\n\nPKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.5.1/lib/`sh swipl-uname.sh` -lswipl\n\nall: $(SHLIB)\n$(SHLIB): mylibs\n\nmylibs:\n\tcd swipl-7.5.1/src && ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC && make && make install\n",
+    "created" : 1487085656841.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1226831132",
+    "id" : "9C549E86",
+    "lastKnownWriteTime" : 1487087793,
+    "last_content_update" : 1487087793149,
+    "path" : "~/rolog/rolog/src/Makevars",
+    "project_path" : "src/Makevars",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "makefile"
+}
