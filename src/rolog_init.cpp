@@ -7,11 +7,12 @@ using namespace Rcpp;
 PlEngine* engine = NULL ;
 
 // [[Rcpp::export]]
-void rolog_exit()
+int rolog_exit()
 {
   if(engine)
     delete(engine) ;
   engine = NULL ;
+  return 0 ;
 } // rolog_exit
 
 // [[Rcpp::export]]
