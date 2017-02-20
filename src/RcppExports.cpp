@@ -18,15 +18,11 @@ END_RCPP
 }
 
 // rolog_exit
-int rolog_exit();
-RcppExport SEXP rolog_rolog_exit() 
+void rolog_exit();
+RcppExport void rolog_rolog_exit() 
 {
-  BEGIN_RCPP
-  Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
-  rcpp_result_gen = Rcpp::wrap(rolog_exit());
-  return rcpp_result_gen;
-  END_RCPP
+  rolog_exit();
 }
 
 // rolog_init
@@ -53,14 +49,14 @@ RcppExport SEXP rolog_rolog_consult(SEXP prolog_files)
   END_RCPP
 }
 
-// rolog_query
-List rolog_query(String predicate, StringVector arguments);
-RcppExport SEXP rolog_rolog_query(SEXP predicate, SEXP arguments) 
+// rolog_query_comp
+List rolog_query_comp(String predicate, StringVector arguments);
+RcppExport SEXP rolog_rolog_query_comp(SEXP predicate, SEXP arguments) 
 {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
-  rcpp_result_gen = Rcpp::wrap(rolog_query(predicate, arguments));
+  rcpp_result_gen = Rcpp::wrap(rolog_query_comp(predicate, arguments));
   return rcpp_result_gen;
   END_RCPP
 }
