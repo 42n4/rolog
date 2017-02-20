@@ -7,4 +7,4 @@ all: $(SHLIB)
 $(SHLIB): mylibs
 
 mylibs:
-	cd swipl-7.5.1/src ; sh ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC ; make ; make install
+	cd swipl-7.5.1/src ; chmod +x mkversion.sh ; chmod +x configure ; chmod +x rel-ln ; sh ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC ; make ; make install
