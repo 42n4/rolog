@@ -15,15 +15,16 @@ int rolog_exit()
   return 0 ;
 } // rolog_exit
 
+char* resfile[3] ;
+
 // [[Rcpp::export]]
 int rolog_init(String home, String prc)
 {
   if(!engine)
   {
-    char* resfile[3] ;
-    resfile[0] = (char*) (home.get_cstring()) ;
-    resfile[1] = (char*) "-x" ;
-    resfile[2] = (char*) (prc.get_cstring()) ;
+    resfile[0] = strdup((char*) (home.get_cstring())) ;
+    resfile[1] = strdup((char*) "-x") ;
+    resfile[2] = strdup((char*) (prc.get_cstring())) ;
     engine = new PlEngine(3, resfile) ;
   }
   // atexit(rolog_exit) ;
