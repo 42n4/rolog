@@ -18,11 +18,15 @@ END_RCPP
 }
 
 // rolog_exit
-void rolog_exit();
-RcppExport void rolog_rolog_exit() 
+int rolog_exit();
+RcppExport SEXP rolog_rolog_exit() 
 {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
-  rolog_exit();
+  rcpp_result_gen = Rcpp::wrap(rolog_exit());
+  return rcpp_result_gen;
+  END_RCPP
 }
 
 // rolog_init
