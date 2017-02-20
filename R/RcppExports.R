@@ -18,7 +18,7 @@ rolog_consult <- function(prolog_files)
   .Call('rolog_rolog_consult', prolog_files, PACKAGE = 'rolog')
 }
 
-rolog_query <- function(predicate, arguments) 
+rolog_query_comp <- function(predicate, arguments) 
 {
-  .Call('rolog_rolog_query', predicate, arguments, PACKAGE = 'rolog')
+  .Call('rolog_rolog_query_comp', predicate, arguments, PACKAGE = 'rolog')
 }
