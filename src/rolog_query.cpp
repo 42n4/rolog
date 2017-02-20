@@ -5,14 +5,14 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-CharacterVector rolog_query(CharacterVector predicate, CharacterVector arguments) 
+List rolog_query(String predicate, StringVector arguments) 
 {
   PlTermv arg(2) ;
-  arg[0] = PlCompound((char*) arguments[0]) ;
-  PlQuery q((char*) predicate[0], arg) ;
+  arg[0] = PlString(String(arguments[0]).get_cstring()) ;
+  PlQuery q(predicate.get_cstring(), arg) ;
 
-  CharacterVector r ;
+  List r ;
   while(q.next_solution())
-    r.push_back((char*) arg[1]) ;
+    r.push_back(String((wchar_t*) arg[1])) ;
   return r ;
 } // rolog_query
