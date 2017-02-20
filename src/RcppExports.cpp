@@ -50,7 +50,7 @@ RcppExport SEXP rolog_rolog_consult(SEXP prolog_files)
 }
 
 // rolog_query
-CharacterVector rolog_query(CharacterVector predicate, CharacterVector arguments);
+List rolog_query(String predicate, StringVector arguments);
 RcppExport SEXP rolog_rolog_query(SEXP predicate, SEXP arguments) 
 {
   BEGIN_RCPP
