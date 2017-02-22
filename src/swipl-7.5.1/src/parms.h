@@ -8,7 +8,7 @@
 #ifndef PLARCH
 #define PLARCH	    "i386-win32"
 #endif
-#define C_LIBS	    "-limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32 "
+#define C_LIBS	    "-limagehlp -ldbghelp -lm -lwsock32 -lwinmm -lshell32 "
 #define C_PLLIB	    "-lswipl"
 #define C_LIBPLSO    "-lswipl"
 #ifndef C_CC

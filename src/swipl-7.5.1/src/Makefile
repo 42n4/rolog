@@ -60,7 +60,7 @@ CC=gcc
 LDEXE=gcc
 EXEEXT = .exe
 TXTEXT=.TXT
-LIBS=-limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32 
+LIBS=-limagehlp -ldbghelp -lm -lwsock32 -lwinmm -lshell32 
 AWK=gawk
 SED=sed
 CHRPATH=:
@@ -94,7 +94,7 @@ STACKFLAGS=-Wl,--stack,4000000
 SUBSYSTEMFLAGS=-Wl,--subsystem,windows
 
 MINGW=true
-MINGWPTHREAD=libwinpthread-1
+MINGWPTHREAD=
 DEFSTARTUP=swipl.ini
 
 HOST_TOOLCHAIN_FLAG=-DHOST_TOOLCHAIN_MINGW
@@ -111,7 +111,7 @@ STREAMH=$(INCLUDEDIR)/SWI-Stream.h
 STARTUPPATH=$(PL).prc
 RUNTIMEDIR=../lib/$(PLARCH)
 PLLIB=libswipl.a
-LNLIBS=-limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32 
+LNLIBS=-limagehlp -ldbghelp -lm -lwsock32 -lwinmm -lshell32 
 XLIBS= -lgdi32 -lcomdlg32
 DBGLIBS=
 USEPLLIB=-lswipl

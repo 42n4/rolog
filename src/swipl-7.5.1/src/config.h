@@ -230,7 +230,7 @@
 /* #undef HAVE_LIBNCURSESW */
 
 /* Define to 1 if you have the `pthread' library (-lpthread). */
-#define HAVE_LIBPTHREAD 1
+/* #undef HAVE_LIBPTHREAD */
 
 /* Define to 1 if you have the `pthreadGC' library (-lpthreadGC). */
 /* #undef HAVE_LIBPTHREADGC */
@@ -338,16 +338,16 @@
 /* #undef HAVE_PTHREAD_GETW32THREADHANDLE_NP */
 
 /* Define to 1 if you have the `pthread_kill' function. */
-#define HAVE_PTHREAD_KILL 1
+/* #undef HAVE_PTHREAD_KILL */
 
 /* Define to 1 if you have the `pthread_mutexattr_setkind_np' function. */
 /* #undef HAVE_PTHREAD_MUTEXATTR_SETKIND_NP */
 
 /* Define to 1 if you have the `pthread_mutexattr_settype' function. */
-#define HAVE_PTHREAD_MUTEXATTR_SETTYPE 1
+/* #undef HAVE_PTHREAD_MUTEXATTR_SETTYPE */
 
 /* Define to 1 if you have the `pthread_setconcurrency' function. */
-#define HAVE_PTHREAD_SETCONCURRENCY 1
+/* #undef HAVE_PTHREAD_SETCONCURRENCY */
 
 /* Define to 1 if you have the `pthread_sigmask' function. */
 /* #undef HAVE_PTHREAD_SIGMASK */
@@ -389,7 +389,7 @@
 /* #undef HAVE_SEMA_INIT */
 
 /* Define to 1 if you have the `sem_init' function. */
-#define HAVE_SEM_INIT 1
+/* #undef HAVE_SEM_INIT */
 
 /* Define to 1 if you have the `setenv' function. */
 /* #undef HAVE_SETENV */
@@ -635,7 +635,7 @@
 #define O_LABEL_ADDRESSES 1
 
 /* Define to include support for multi-threading */
-#define O_PLMT 1
+/* #undef O_PLMT */
 
 /* "Define if Prolog kernel is in shared object" */
 /* #undef O_SHARED_KERNEL */
@@ -674,7 +674,7 @@
 /* #undef PTHREAD_CPUCLOCKS */
 
 /* Define to make use of standard (UNIX98) pthread recursive mutexes */
-#define RECURSIVE_MUTEXES 1
+/* #undef RECURSIVE_MUTEXES */
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
