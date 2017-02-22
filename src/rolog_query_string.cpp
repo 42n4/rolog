@@ -13,6 +13,6 @@ List rolog_query_string(String predicate, StringVector arguments)
 
   List r ;
   while(q.next_solution())
-    r.push_back(String((wchar_t*) arg[1])) ;
+    r.push_back(String((char*) (arg[1]))) ;
   return r ;
 } // rolog_query_string
