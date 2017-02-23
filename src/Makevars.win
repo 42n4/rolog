@@ -10,4 +10,4 @@ $(SHLIB): mylibs
 
 mylibs:
 	make -C swipl-7.5.1/src DEVPL=./swipl1.sh
-	make -C swipl-7.5.1/src install DEVPL=./swipl2.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)
+	make -C swipl-7.5.1/src install DEVPL=./swipl2.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp INSTALL_PROGRAM="cp -p" RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)
