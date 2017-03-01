@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include "SWI-Prolog.h"
 #include "SWI-cpp.h"
+#include <iostream>
 
 using namespace Rcpp;
 
