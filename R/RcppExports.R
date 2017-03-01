@@ -20,7 +20,7 @@ rolog_consult <- function(prolog_files)
 
 rolog_query_comp <- function(predicate, arguments) 
 {
-  .Call('rolog_rolog_query_comp', predicate, arguments, PACKAGE = 'rolog')
+  .Call('rolog_rolog_query_comp', enc2native(predicate), enc2native(arguments), PACKAGE='rolog')
 }
 
 rolog_query_string <- function(predicate, arguments) 
