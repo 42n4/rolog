@@ -27,7 +27,7 @@ int rolog_init(String home, String prc)
   }
   
   char predicate[512] ;
-  sprintf(predicate, "asserta(file_search_path(myswip, \"%s/library\"))", home.get_cstring()) ;
+  sprintf(predicate, "asserta(file_search_path(library, \"%s/library\"))", home.get_cstring()) ;
   PlCall(predicate) ;
   
   // atexit(rolog_exit) ;
