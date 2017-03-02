@@ -3,7 +3,7 @@ rcpp_hello_world <- function()
   .Call('rolog_rcpp_hello_world', PACKAGE = 'rolog')
 }
 
-rolog_init <- function(home=system.file("swipl/lib/swipl-7.5.1/boot64.prc", package="rolog"), prc=home)
+rolog_init <- function(home=system.file("swipl/lib/swipl-7.5.1", package="rolog"), prc=file.path(home, "boot64.prc"))
 {
   .Call('rolog_rolog_init', home, prc, PACKAGE = 'rolog')
 }
