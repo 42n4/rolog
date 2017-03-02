@@ -4,10 +4,18 @@
 
 using namespace Rcpp;
 
+extern PlEngine* rolog_engine ;
+
 // [[Rcpp::export]]
 CharacterVector rolog_consult(CharacterVector prolog_files) 
 {
   CharacterVector r ;
+  if(!rolog_engine)
+  {
+    r.push_back("Rolog not initialized") ;
+    return r ;
+  } // if
+
   for(R_xlen_t i=0 ; i<prolog_files.length() ; i++)
   {
     PlQuery q("consult", PlString(prolog_files[i])) ;
