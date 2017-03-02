@@ -26,6 +26,10 @@ int rolog_init(String home, String prc)
     rolog_engine = new PlEngine(3, resfile) ;
   }
   
+  char predicate[512] ;
+  sprintf(predicate, "asserta(file_search_path(myswip, \"%s/library\"))", home.get_cstring()) ;
+  PlCall(predicate) ;
+  
   // atexit(rolog_exit) ;
   return 0 ;
 } // rolog_init
