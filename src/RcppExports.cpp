@@ -61,6 +61,18 @@ RcppExport SEXP rolog_rolog_query_comp(SEXP predicate, SEXP arguments)
   END_RCPP
 }
 
+// rolog_query_LL
+List rolog_query_LL(String predicate, StringVector arguments);
+RcppExport SEXP rolog_rolog_query_LL(SEXP predicate, SEXP arguments) 
+{
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  rcpp_result_gen = Rcpp::wrap(rolog_query_LL(predicate, arguments));
+  return rcpp_result_gen;
+  END_RCPP
+}
+
 // rolog_query_string
 List rolog_query_string(String predicate, StringVector arguments);
 RcppExport SEXP rolog_rolog_query_string(SEXP predicate, SEXP arguments) 
