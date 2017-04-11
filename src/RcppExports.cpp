@@ -49,6 +49,18 @@ RcppExport SEXP rolog_rolog_consult(SEXP prolog_files)
   END_RCPP
 }
 
+// rolog_call
+CharacterVector rolog_call(String prolog_call);
+RcppExport SEXP rolog_rolog_call(SEXP prolog_call) 
+{
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  rcpp_result_gen = Rcpp::wrap(rolog_call(prolog_call));
+  return rcpp_result_gen;
+  END_RCPP
+}
+
 // rolog_query_comp
 List rolog_query_comp(String predicate, StringVector arguments);
 RcppExport SEXP rolog_rolog_query_comp(SEXP predicate, SEXP arguments) 
