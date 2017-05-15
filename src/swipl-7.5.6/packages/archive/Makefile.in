@@ -1,0 +1,89 @@
+################################################################
+# Makefile template for SWI-Prolog archive package
+#
+# This template is used by configure to create Makefile.  See
+# the file INSTALL for further installation instructions.
+#
+# License: Simplified BSD
+#
+# Author: Jan Wielemaker (J.Wielemaker@vu.nl)
+################################################################
+
+PACKAGE=archive
+DOC=archive
+include ../Makefile.defs
+CFLAGS+= -I.
+
+# COFLAGS=-gdwarf-2 -g3
+
+LIBPL=		@ARCHIVE_PLTARGETS@
+TARGETS=	@ARCHIVE_TARGETS@
+
+AROBJ=		archive4pl.o
+
+all:		$(TARGETS)
+
+nolib::
+		@echo "WARNING: Could not find archive library; skipped"
+
+archive4pl.@SO@: $(AROBJ)
+		$(LD) $(LDSOFLAGS) -o $@ $(AROBJ) @LIBS@ $(LIBPLSO)
+
+install:	$(TARGETS) $(LIBPL)
+		mkdir -p $(DESTDIR)$(SOLIBDIR)
+		for f in $(TARGETS); do \
+		  [ "$$f" = nolib ] || $(INSTALL_PROGRAM) $$f $(DESTDIR)$(SOLIBDIR); \
+		done
+		mkdir -p $(DESTDIR)$(PLBASE)/library
+		for f in $(LIBPL); do \
+		  $(INSTALL_DATA) $$f $(DESTDIR)$(PLBASE)/library; \
+		done
+		$(MKINDEX)
+
+ln-install::
+		$(MAKE) INSTALL_DATA="../ln-install" INSTALL_PROGRAM="../ln-install" install
+
+rpm-install:	install
+
+html-install::
+		mkdir -p $(DESTDIR)$(PKGDOC)
+		$(INSTALL) -m 644 $(DOC).html $(DESTDIR)$(PKGDOC)
+
+pdf-install::
+		mkdir -p $(DESTDIR)$(PKGDOC)
+		$(INSTALL) -m 644 $(DOC).pdf $(DESTDIR)$(PKGDOC)
+
+uninstall::
+		(cd $(SOLIBDIR) && rm -f $(TARGETS))
+		(cd $(PLBASE)/library && rm -f $(LIBPL))
+		$(MKINDEX)
+
+################################################################
+# Documentation
+################################################################
+
+TEXEXTRA=	archive4pl.tex
+$(TEX):		$(TEXEXTRA)
+
+archive4pl.tex:	archive.pl
+		$(PLTOTEX) --out=$@ --section 'library(archive)'
+
+
+################################################################
+# Testing
+################################################################
+
+check::
+
+
+################################################################
+# Clean
+################################################################
+
+clean:
+		rm -f $(AROBJ) *~ *.o *% a.out core config.log
+
+distclean:	clean
+		rm -f $(TARGETS) config.cache config.h config.status Makefile
+		rm -f $(DOC).aux $(DOC).log $(DOC).out $(DOC).toc
+		rm -rf autom4te.cache
