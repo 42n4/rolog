@@ -10,5 +10,5 @@ all: $(SHLIB)
 $(SHLIB): mylibs
 
 mylibs:
-	make -C swipl-7.5.8/src DEVPL=./swipl.sh
+	make -C swipl-7.5.8/src DEVPL=./swipl1.sh
 	make -C swipl-7.5.8/src install DEVPL=./swipl2.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)
