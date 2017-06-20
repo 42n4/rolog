@@ -1,0 +1,14 @@
+.plrc
+Makefile
+config.h
+config.status
+*.aux
+*.bbl
+*.blg
+*.ilg
+*.log
+*.out
+*.tex
+*.dll
+*.exp
+*.lib
