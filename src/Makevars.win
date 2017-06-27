@@ -1,14 +1,14 @@
 .PHONY: all mylibs
 
-PKG_CPPFLAGS=-Iswipl-7.5.8/src -Iswipl-7.5.8/packages/cpp
-PKG_LIBS=-Lswipl-7.5.8/lib/i386-win32 -lswipl -luxnt -ldbghelp -lws2_32 -lwsock32 -lwinmm -lshell32
+PKG_CPPFLAGS=-Iswipl-7.5.9/src -Iswipl-7.5.9/packages/cpp
+PKG_LIBS=-Lswipl-7.5.9/lib/i386-win32 -lswipl -luxnt -ldbghelp -lws2_32 -lwsock32 -lwinmm -lshell32
 MY_prefix=../../../inst/swipl/lib
-MY_PLBASE=../../../inst/swipl/lib/swipl-7.5.8
+MY_PLBASE=../../../inst/swipl/lib/swipl-7.5.9
 
 all: $(SHLIB)
 
 $(SHLIB): mylibs
 
 mylibs:
-	make -C swipl-7.5.8/src BDIR=. DEVPL=./swipl.sh
-	make -C swipl-7.5.8/src install BDIR=bin DEVPL=./swipl.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)
+	make -C swipl-7.5.9/src BDIR=. DEVPL=./swipl.sh
+	make -C swipl-7.5.9/src install BDIR=bin DEVPL=./swipl.sh INSTALL_PLARCH=. INSTALL=cp INSTALL_DATA=cp RANLIB=echo prefix=$(MY_prefix) PLBASE=$(MY_PLBASE)
