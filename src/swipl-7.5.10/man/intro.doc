@@ -1,0 +1,295 @@
+\chapter{Introduction}			\label{sec:intro}
+
+This document is a \jargon{reference manual}. That means that it
+documents the system, but it does not explain the basics of the Prolog
+language and it leaves many details of the syntax, semantics and
+built-in primitives undefined where SWI-Prolog follows the standards.
+This manual is intended for people that are familiar with Prolog. For
+those not familiar with Prolog, we recommend to start with a Prolog
+textbook such as \cite{Bratko:86}, \cite{Sterling:86} or
+\cite{Clocksin:87}. For more advanced Prolog usage we recommend
+\cite{Keefe:90}.
+
+
+\section{Positioning SWI-Prolog}	\label{sec:swiprolog}
+
+Most implementations of the Prolog language are designed to serve a
+limited set of use cases. SWI-Prolog is no exception to this rule.
+SWI-Prolog positions itself primarily as a Prolog environment for
+`programming in the large' and use cases where it plays a central role
+in an application, i.e., where it acts as `glue' between components. At
+the same time, SWI-Prolog aims at providing a productive rapid
+prototyping environment. Its orientation towards programming in the
+large is backed up by scalability, compiler speed, program structuring
+(modules), support for multithreading to accommodate servers, Unicode
+and interfaces to a large number of document formats, protocols and
+programming languages. Prototyping is facilitated by good development
+tools, both for command line usage as for usage with graphical
+development tools. Demand loading of predicates from the library and a
+`make' facility avoids the \emph{requirement} for using declarations and
+reduces typing.
+
+SWI-Prolog is traditionally strong in education because it is free and
+portable, but also because of its compatibility with textbooks and its
+easy-to-use environment.
+
+Note that these positions do not imply that the system cannot be used
+with other scenarios. SWI-Prolog is used as an embedded language where
+it serves as a small rule subsystem in a large application. It is also
+used as a deductive database. In some cases this is the right choice
+because SWI-Prolog has features that are required in the application,
+such as threading or Unicode support. In general though, for example,
+GNU-Prolog is more suited for embedding because it is small and can
+compile to native code, XSB is better for deductive databases because it
+provides advanced resolution techniques (tabling), and ECLiPSe is better
+at constraint handling.
+
+The syntax and set of built-in predicates is based on the ISO standard
+\cite{stdprolog:98}. Most extensions follow the `Edinburgh tradition'
+(DEC10 Prolog and C-Prolog) and Quintus Prolog \cite{QUINTUS:manual}.
+The infrastructure for constraint programming is based on hProlog
+\cite{Demoen:CW350}. Some libraries are copied from the
+YAP\footnote{\url{http://www.dcc.fc.up.pt/\~{}vsc/Yap/}} system.
+Together with YAP we developed a portability framework (see
+\secref{dialect}). This framework has been filled for SICStus Prolog,
+YAP, IF/Prolog and Ciao. SWI-Prolog version~7 introduces various
+extensions to the Prolog language (see \secref{extensions}). The
+\jargon{string} data type and its supporting set of built-in predicates
+is compatibility with ECLiPSe.
+
+\section{Status and releases}			\label{sec:status}
+
+This manual describes version \versionshort{} of SWI-Prolog. SWI-Prolog
+is widely considered to be a robust and scalable implementation of the
+Prolog language. It is widely used in education and research. In
+addition, it is in use for $24 \times 7$ mission critical commercial
+server processes. The site \url{http://www.swi-prolog.org} is hosted
+using the SWI-Prolog HTTP server infrastructure. It receives
+approximately 2.3 million hits and serves approximately 300 Gbytes on
+manual data and downloads each month.  SWI-Prolog applications range
+from student assignments to commercial applications that count more
+than one million lines of Prolog code.
+
+SWI-Prolog has two development tracks. \emph{Stable} releases have an
+even \emph{minor} version number (e.g., 6.2.1) and are released as a
+branch from the development version when the development
+version is considered stable and there is sufficient new functionality
+to justify a stable release. Stable releases often get a few patch
+updates to deal with installation issues or major flaws. A new
+\emph{Development} version is typically released every couple of weeks
+as a snapshot of the public git repository. `Extra editions' of the
+development version may be released after problems that severely hindered the
+user in their progress have been fixed.
+
+Known bugs that are not likely to be fixed soon are described as
+footnotes in this manual.
+
+
+\section{Should I be using SWI-Prolog?}		\label{sec:swiorother}
+
+There are a number of reasons why it might be better to choose a
+commercial, or another free, Prolog system:
+
+\begin{itemlist}
+    \item [SWI-Prolog comes with no warranties]
+Although the developers or the community often provide a work-around or
+a fix for a bug, there is no place you can go to for guaranteed support.
+However, the full source archive is available and can be used to compile
+and debug SWI-Prolog using free tools on all major platforms.
+Users requiring more support should ensure access to knowledgeable developers.
+
+    \item [Performance is your first concern]
+Various free and commercial systems have better performance. But,
+`standard' Prolog benchmarks disregard many factors that are often
+critical to the performance of large applications. SWI-Prolog is not
+good at fast calling of simple predicates and if-then-else selection
+based on simple built-in tests, but it is fast with dynamic code,
+meta-calling and predicates that contain large numbers of clauses. Many
+of SWI-Prolog's built-in predicates are written in C and have excellent
+performance.
+
+    \item [You need features not offered by SWI-Prolog]
+Although SWI-Prolog has many features, it also lacks some important
+features.  The most well known is probably \jargon{tabling}
+\cite{oai:CiteSeerPSU:36493}.  If you require additional features
+and you have resources, be it financial or expertise, please
+contact the developers.
+\end{itemlist}
+
+On the other hand, SWI-Prolog offers some facilities that are widely
+appreciated by users:
+
+\begin{itemlist}
+    \item [Nice environment]
+SWI-Prolog provides a good command line environment, including `Do What I
+Mean', autocompletion, history and a tracer that operates on single
+key strokes.  The system automatically recompiles modified parts of the
+source code using the make/0 command.  The system can be instructed to
+open an arbitrary editor on the right file and line based on its source
+database. It ships with various graphical tools and can be combined with the
+SWI-Prolog editor, PDT (Eclipse plugin for Prolog) or GNU-Emacs.
+
+    \item [Fast compiler]
+Even very large applications can be loaded in seconds on most machines.
+If this is not enough, there is the Quick Load Format.  See qcompile/1
+and qsave_program/2.
+
+    \item [Transparent compiled code]
+SWI-Prolog compiled code can be treated just as interpreted code: you
+can list it, trace it, etc. This implies you do not have to decide
+beforehand whether a module should be loaded for debugging or not, and
+the performance of debugged code is close to that of normal operation.
+
+    \item [Source level debugger]
+The source level debugger provides a good overview of your current
+location in the search tree, variable bindings, your source code and
+open choice points. Choice point inspection provides meaningful insight to
+both novices and experienced users. Avoiding unintended choice points
+often provides a huge increase in performance and a huge saving in
+memory usage.
+
+    \item [Profiling]
+SWI-Prolog offers an execution profiler with either textual output or
+graphical output.  Finding and improving hotspots in a Prolog program
+may result in huge speedups.
+
+    \item [Flexibility]
+SWI-Prolog can easily be integrated with C, supporting non-determinism
+in Prolog calling C as well as C calling Prolog (see \secref{foreign}).
+It can also be \jargon{embedded} in external programs (see
+\secref{plld}). System predicates can be redefined locally to provide
+compatibility with other Prolog systems.
+
+    \item [Threads]
+Robust support for multiple threads may improve performance and is a
+key enabling factor for deploying Prolog in server applications.
+
+    \item [Interfaces]
+SWI-Prolog ships with many extension packages that provide robust
+interfaces to processes, encryption, TCP/IP, TIPC, ODBC, SGML/XML/HTML,
+RDF, HTTP, graphics and much more.
+\end{itemlist}
+
+
+\section{Support the SWI-Prolog project}	\label{sec:sponsor}
+
+You can support the SWI-Prolog project in several ways. Academics are
+invited to cite one of the
+publications\footnote{\url{http://www.swi-prolog.org/Publications.html}}
+on SWI-Prolog. Users can help by identifying and/or fixing problems with
+the code or its
+documentation.\footnote{\url{http://www.swi-prolog.org/howto/SubmitPatch.html}}.
+Users can contribute new features or, more lightweight, contribute
+packs\footnote{\url{http://www.swi-prolog.org/pack/list}}. Commercial
+users may consider contacting the
+developers\footnote{\url{mailto:info@swi-prolog.org}} to sponsor the
+development of new features or seek for opportunities to cooperate with
+the developers or other commercial users.
+
+
+\section{Implementation history}		\label{sec:implhistory}
+
+
+SWI-Prolog started back in 1986 with the requirement for a Prolog that
+could handle recursive interaction with the C-language: Prolog calling C
+and C calling Prolog recursively. In those days Prolog systems were not
+very aware of their environment and we needed such a system to support
+interactive applications. Since then, SWI-Prolog's development has been
+guided by requests from the user community, especially focussing on (in
+arbitrary order) interaction with the environment, scalability, (I/O)
+performance, standard compliance, teaching and the program development
+environment.
+
+SWI-Prolog is based on a simple Prolog virtual machine called ZIP
+\cite{Bowen:83,Neumerkel:93} which defines only 7 instructions. Prolog
+can easily be compiled into this language, and the abstract machine code
+is easily decompiled back into Prolog. As it is also possible to wire a
+standard 4-port debugger in the virtual machine, there is no need for a
+distinction between compiled and interpreted code. Besides simplifying
+the design of the Prolog system itself, this approach has advantages for
+program development: the compiler is simple and fast, the user does not
+have to decide in advance whether debugging is required, and the system
+only runs slightly slower in debug mode compared to normal execution.
+The price we have to pay is some performance degradation (taking out the
+debugger from the VM interpreter improves performance by about 20\%) and
+somewhat additional memory usage to help the decompiler and debugger.
+
+SWI-Prolog extends the minimal set of instructions described in
+\cite{Bowen:83} to improve performance. While extending this set, care
+has been taken to maintain the advantages of decompilation and tracing
+of compiled code. The extensions include specialised instructions for
+unification, predicate invocation, some frequently used built-in
+predicates, arithmetic, and control (\predref{;}{2}, \predref{|}{2}),
+if-then (\predref{->}{2}) and negation-by-failure (\predref{\+}{1}).
+
+
+\section{Acknowledgements}	\label{sec:acknowledge}
+
+Some small parts of the Prolog code of SWI-Prolog are modified
+versions of the corresponding Edinburgh C-Prolog code: grammar rule
+compilation and writef/2.  Also some of the C-code originates from
+C-Prolog: finding the path of the currently running executable and
+some of the code underlying absolute_file_name/2. Ideas on programming
+style and techniques originate from C-Prolog and Richard O'Keefe's {\em
+thief} editor. An important source of inspiration are the programming
+techniques introduced by Anjo Anjewierden in PCE version~1 and~2.
+
+Our special thanks go to those who had the fate of using the early
+versions of this system, suggested extensions or reported bugs. Among
+them are Anjo Anjewierden, Huub Knops, Bob Wielinga, Wouter Jansweijer,
+Luc Peerdeman, Eric Nombden, Frank van Harmelen, Bert Rengel.
+
+Martin Jansche (\email{jansche@novell1.gs.uni-heidelberg.de}) has been
+so kind to reorganise the sources for version 2.1.3 of this manual.
+Horst von Brand has been so kind to fix many typos in the 2.7.14 manual.
+Thanks!  Randy Sharp fixed many issues in the 6.0.x version of the
+manual.
+
+Bart Demoen and Tom Schrijvers have helped me adding coroutining,
+constraints, global variables and support for cyclic terms to the
+kernel. Tom Schrijvers has provided a first clp(fd) constraint solver,
+the CHR compiler and some of the coroutining predicates.  Markus Triska
+contributed the current clp(fd) implementation as well as the clp(b)
+implementation.
+
+Tom Schrijvers and Bart Demoen initiated the implementation of
+\jargon{delimited continuations} (\secref{delcont}), which was used by
+Benoit Desouter and Tom Schrijvers to implement \jargon{tabling}
+(\secref{tabling}) as a library. Fabrizio Riguzzi added a first
+implementation for \jargon{mode directed tabling}
+(\secref{tabling-mode-directed}).
+
+The SWI-Prolog~7 extensions (\secref{extensions}) are the result of a
+long heated discussion on the mailinglist. Nicos Angelopoulos' wish for
+a smooth integration with the R language triggered the overall intend of
+these extensions to enable a smoother integration of Prolog with other
+languages.  Michael Hendrix suggested and helped shaping SWI-Prolog
+\jargon{quasi quotations}.
+
+Paul Singleton has integrated Fred Dushin's Java-calls-Prolog side
+with his Prolog-calls-Java side into the current bidirectional JPL
+interface package.
+
+Richard O'Keefe is gratefully acknowledged for his efforts to educate
+beginners as well as valuable comments on proposed new developments.
+
+Scientific Software and Systems Limited, \url{www.sss.co.nz} has
+sponsored the development of the SSL library, unbounded integer and
+rational number arithmetic and many enhancements to the memory
+management of the system.
+
+Leslie de Koninck has made clp(QR) available to SWI-Prolog.
+
+Jeff Rosenwald contributed the TIPC networking library and Google's
+protocol buffer handling.
+
+Paulo Moura's great experience in maintaining Logtalk for many Prolog
+systems including SWI-Prolog has helped in many places fixing
+compatibility issues.  He also worked on the MacOS port and fixed many
+typos in the 5.6.9 release of the documentation.
+
+Kyndi (\url{https://kyndi.com/}) sponsored the development of the
+\jargon{engines} interface (\chapref{engines}).  The final API was
+established after discussion with the founding father of engines,
+Paul Tarau and Paulo Moura.  Kyndi also sponsored JIT indexing on
+multiple arguments.
