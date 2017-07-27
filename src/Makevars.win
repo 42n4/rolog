@@ -1,6 +1,6 @@
 .PHONY: all mylibs
 
-PKG_CPPFLAGS=-Iswipl-7.5.11/src -Iswipl-7.5.10/packages/cpp
+PKG_CPPFLAGS=-Iswipl-7.5.11/src -Iswipl-7.5.11/packages/cpp
 PKG_LIBS=-Lswipl-7.5.11/lib/i386-win32 -lswipl -luxnt -ldbghelp -lws2_32 -lwsock32 -lwinmm -lshell32
 MY_prefix=../../../inst/swipl/lib
 MY_PLBASE=../../../inst/swipl/lib/swipl-7.5.10
