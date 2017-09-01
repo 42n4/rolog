@@ -1,0 +1,16 @@
+Tests
+Makefile
+config.h
+config.log
+html
+*.log
+*.aux
+*.tex
+*.db
+*.out
+test.pl
+.plrc
+correct.pl
+dbpred.pl
+dbmodul.pl
+t.pl
