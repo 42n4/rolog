@@ -1,0 +1,451 @@
+\section{Managing RDF input files}
+\label{sec:rdflib}
+
+Complex projects require RDF resources from many locations and typically
+wish to load these in different combinations. For example loading a
+small subset of the data for debugging purposes or load a different set
+of files for experimentation. The library \pllib{semweb/rdf_library.pl}
+manages sets of RDF files spread over different locations, including
+file and network locations. The original version of this library
+supported metadata about collections of RDF sources in an RDF file
+called \jargon{Manifest}. The current version supports both the
+\href{http://www.w3.org/TR/void/}{VoID} format and the original format.
+VoID files (typically named \file{void.ttl}) can use elements from the
+RDF Manifest vocabulary to support features that are not supported by
+VoID.
+
+
+\subsection{The Manifest file}
+\label{sec:semweb-rdf-manifest}
+
+A manifest file is an RDF file, often in
+\href{http://www.w3.org/TeamSubmission/turtle/}{Turtle} format, that
+provides meta-data about RDF resources. Often, a manifest will describe
+RDF files in the current directory, but it can also describe RDF
+resources at arbitrary URL locations. The RDF schema for RDF library
+meta-data can be found in \file{rdf_library.ttl}. The namespace for the
+RDF library format is defined as
+\url{http://www.swi-prolog.org/rdf/library/} and abbreviated as
+\const{lib}.
+
+The schema defines three root classes: lib:Namespace, lib:Ontology and
+lib:Virtual, which we describe below.
+
+\begin{description}
+    \resitem{lib:Ontology}
+This is a subclass of owl:Ontology.  It has two subclasses, lib:Schema
+and lib:Instances.  These three classes are currently processed equally.
+The following properties are recognised on lib:Ontology:
+
+    \begin{description}
+	\resitem {dc:title}
+Title of the ontology.  Displayed by rdf_list_library/0.
+	\resitem {owl:versionInfo}
+Version of the ontology.  Displayed by rdf_list_library/0.
+	\resitem {owl:imports}
+Ontologies imported.  If rdf_load_library/2 is used to load this
+ontology, the ontologies referenced here are loaded as well.  There
+are two subProperties: lib:schema and lib:instances with the obvious
+meaning.
+	\resitem {lib:source}
+Defines the named graph into which the resource is loaded.  If this
+ends in a \const{/}, the basename of each loaded file is appended to
+the given source.  Defaults to the URL the RDF is loaded from.
+	\resitem {lib:baseURI}
+Defines the base for processing the RDF data.  If not provided this
+defaults to the named graph, which in turn defaults to the URL the
+RDF is loaded from.
+    \end{description}
+
+    \resitem{lib:Virtual}
+Virtual ontologies do not refer to an RDF resource themselves. They
+only import other resources.  For example the W3C WordNet manifest
+defines \const{wn-basic} and \const{wn-full} as virtual resources.
+The lib:Virtual resource is used as a second rdf:type:
+
+\begin{code}
+<wn-basic>
+	a lib:Ontology ;
+	a lib:Virtual ;
+	...
+\end{code}
+
+    \resitem{lib:CloudNode}
+Used by ClioPatria to combine this ontology and all data it imports into
+a node in the automatically generated datacloud.
+
+    \resitem{lib:Namespace}
+Defines a URL to be a namespace. The definition provides the preferred
+mnemonic and can be referenced in the lib:providesNamespace and
+lib:usesNamespace properties. The rdf_load_library/2 predicates
+registers encountered namespace mnemonics with rdf-db using
+rdf_register_ns/2.  Typically namespace declarations use @{prefix}
+declarations.  E.g.\
+
+\begin{code}
+@prefix	    lib: <http://www.swi-prolog.org/rdf/library/> .
+@prefix    rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+[ a lib:Namespace ;
+  lib:mnemonic "rdfs" ;
+  lib:namespace rdfs:
+] .
+\end{code}
+\end{description}
+
+\subsubsection{Support for the VoID and VANN vocabularies}
+\label{sec:semweb-void}
+
+The \href{http://www.w3.org/TR/void/}{VoID} aims at resolving the same
+problem as the Manifest files described here. In addition, the
+\href{http://vocab.org/vann/}{VANN} vocabulary provides the information
+about preferred namepaces prefixes.  The RDF library manager can deal
+with VoID files.  The following relations apply:
+
+\begin{itemize}
+    \item VoID \const{Dataset} and \const{Linkset} are similar to
+    \const{lib:Ontology}, but a VoID resource is always
+    \jargon{Virtual}.  I.e., the VoID URI itself never refers to
+    an RDF document.
+
+    \item The \const{owl:imports} and its lib specializations are
+    replaced by \const{void:subset} (referring to another VoID
+    dataset) and \const{void:dataDump} (referring to a concrete
+    document).
+
+    \item A description of the dataset is given using \const{dcterms:description}
+    rather than \const{rdfs:comment}
+
+    \item The RDF library recognises \const{lib:source}, \const{lib:baseURI}
+    and \const{lib:Cloudnode}, which have no equivalent in VoID.
+
+    \item The RDF library recognises \const{vann:preferredNamespacePrefix} and
+    \const{vann:preferredNamespaceUri} as alternatives to its
+    proprietary way for defining prefixes. The domain of these
+    predicates is unclear. The library recognises them regardless of the
+    domain. Note that the range of \const{vann:preferredNamespaceUri} is
+    a \emph{literal}.  A disadvantage of that is that the Turtle prefix
+    declaration cannot be reused.
+\end{itemize}
+
+Currently, the RDF metadata is \emph{not} stored in the RDF database. It
+is processed by low-level primitives that do \emph{not} perform RDFS
+reasoning. In particular, this means that rdfs:supPropertyOf and
+rdfs:subClassOf cannot be used to specialise the RDF meta vocabulary.
+
+
+\subsubsection{Finding manifest files}
+\label{sec:semweb-find-manifest}
+
+The initial metadata file(s) are loaded into the system using
+rdf_attach_library/1.
+
+\begin{description}
+    \predicate{rdf_attach_library}{1}{+FileOrDirectory}
+Load meta-data on RDF repositories from \arg{FileOrDirectory}. If the
+argument is a directory, this directory is processed recursively and
+each for each directory, a file named \file{void.ttl},
+\file{Manifest.ttl} or \file{Manifest.rdf} is loaded (in this order of
+preference).
+
+Declared namespaces are added to the rdf-db namespace list. Encountered
+ontologies are added to a private database of
+\file{rdf_list_library.pl}. Each ontology is given an
+\jargon{identifier}, derived from the basename of the URL without the
+extension. This, using the declaration below, the identifier of the
+declared ontology is \const{wn-basic}.
+
+\begin{code}
+<wn-basic>
+	a void:Dataset ;
+	dcterms:title "Basic WordNet" ;
+	...
+\end{code}
+
+    \predicate{rdf_list_library}{0}{}
+List the available resources in the library.  Currently only lists
+resources that have a dcterms:title property.  See \secref{usage} for
+an example.
+\end{description}
+
+It is possible for the initial set of manifests to refer to RDF files
+that are not covered by a manifest. If such a reference is encountered
+while loading or listing a library, the library manager will look for a
+manifest file in the directory holding the referenced RDF file and load
+this manifest. If a manifest is found that covers the referenced file,
+the directives found in the manifest will be followed. Otherwise the RDF
+resource is simply loaded using the current defaults.
+
+Further exploration of the library is achieved using rdf_list_library/1
+or rdf_list_library/2:
+
+\begin{description}
+    \predicate{rdf_list_library}{1}{+Id}
+Same as \term{rdf_list_library}{Id, []}.
+
+    \predicate{rdf_list_library}{2}{+Id, +Options}
+Lists the resources that will be loaded if \arg{Id} is handed to
+rdf_load_library/2. See rdf_attach_library/1 for how ontology
+identifiers are generated. In addition it checks the existence of each
+resource to help debugging library dependencies. Before doing its work,
+rdf_list_library/2 reloads manifests that have changed since they were
+loaded the last time. For HTTP resources it uses the HEAD method to
+verify existence and last modification time of resources.
+
+    \predicate{rdf_load_library}{2}{+Id, +Options}
+Load the given library. First rdf_load_library/2 will establish what
+resources need to be loaded and whether all resources exist.  Than it
+will load the resources.
+\end{description}
+
+
+\subsection{Usage scenarios}
+\label{sec:usage}
+
+Typically, a project will use a single file using the same format as a
+manifest file that defines alternative configurations that can be
+loaded. This file is loaded at program startup using
+rdf_attach_library/1.  Users can now list the available libraries
+using rdf_list_library/0 and rdf_list_library/1:
+
+\begin{code}
+1 ?- rdf_list_library.
+ec-core-vocabularies E-Culture core vocabularies
+ec-all-vocabularies All E-Culture vocabularies
+ec-hacks            Specific hacks
+ec-mappings         E-Culture ontology mappings
+ec-core-collections E-Culture core collections
+ec-all-collections  E-Culture all collections
+ec-medium           E-Culture medium sized data (artchive+aria)
+ec-all              E-Culture all data
+\end{code}
+
+Now we can list a specific category using rdf_list_library/1. Note this
+loads two additional manifests referenced by resources encountered in
+\const{ec-mappings}.  If a resource does not exist is is flagged using
+\const{[NOT FOUND]}.
+
+\begin{code}
+2 ?- rdf_list_library('ec-mappings').
+% Loaded RDF manifest /home/jan/src/eculture/vocabularies/mappings/Manifest.ttl
+% Loaded RDF manifest /home/jan/src/eculture/collections/aul/Manifest.ttl
+<file:///home/jan/src/eculture/src/server/ec-mappings>
+. <file:///home/jan/src/eculture/vocabularies/mappings/mappings>
+. . <file:///home/jan/src/eculture/vocabularies/mappings/interface>
+. . . file:///home/jan/src/eculture/vocabularies/mappings/interface_class_mapping.ttl
+. . . file:///home/jan/src/eculture/vocabularies/mappings/interface_property_mapping.ttl
+. . <file:///home/jan/src/eculture/vocabularies/mappings/properties>
+. . . file:///home/jan/src/eculture/vocabularies/mappings/ethnographic_property_mapping.ttl
+. . . file:///home/jan/src/eculture/vocabularies/mappings/eculture_properties.ttl
+. . . file:///home/jan/src/eculture/vocabularies/mappings/eculture_property_semantics.ttl
+. . <file:///home/jan/src/eculture/vocabularies/mappings/situations>
+. . . file:///home/jan/src/eculture/vocabularies/mappings/eculture_situations.ttl
+. <file:///home/jan/src/eculture/collections/aul/aul>
+. . file:///home/jan/src/eculture/collections/aul/aul.rdfs
+. . file:///home/jan/src/eculture/collections/aul/aul.rdf
+. . file:///home/jan/src/eculture/collections/aul/aul9styles.rdf
+. . file:///home/jan/src/eculture/collections/aul/extractedperiods.rdf
+. . file:///home/jan/src/eculture/collections/aul/manual-periods.rdf
+\end{code}
+
+
+\subsubsection{Referencing resources}
+\label{sec:semweb-manifest-resources}
+
+Resources and manifests are located either on the local filesystem or on
+a network resource. The initial manifest can also be loaded from a file
+or a URL. This defines the initial \jargon{base URL} of the document.
+The base URL can be overruled using the Turtle @{base} directive. Other
+documents can be referenced relative to this base URL by exploiting
+Turtle's URI expansion rules. Turtle resources can be specified in three
+ways, as absolute URLs (e.g.\
+\verb$<http://www.example.com/rdf/ontology.rdf$>), as relative URL to
+the base (e.g.\ \verb$<../rdf/ontology.rdf$>) or following a
+\jargon{prefix} (e.g.\ prefix:ontology).
+
+The prefix notation is powerful as we can define multiple of them and
+define resources relative to them. Unfortunately, prefixes can only be
+defined as absolute URLs or URLs relative to the base URL. Notably, they
+cannot be defined relative to other prefixes. In addition, a prefix can
+only be followed by a Qname, which excludes \verb$.$ and \verb$/$.
+
+Easily relocatable manifests must define all resources relative to the
+base URL. Relocation is automatic if the manifest remains in the same
+hierarchy as the resources it references. If the manifest is copied
+elsewhere (i.e.\ for creating a local version) it can use @{base} to
+refer to the resource hierarchy. We can point to directories holding
+manifest files using @{prefix} declarations.  There, we can reference
+\jargon{Virtual} resources using prefix:name.  Here is an example, were
+we first give some line from the initial manifest followed by the
+definition of the virtual RDFS resource.
+
+\begin{code}
+@base <http://gollem.science.uva.nl/e-culture/rdf/> .
+
+@prefix base:		<base_ontologies/> .
+
+<ec-core-vocabularies>
+	a lib:Ontology ;
+	a lib:Virtual ;
+	dc:title "E-Culture core vocabularies" ;
+	owl:imports
+		base:rdfs ,
+		base:owl ,
+		base:dc ,
+		base:vra ,
+		...
+\end{code}
+
+\begin{code}
+<rdfs>
+	a lib:Schema ;
+	a lib:Virtual ;
+	rdfs:comment "RDF Schema" ;
+	lib:source rdfs: ;
+	lib:schema <rdfs.rdfs> .
+\end{code}
+
+\subsection{Putting it all together}
+\label{sec:semweb-rdflib-example}
+
+In this section we provide skeleton code for filling the RDF database
+from a password protected HTTP repository. The first line loads the
+application. Next we include modules that enable us to manage the RDF
+library, RDF database caching and HTTP connections. Then we setup the
+HTTP authentication, enable caching of processed RDF files and load the
+initial manifest. Finally load_data/0 loads all our RDF data.
+
+\begin{code}
+:- use_module(server).
+
+:- use_module(library(http/http_open)).
+:- use_module(library(semweb/rdf_library)).
+:- use_module(library(semweb/rdf_cache)).
+
+:- http_set_authorization('http://www.example.org/rdf',
+			  basic(john, secret)).
+
+:- rdf_set_cache_options([ global_directory('RDF-Cache'),
+			   create_global_directory(true)
+			 ]).
+
+
+:- rdf_attach_library('http://www.example.org/rdf/Manifest.ttl').
+
+%%	load_data
+%
+%	Load our RDF data
+
+load_data :-
+	rdf_load_library('all').
+\end{code}
+
+\subsection{Example: A metadata file for W3C WordNet}
+\label{sec:w3cmanifest}
+
+The VoID metadata below allows for loading WordNet in the two
+predefined versions using one of
+
+\begin{code}
+?- rdf_load_library('wn-basic', []).
+?- rdf_load_library('wn-full', []).
+\end{code}
+
+
+
+\begin{code}
+@prefix    void: <http://rdfs.org/ns/void#> .
+@prefix    vann: <http://purl.org/vocab/vann/> .
+@prefix	    lib: <http://www.swi-prolog.org/rdf/library/> .
+@prefix     owl: <http://www.w3.org/2002/07/owl#> .
+@prefix     rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix    rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix     xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix      dc: <http://purl.org/dc/terms/> .
+@prefix   wn20s: <http://www.w3.org/2006/03/wn/wn20/schema/> .
+@prefix   wn20i: <http://www.w3.org/2006/03/wn/wn20/instances/> .
+
+[ vann:preferredNamespacePrefix "wn20i" ;
+  vann:preferredNamespaceUri "http://www.w3.org/2006/03/wn/wn20/instances/"
+] .
+
+[ vann:preferredNamespacePrefix "wn20s" ;
+  vann:preferredNamespaceUri "http://www.w3.org/2006/03/wn/wn20/schema/"
+] .
+
+<wn20-common>
+	a void:Dataset ;
+	dc:description "Common files between full and basic version" ;
+	lib:source wn20i: ;
+	void:dataDump
+		<wordnet-attribute.rdf.gz> ,
+		<wordnet-causes.rdf.gz> ,
+		<wordnet-classifiedby.rdf.gz> ,
+		<wordnet-entailment.rdf.gz> ,
+		<wordnet-glossary.rdf.gz> ,
+		<wordnet-hyponym.rdf.gz> ,
+		<wordnet-membermeronym.rdf.gz> ,
+		<wordnet-partmeronym.rdf.gz> ,
+		<wordnet-sameverbgroupas.rdf.gz> ,
+		<wordnet-similarity.rdf.gz> ,
+		<wordnet-synset.rdf.gz> ,
+		<wordnet-substancemeronym.rdf.gz> ,
+		<wordnet-senselabels.rdf.gz> .
+
+<wn20-skos>
+	a void:Dataset ;
+	void:subset <wnskosmap> ;
+	void:dataDump <wnSkosInScheme.ttl.gz> .
+
+<wnskosmap>
+	a lib:Schema ;
+	lib:source wn20s: ;
+	void:dataDump
+		<wnskosmap.rdfs> .
+
+<wnbasic-schema>
+	a void:Dataset ;
+	lib:source wn20s: ;
+	void:dataDump
+		<wnbasic.rdfs> .
+
+<wn20-basic>
+	a void:Dataset ;
+	a lib:CloudNode ;
+	dc:title "Basic WordNet" ;
+	dc:description "Light version of W3C WordNet" ;
+	owl:versionInfo "2.0" ;
+	lib:source wn20i: ;
+	void:subset
+		<wnbasic-schema> ,
+		<wn20-skos> ,
+		<wn20-common> .
+
+<wnfull-schema>
+	a void:Dataset ;
+	lib:source wn20s: ;
+	void:dataDump
+		<wnfull.rdfs> .
+
+<wn20-full>
+	a void:Dataset ;
+	a lib:CloudNode ;
+	dc:title "Full WordNet" ;
+	dc:description "Full version of W3C WordNet" ;
+	owl:versionInfo "2.0" ;
+	lib:source wn20i: ;
+	void:subset
+		<wnfull-schema> ,
+		<wn20-skos> ,
+		<wn20-common> ;
+	void:dataDump
+		<wordnet-antonym.rdf.gz> ,
+		<wordnet-derivationallyrelated.rdf.gz> ,
+		<wordnet-participleof.rdf.gz> ,
+		<wordnet-pertainsto.rdf.gz> ,
+		<wordnet-seealso.rdf.gz> ,
+		<wordnet-wordsensesandwords.rdf.gz> ,
+		<wordnet-frame.rdf.gz> .
+\end{code}
+
+%%

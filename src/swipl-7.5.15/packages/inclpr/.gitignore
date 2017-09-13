@@ -1,0 +1,11 @@
+*~
+*.so
+*.o
+*.dll
+autom4te.cache
+config.h
+config.log
+config.status
+config.h.in
+configure
+Makefile
