@@ -28,7 +28,7 @@ PlCompound leaf_lang(SEXP l)
 }
 
 // translate Prolog compound to R expression
-SEXP pl2r_lang(PlCompound t)
+SEXP pl2r_lang(PlTerm t)
 {
   Pairlist l ;
   l.push_back(t.name()) ;
