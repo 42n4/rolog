@@ -98,16 +98,13 @@ List rolog_query(String predicate, SEXP call)
   std::cout << "rolog_query" << std::endl ;
   PlTerm v = leaf(call) ;
   std::cout << "rolog_query done" << std::endl ;
-  return List(1) ;
 
-  /*
   PlTermv arg(2) ;
-  arg[0] = PlCompound(String(arguments[0]).get_cstring()) ;
+  arg[0] = v
   PlQuery q(predicate.get_cstring(), arg) ;
 
   List r ;
   while(q.next_solution())
     r.push_back(String((wchar_t*) arg[1])) ;
   return r ;
-  */
 } // rolog_query
