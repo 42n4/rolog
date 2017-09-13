@@ -16,7 +16,7 @@ SEXP leaf_lang(SEXP l)
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
     lang.push_back(leaf(CAR(cons))) ;
 
-  PlCompound c(pred.get_cstring(), PlTermv("args")) ;
+  PlCompound c(pred.c_str(), PlTermv("args")) ;
   return lang ;
 }
 
