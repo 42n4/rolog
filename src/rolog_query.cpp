@@ -30,7 +30,7 @@ PlCompound leaf_lang(SEXP l)
 // translate Prolog compound to R expression
 SEXP leaf_lang(PlCompound t)
 {
-  Rcpp::PairList l ;
+  PairList l ;
   l.push_back(t.name()) ;
   for(int i=1 ; i<=t.arity() ; i++)
     l.push_back(leaf(t[i])) ;
