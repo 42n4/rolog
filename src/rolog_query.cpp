@@ -31,7 +31,7 @@ PlCompound leaf_lang(SEXP l)
 SEXP pl2r_lang(PlTerm t)
 {
   Pairlist l ;
-  l.push_back(t.name()) ;
+  l.push_back(Symbol(t.name())) ;
   for(int i=1 ; i<=t.arity() ; i++)
     l.push_back(pl2r_leaf(t[i])) ;
   SEXP s = l ;
