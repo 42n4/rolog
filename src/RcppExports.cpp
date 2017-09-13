@@ -63,7 +63,7 @@ RcppExport SEXP rolog_rolog_call(SEXP prolog_call)
 
 // rolog_query_comp
 List rolog_query(String predicate, SEXP call);
-RcppExport SEXP rolog_rolog_query_comp(SEXP predicate, SEXP call) 
+RcppExport SEXP rolog_rolog_query(SEXP predicate, SEXP call) 
 {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
