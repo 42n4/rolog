@@ -46,7 +46,9 @@ PlTerm leaf_na(SEXP l)
 // R NA
 SEXP leaf_na(PlTerm l)
 {
-  return PlTerm(NumericVector::create(-1)) ;
+  NumericVector v(1) ;
+  v[0] = -1 ;
+  return PlTerm(v[0]) ;
 }
 
 // real number
