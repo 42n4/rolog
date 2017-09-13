@@ -10,14 +10,19 @@ PlTerm leaf(SEXP l) ;
 PlCompound leaf_lang(SEXP l)
 {
   std::cout << "entering PLCompound" << std::endl ;
-  int i=0 ;
+  int i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
     i++ ;
   std::cout << i << " arguments" << std::endl ;
   
   PlTermv v(i) ;
+  i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
-    v[i++] = leaf(CAR(cons)) ;
+  {
+    std::cout << "argument " << i << std::endl ;
+    v[i++] = PlTerm(leaf(CAR(cons))) ;
+    std::cout << "argument " << i-1 << "done" << std::endl ;
+  }
   std::cout << i << " arguments instantiated" << std::endl ;
 
   Symbol pred = as<Symbol>(CAR(l)) ;
