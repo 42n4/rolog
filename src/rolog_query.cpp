@@ -39,7 +39,8 @@ PlTerm leaf_real(SEXP l)
   std::cout << "leaf_real" << std::endl ;
   NumericVector v(1) ;
   v[0] = as<double>(l) ;
-  return PlTerm(v[0]) ;
+  std::cout << "leaf_real" << (double) (v[0]) << std::endl ;
+  return PlTerm((double) (v[0])) ;
 }
 
 PlTerm leaf_int(IntegerVector l)
