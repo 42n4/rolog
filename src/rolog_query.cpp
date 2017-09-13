@@ -23,13 +23,13 @@ PlCompound leaf_lang(SEXP l)
 
   // Construct term
   Symbol pred = as<Symbol>(CAR(l)) ;
-  return PlCompound c(pred.c_str(), v) ;
+  return PlCompound(pred.c_str(), v) ;
 }
 
 // translate Prolog compound to R expression
 SEXP leaf_lang(PlCompound t)
 {
-  PairList l ;
+  Rcpp::PairList l ;
   l.push_back(t.name()) ;
   for(int i=1 ; i<=t.arity() ; i++)
     l.push_back(leaf(t[i])) ;
