@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 PlTerm leaf(SEXP l) ;
-SEXP leaf(PlTerm t) ;
+SEXP pl2r_leaf(PlTerm t) ;
 
 // translate R expression to Prolog compound
 PlCompound leaf_lang(SEXP l)
