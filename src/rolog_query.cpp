@@ -24,8 +24,7 @@ PlCompound leaf_lang(SEXP l)
 
 PlTerm leaf_na(SEXP l)
 {
-  PlTerm t((long) -1) ;
-  return v ;
+  return PlTerm((long) -1) ;
 }
 
 PlTerm leaf_real(SEXP l)
