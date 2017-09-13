@@ -51,7 +51,7 @@ PlTerm leaf_string(StringVector l)
 {
   StringVector v(1) ;
   v[0] = l[0] ;
-  return PlString(v[0].c_str()) ;
+  return PlString(v[0].get_cstring()) ;
 }
 
 PlTerm leaf(SEXP l)
