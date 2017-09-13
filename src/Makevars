@@ -1,10 +1,10 @@
 .PHONY: all mylibs
 
-PKG_CPPFLAGS=-Iswipl-7.5.14/src -Iswipl-7.5.14/packages/cpp
-PKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.5.14/lib/`sh swipl-uname.sh` -lswipl
+PKG_CPPFLAGS=-Iswipl-7.5.15/src -Iswipl-7.5.15/packages/cpp
+PKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.5.15/lib/`sh swipl-uname.sh` -lswipl
 
 all: $(SHLIB)
 $(SHLIB): mylibs
 
 mylibs:
-	cd swipl-7.5.14/src ; chmod u+x configure rel-ln mkversion.sh ; sh ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC ; make ; make install
+	cd swipl-7.5.15/src ; chmod u+x configure rel-ln mkversion.sh ; sh ./configure --prefix=$(PWD)/../inst/swipl --disable-shared --enable-static CFLAGS=-fPIC ; make ; make install
