@@ -75,7 +75,7 @@ PlTerm leaf_int(IntegerVector l)
   return PlTerm((long) (v[0])) ;
 }
 
-SEXP leaf_int(PlTerm l)
+SEXP pl2r_int(PlTerm l)
 {
   IntegerVector v(1) ;
   v[0] = (int) l ;
@@ -131,7 +131,7 @@ PlTerm leaf(SEXP l)
 SEXP leaf(PlTerm t)
 {
   if(PL_is_integer(t))
-    return(leaf_int(t)) ;
+    return(leaf_pl2r(t)) ;
 
   if(PL_is_number(t))
     return(leaf_real(t)) ;
