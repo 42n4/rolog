@@ -9,7 +9,7 @@ SEXP leaf(SEXP l) ;
 
 SEXP leaf_lang(SEXP l)
 {
-  std::string pred = as(CAR(l)) ;
+  std::string pred = as<std::string>(CAR(l)) ;
     
   List lang(1) ;
   lang[0] = as<Symbol>(pred) ;  
