@@ -131,7 +131,7 @@ PlTerm leaf(SEXP l)
 SEXP leaf(PlTerm t)
 {
   if(PL_is_integer(t))
-    return(leaf_pl2r(t)) ;
+    return(pl2r_int(t)) ;
 
   if(PL_is_number(t))
     return(leaf_real(t)) ;
