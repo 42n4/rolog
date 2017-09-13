@@ -33,7 +33,7 @@ SEXP pl2r_lang(PlTerm t)
   Pairlist l ;
   l.push_back(t.name()) ;
   for(int i=1 ; i<=t.arity() ; i++)
-    l.push_back(leaf(t[i])) ;
+    l.push_back(pl2r_leaf(t[i])) ;
   return(l) ;
 }
 
@@ -127,7 +127,7 @@ PlTerm leaf(SEXP l)
   return leaf_na(l) ;
 }
 
-SEXP leaf(PlTerm t)
+SEXP pl2r_leaf(PlTerm t)
 {
   if(PL_is_integer(t))
     return(pl2r_int(t)) ;
@@ -156,6 +156,6 @@ List rolog_query(String predicate, SEXP call)
 
   List r ;
   while(q.next_solution())
-    r.push_back(String((wchar_t*) arg[1])) ;
+    r.push_back(pl2r_leaf(arg[1])) ;
   return r ;
 } // rolog_query
