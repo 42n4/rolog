@@ -100,7 +100,7 @@ List rolog_query(String predicate, SEXP call)
   std::cout << "rolog_query done" << std::endl ;
 
   PlTermv arg(2) ;
-  arg[0] = v
+  arg[0] = v ;
   PlQuery q(predicate.get_cstring(), arg) ;
 
   List r ;
