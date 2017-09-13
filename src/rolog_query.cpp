@@ -7,53 +7,55 @@ using namespace Rcpp;
 
 SEXP leaf(SEXP l) ;
 
-SEXP leaf_lang(SEXP l)
+PlCompound leaf_lang(SEXP l)
 {
-  List lang(1) ;
-  lang[0] = as<Symbol>(CAR(l)) ;  
+  int i=0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
-    lang.push_back(leaf(CAR(cons))) ;
+    i++ ;
+  
+  PlTermv v(i) ;
+  for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
+    v[i++] = leaf(CAR(cons)) ;
 
   Symbol pred = as<Symbol>(CAR(l)) ;
-  PlCompound c(pred.c_str(), PlTermv("args")) ;
-  return lang ;
+  PlCompound c(pred.c_str(), v) ;
+  return c ;
 }
 
-SEXP leaf_na(SEXP l)
+PlTerm leaf_na(SEXP l)
 {
-  NumericVector v(1) ;
-  v[0] = -1 ;
+  PlTerm t(-1) ;
   return v ;
 }
 
-SEXP leaf_real(SEXP l)
+PlTerm leaf_real(SEXP l)
 {
   NumericVector v(1) ;
   v[0] = as<double>(l) ;
-  return v ;
+  return PlTerm(v[0]) ;
 }
 
-SEXP leaf_int(IntegerVector l)
+PlTerm leaf_int(IntegerVector l)
 {
   IntegerVector v(1) ;
   v[0] = -l[0] ;
-  return v ;
+  return PlTerm((double) v[0]) ;
 }
 
-SEXP leaf_symbol(SEXP l)
+PlTerm leaf_symbol(SEXP l)
 {
   Symbol v = as<Symbol>(l) ;
-  return v ;
+  return PlAtom(v.c_str()) ;
 }
 
-SEXP leaf_string(StringVector l)
+PlTerm leaf_string(StringVector l)
 {
   StringVector v(1) ;
   v[0] = l[0] ;
-  return v ;
+  return PlString(v[0].c_str()) ;
 }
 
-SEXP leaf(SEXP l)
+PlTerm leaf(SEXP l)
 {
   if(TYPEOF(l) == LANGSXP)
     return leaf_lang(l) ;
@@ -76,7 +78,8 @@ SEXP leaf(SEXP l)
 // [[Rcpp::export]]
 List rolog_query(String predicate, SEXP call) 
 {
-  return leaf(call) ;
+  PlTerm v = leaf(call) ;
+  return List(1) ;
 
   /*
   PlTermv arg(2) ;
