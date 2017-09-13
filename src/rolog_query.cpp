@@ -88,7 +88,7 @@ PlTerm leaf_symbol(SEXP l)
   return PlAtom(v.c_str()) ;
 }
 
-SEXP leaf_symbol(PLAtom l)
+SEXP leaf_symbol(PlAtom l)
 {
   Symbol v = as<Symbol>(l) ;
   return v ;
@@ -101,7 +101,7 @@ PlTerm leaf_string(StringVector l)
   return PlString(String(v[0]).get_cstring()) ;
 }
 
-SEXP leaf_string(PLString l)
+SEXP leaf_string(PlString l)
 {
   StringVector v(1) ;
   v[0] = (wchar_t*) l ;
