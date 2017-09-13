@@ -72,7 +72,7 @@ PlTerm leaf_int(IntegerVector l)
 {
   IntegerVector v(1) ;
   v[0] = l[0] ;
-  return PlTerm((int) v[0]) ;
+  return PlTerm((long) (v[0])) ;
 }
 
 SEXP leaf_int(PlTerm l)
