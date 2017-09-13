@@ -90,7 +90,7 @@ PlTerm leaf_symbol(SEXP l)
 
 SEXP leaf_symbol(PlTerm l)
 {
-  Symbol v = as<Symbol>(l.name()) ;
+  Symbol v = as<Symbol>((wchar_t*) l) ;
   return v ;
 }
 
