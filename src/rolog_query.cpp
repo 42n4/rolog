@@ -5,7 +5,7 @@
 
 using namespace Rcpp;
 
-SEXP leaf(SEXP l) ;
+PlTerm leaf(SEXP l) ;
 
 PlCompound leaf_lang(SEXP l)
 {
