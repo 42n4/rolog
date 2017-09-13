@@ -35,7 +35,7 @@ rolog_query_comp <- function(predicate, arguments)
 
 rolog_query <- function(predicate, call) 
 {
-  .Call('rolog_rolog_query', enc2native(predicate), enc2native(call), PACKAGE='rolog')
+  .Call('rolog_rolog_query', enc2native(predicate), call, PACKAGE='rolog')
 }
 
 rolog_query_string <- function(predicate, arguments) 
