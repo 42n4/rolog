@@ -34,7 +34,9 @@ SEXP pl2r_lang(PlTerm t)
   l.push_back(t.name()) ;
   for(int i=1 ; i<=t.arity() ; i++)
     l.push_back(pl2r_leaf(t[i])) ;
-  return(l) ;
+  SEXP* s = l ;
+  SET_TYPEOF(s, LANGSXP) ;
+  return(s) ;
 }
 
 // Prolog NA
