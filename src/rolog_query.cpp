@@ -88,7 +88,7 @@ PlTerm leaf_symbol(SEXP l)
   return PlAtom(v.c_str()) ;
 }
 
-SEXP leaf_symbol(PlAtom l)
+SEXP leaf_symbol(PlTerm l)
 {
   Symbol v = as<Symbol>(l.name()) ;
   return v ;
