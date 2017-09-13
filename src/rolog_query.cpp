@@ -32,7 +32,7 @@ SEXP pl2r_lang(PlTerm t)
 {
   Pairlist l ;
   std::cout << t.name() << 1 << std::endl ;
-  Symbol pred = t.name() ;
+  Symbol pred = as<Symbol>(t.name()) ;
   std::cout << t.name() << 2 << std::endl ;
   l.push_back(pred) ;
   std::cout << t.name() << 3 << std::endl ;
