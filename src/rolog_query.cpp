@@ -48,7 +48,7 @@ SEXP leaf_na(PlTerm l)
 {
   NumericVector v(1) ;
   v[0] = -1 ;
-  return PlTerm(v[0]) ;
+  return v ;
 }
 
 // real number
@@ -60,9 +60,11 @@ PlTerm leaf_real(SEXP l)
 }
 
 // real number
-SEXP leaf_na(PlTerm l)
+SEXP leaf_real(PlTerm l)
 {
-  return PlTerm(NumericVector::create(l)) ;
+  NumericVector v(1) ;
+  v[0] = (double) l ;
+  return v ;
 }
 
 // integer
@@ -75,7 +77,9 @@ PlTerm leaf_int(IntegerVector l)
 
 SEXP leaf_int(PlTerm l)
 {
-  return PlTerm(IntegerVector::create(l)) ;
+  IntegerVector v(1) ;
+  v[0] = (int) l ;
+  return v ;
 }
 
 PlTerm leaf_symbol(SEXP l)
@@ -100,7 +104,7 @@ PlTerm leaf_string(StringVector l)
 SEXP leaf_string(PLString l)
 {
   StringVector v(1) ;
-  v[0] = (wchat_t*) l ;
+  v[0] = (wchar_t*) l ;
   return v ;
 }
 
