@@ -9,63 +9,49 @@ PlTerm leaf(SEXP l) ;
 
 PlCompound leaf_lang(SEXP l)
 {
-  std::cout << "entering PLCompound" << std::endl ;
+  // Count number of arguments
   int i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
     i++ ;
-  std::cout << i << " arguments" << std::endl ;
   
+  // Collect arguments
   PlTermv v(i) ;
   i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
-  {
-    std::cout << "argument " << i << std::endl ;
     v[i++] = PlTerm(leaf(CAR(cons))) ;
-    std::cout << "argument " << i-1 << "done" << std::endl ;
-  }
-  std::cout << i << " arguments instantiated" << std::endl ;
 
+  // Construct term
   Symbol pred = as<Symbol>(CAR(l)) ;
-  std::cout << pred.c_str() << "/" << i << " initialized" << std::endl ;
-  
-  PlCompound c(pred.c_str(), v) ;
-  std::cout << "leaving PLCompound" << std::endl ;
-  return c ;
+  return PlCompound c(pred.c_str(), v) ;
 }
 
 PlTerm leaf_na(SEXP l)
 {
-  std::cout << "leaf_na" << std::endl ;
   return PlTerm((long) -1) ;
 }
 
 PlTerm leaf_real(SEXP l)
 {
-  std::cout << "leaf_real" << std::endl ;
   NumericVector v(1) ;
   v[0] = as<double>(l) ;
-  std::cout << "leaf_real" << (double) (v[0]) << std::endl ;
   return PlTerm((double) (v[0])) ;
 }
 
 PlTerm leaf_int(IntegerVector l)
 {
-  std::cout << "leaf_int" << std::endl ;
   IntegerVector v(1) ;
-  v[0] = -l[0] ;
+  v[0] = l[0] ;
   return PlTerm((double) v[0]) ;
 }
 
 PlTerm leaf_symbol(SEXP l)
 {
-  std::cout << "leaf_symbol" << std::endl ;
   Symbol v = as<Symbol>(l) ;
   return PlAtom(v.c_str()) ;
 }
 
 PlTerm leaf_string(StringVector l)
 {
-  std::cout << "leaf_string" << std::endl ;
   StringVector v(1) ;
   v[0] = l[0] ;
   return PlString(String(v[0]).get_cstring()) ;
@@ -73,7 +59,6 @@ PlTerm leaf_string(StringVector l)
 
 PlTerm leaf(SEXP l)
 {
-  std::cout << "leaf dispatcher" << std::endl ;
   if(TYPEOF(l) == LANGSXP)
     return leaf_lang(l) ;
   
@@ -95,12 +80,8 @@ PlTerm leaf(SEXP l)
 // [[Rcpp::export]]
 List rolog_query(String predicate, SEXP call) 
 {
-  std::cout << "rolog_query" << std::endl ;
-  PlTerm v = leaf(call) ;
-  std::cout << "rolog_query done" << std::endl ;
-
   PlTermv arg(2) ;
-  arg[0] = v ;
+  arg[0] = leaf(call) ;
   PlQuery q(predicate.get_cstring(), arg) ;
 
   List r ;
