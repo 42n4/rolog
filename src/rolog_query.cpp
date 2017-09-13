@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <Rcpp/PairList.h>
 #include "SWI-Prolog.h"
 #include "SWI-cpp.h"
 #include <iostream>
