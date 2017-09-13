@@ -73,9 +73,9 @@ SEXP leaf(SEXP l)
 }
 
 // [[Rcpp::export]]
-List rolog_query(String predicate, SEXP arguments) 
+List rolog_query(String predicate, SEXP call) 
 {
-  return leaf(arguments) ;
+  return leaf(call) ;
 
   /*
   PlTermv arg(2) ;
