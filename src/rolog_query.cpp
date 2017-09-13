@@ -90,8 +90,7 @@ PlTerm leaf_symbol(SEXP l)
 
 SEXP leaf_symbol(PlTerm l)
 {
-  Symbol v = as<Symbol>((char*) l) ;
-  return v ;
+  return Symbol((char*) l) ;
 }
 
 PlTerm leaf_string(StringVector l)
