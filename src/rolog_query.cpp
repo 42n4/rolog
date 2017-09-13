@@ -28,7 +28,7 @@ PlCompound leaf_lang(SEXP l)
 }
 
 // translate Prolog compound to R expression
-SEXP leaf_lang(PlCompound t)
+SEXP pl2r_lang(PlCompound t)
 {
   Pairlist l ;
   l.push_back(t.name()) ;
@@ -142,7 +142,7 @@ SEXP leaf(PlTerm t)
     return leaf_symbol(t) ;
   
   if(PL_is_compound(t))
-    return leaf_lang(t) ;
+    return pl2r_lang(t) ;
 
   return leaf_na(t) ;
 }
