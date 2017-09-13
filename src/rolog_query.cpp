@@ -101,7 +101,7 @@ PlTerm leaf_string(StringVector l)
   return PlString(String(v[0]).get_cstring()) ;
 }
 
-SEXP leaf_string(PlString l)
+SEXP leaf_string(PlTerm l)
 {
   StringVector v(1) ;
   v[0] = (wchar_t*) l ;
