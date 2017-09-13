@@ -12,7 +12,7 @@ SEXP leaf_lang(SEXP l)
   std::string pred = as<std::string>(CAR(l)) ;
     
   List lang(1) ;
-  lang[0] = as<Symbol>(pred) ;  
+  lang[0] = as<Symbol>(CAR(l)) ;  
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
     lang.push_back(leaf(CAR(cons))) ;
 
