@@ -100,9 +100,9 @@ SEXP pl2r_int(PlTerm l)
 
 PlTerm leaf_symbol(SEXP l)
 {
-  str::cout << "leaf_symbol(SEXP l)-1" << std::endl ;
+  std::cout << "leaf_symbol(SEXP l)-1" << std::endl ;
   Symbol v = as<Symbol>(l) ;
-  str::cout << "leaf_symbol(SEXP l)-2" << std::endl ;
+  std::cout << "leaf_symbol(SEXP l)-2" << std::endl ;
   return PlAtom(v.c_str()) ;
 }
 
