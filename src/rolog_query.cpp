@@ -108,7 +108,7 @@ PlTerm leaf_symbol(SEXP l)
 PlTerm leaf_logical(SEXP l)
 {
   String v = as<String>(l) ;
-  return PlAtom(v.c_str()) ;
+  return PlAtom(v.get_cstring()) ;
 }
 
 SEXP leaf_symbol(PlTerm l)
