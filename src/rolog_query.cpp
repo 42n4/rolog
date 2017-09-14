@@ -42,6 +42,18 @@ SEXP pl2r_lang(PlTerm t)
   return(s) ;
 }
 
+// translate Prolog list to R list
+SEXP pl2r_lang(PlTerm t)
+{
+  List l ;
+  
+  PlTail tail(t) ;
+  PlTerm e ;
+  while(tail.next(e))
+    l.push_back(pl2r_leaf(e)) ;
+  return l ;
+}
+
 // Prolog NA
 PlTerm leaf_na(SEXP l)
 {
@@ -146,6 +158,9 @@ SEXP pl2r_leaf(PlTerm t)
   if(PL_is_atom(t))
     return leaf_symbol(t) ;
   
+  if(PL_is_list(t))
+    return pl2r_list(t) ;
+
   if(PL_is_compound(t))
     return pl2r_lang(t) ;
 
