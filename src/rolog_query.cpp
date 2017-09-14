@@ -107,7 +107,7 @@ PlTerm leaf_symbol(SEXP l)
 
 PlTerm leaf_logical(SEXP l)
 {
-  Symbol v = as<Symbol>(l) ;
+  String v = as<String>(l) ;
   return PlAtom(v.c_str()) ;
 }
 
