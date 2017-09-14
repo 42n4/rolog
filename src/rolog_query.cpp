@@ -117,7 +117,15 @@ PlTerm leaf_logical(SEXP l)
 
 SEXP leaf_symbol(PlTerm l)
 {
-  return Symbol((char*) l) ;
+  s = Symbol((char*) l) ;
+  LogicalVector v(1) ;
+  v[0] = TRUE ;
+  if(s == "TRUE")
+    return v ;
+  v[0] = FALSE ;
+  if(s == "FALSE")
+    return v ;
+  return s ;  
 }
 
 PlTerm leaf_string(StringVector l)
