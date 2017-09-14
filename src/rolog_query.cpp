@@ -63,6 +63,7 @@ PlTerm leaf_na(SEXP l)
 // R NA
 SEXP leaf_na(PlTerm l)
 {
+  std::cout << (char*) l << " not recognized" << std::endl ;
   NumericVector v(1) ;
   v[0] = -1 ;
   return v ;
