@@ -46,7 +46,6 @@ SEXP pl2r_lang(PlTerm t)
 SEXP pl2r_list(PlTerm t)
 {
   List l ;
-  
   PlTail tail(t) ;
   PlTerm e ;
   while(tail.next(e))
