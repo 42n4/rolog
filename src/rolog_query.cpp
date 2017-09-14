@@ -100,18 +100,20 @@ SEXP pl2r_int(PlTerm l)
 
 PlTerm leaf_symbol(SEXP l)
 {
-  std::cout << "leaf_symbol(SEXP l)-1" << std::endl ;
   Symbol v = as<Symbol>(l) ;
-  std::cout << "leaf_symbol(SEXP l)-2" << std::endl ;
   return PlAtom(v.c_str()) ;
 }
 
 PlTerm leaf_logical(SEXP l)
 {
-  std::cout << "leaf_logical(SEXP l)-1" << std::endl ;
-  String v = as<String>(l) ;
-  std::cout << "leaf_logical(SEXP l)-2" << std::endl ;
-  return PlAtom(v.get_cstring()) ;
+  LogicalVector v(1) ;
+  v[0] = l ;
+  if(l[0] == TRUE)
+    return PlAtom("TRUE") ;
+  if(l[0] == FALSE)
+    return PlAtom("FALSE") ;
+
+  return leaf_na(l) ;
 }
 
 SEXP leaf_symbol(PlTerm l)
