@@ -107,9 +107,9 @@ PlTerm leaf_symbol(SEXP l)
 PlTerm leaf_logical(SEXP l)
 {
   LogicalVector v = as<LogicalVector>(l) ;
-  if(l[0] == TRUE)
+  if(v[0] == TRUE)
     return PlAtom("TRUE") ;
-  if(l[0] == FALSE)
+  if(v[0] == FALSE)
     return PlAtom("FALSE") ;
 
   return leaf_na(l) ;
