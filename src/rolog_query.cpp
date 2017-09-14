@@ -108,9 +108,9 @@ PlTerm leaf_symbol(SEXP l)
 
 PlTerm leaf_logical(SEXP l)
 {
-  str::cout << "leaf_logical(SEXP l)-1" << std::endl ;
+  std::cout << "leaf_logical(SEXP l)-1" << std::endl ;
   String v = as<String>(l) ;
-  str::cout << "leaf_logical(SEXP l)-2" << std::endl ;
+  std::cout << "leaf_logical(SEXP l)-2" << std::endl ;
   return PlAtom(v.get_cstring()) ;
 }
 
