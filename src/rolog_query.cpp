@@ -43,7 +43,7 @@ SEXP pl2r_lang(PlTerm t)
 }
 
 // translate Prolog list to R list
-SEXP pl2r_lang(PlTerm t)
+SEXP pl2r_list(PlTerm t)
 {
   List l ;
   
