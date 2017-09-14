@@ -63,7 +63,6 @@ PlTerm leaf_na(SEXP l)
 // R NA
 SEXP leaf_na(PlTerm l)
 {
-  std::cout << (char*) l << " not recognized" << std::endl ;
   NumericVector v(1) ;
   v[0] = -1 ;
   return v ;
@@ -106,6 +105,12 @@ PlTerm leaf_symbol(SEXP l)
   return PlAtom(v.c_str()) ;
 }
 
+PlTerm leaf_logical(SEXP l)
+{
+  Symbol v = as<Symbol>(l) ;
+  return PlAtom(v.c_str()) ;
+}
+
 SEXP leaf_symbol(PlTerm l)
 {
   return Symbol((char*) l) ;
@@ -132,6 +137,9 @@ PlTerm leaf(SEXP l)
   
   if(TYPEOF(l) == REALSXP)
     return leaf_real(l) ;
+
+  if(TYPEOF(l) == LGLSXP)
+    return leaf_logical(l) ;
 
   if(TYPEOF(l) == INTSXP)
     return leaf_int(l) ;
