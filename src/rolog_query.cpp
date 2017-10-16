@@ -38,7 +38,7 @@ SEXP pl2r_lang(PlTerm t)
   for(int i=1 ; i<=t.arity() ; i++)
   {
     // compounds like '='(x, y) are named arguments
-    if(PL_is_compound(t[i]) && t[i].name() == String("=") && t[i].arity() == 2)
+    if(PL_is_compound(t[i]) && t[i].name() == std::string("=") && t[i].arity() == 2)
     {
       PlTerm u = t[i] ;
       l.push_back(Named(u[1].name()) = pl2r_leaf(u[2])) ;
