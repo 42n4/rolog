@@ -40,19 +40,28 @@ SEXP pl2r_lang(PlTerm t)
     SEXP leaf = pl2r_leaf(t[i]) ;
 
     // compounds like '='(x, y) are named arguments
-    if(TYPEOF(leaf) == LANGSXP && String("=") == as<String>(CAR(leaf)))
+    if(TYPEOF(leaf) == LANGSXP)
     {
-      SEXP n = CDR(leaf) ;
-      String name = as<String>(CAR(n)) ;
-      SEXP a = CDR(n) ;
-      SEXP arg = pl2r_leaf(CAR(a)) ;
-      l.push_back(Named(name) = arg) ;
-      continue ;
+      std::cout << "Compound" << std::endl ;
+      if(Symbol("=") == as<Symbol>(CAR(leaf)))
+      {
+        std::cout << "=" << std::endl ;
+        
+        SEXP n = CDR(leaf) ;
+        String name = as<String>(CAR(n)) ;
+        SEXP a = CDR(n) ;
+        SEXP arg = pl2r_leaf(CAR(a)) ;
+        l.push_back(Named(name) = arg) ;
+        continue ;
+      }
+      
+      l.push_back(leaf) ;
     }
     
     // other arguments
     l.push_back(leaf) ;
   }
+  
   SEXP s = l ;
   SET_TYPEOF(s, LANGSXP) ;
   return(s) ;
