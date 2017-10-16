@@ -42,9 +42,9 @@ SEXP pl2r_lang(PlTerm t)
     // compounds like '='(x, y) are named arguments
     if(TYPEOF(l) == LANGSXP && String("=") == as<String>(CAR(l)))
     {
-      n = CDR(l) ;
+      SEXP n = CDR(l) ;
       String name = as<String>(CAR(n)) ;
-      a = CDR(n) ;
+      SEXP a = CDR(n) ;
       SEXP arg = pl2r_leaf(CAR(a)) ;
       l.push_back(Named(arg) = name) ;
       continue ;
