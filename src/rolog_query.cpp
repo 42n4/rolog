@@ -51,7 +51,7 @@ SEXP pl2r_lang(PlTerm t)
         std::cout << name.c_str() << std::endl ;        
         
         SEXP a = CDR(n) ;
-        SEXP arg = pl2r_leaf(CAR(a)) ;
+        SEXP arg = pl2r_leaf(a) ;
         l.push_back(Named(name.c_str()) = arg) ;
         continue ;
       }
