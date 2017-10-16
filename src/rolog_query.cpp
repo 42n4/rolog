@@ -45,13 +45,14 @@ SEXP pl2r_lang(PlTerm t)
       std::cout << "Compound" << std::endl ;
       if(Symbol("=") == as<Symbol>(CAR(leaf)))
       {
-        std::cout << "=" << std::endl ;
-        
+        std::cout << "=" << std::endl ;        
         SEXP n = CDR(leaf) ;
-        String name = as<String>(CAR(n)) ;
+        Symbol name = as<Symbol>(CAR(n)) ;
+        std::cout << name.c_str() << std::endl ;        
+        
         SEXP a = CDR(n) ;
         SEXP arg = pl2r_leaf(CAR(a)) ;
-        l.push_back(Named(name) = arg) ;
+        l.push_back(Named(name.c_str()) = arg) ;
         continue ;
       }
       
