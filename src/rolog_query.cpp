@@ -37,12 +37,12 @@ SEXP pl2r_lang(PlTerm t)
   l.push_back(pred) ;
   for(int i=1 ; i<=t.arity() ; i++)
   {
-    SEXP l = pl2r_leaf(t[i]) ;
+    SEXP leaf = pl2r_leaf(t[i]) ;
 
     // compounds like '='(x, y) are named arguments
-    if(TYPEOF(l) == LANGSXP && String("=") == as<String>(CAR(l)))
+    if(TYPEOF(leaf) == LANGSXP && String("=") == as<String>(CAR(leaf)))
     {
-      SEXP n = CDR(l) ;
+      SEXP n = CDR(leaf) ;
       String name = as<String>(CAR(n)) ;
       SEXP a = CDR(n) ;
       SEXP arg = pl2r_leaf(CAR(a)) ;
@@ -51,7 +51,7 @@ SEXP pl2r_lang(PlTerm t)
     }
     
     // other arguments
-    l.push_back(l) ;
+    l.push_back(leaf) ;
   }
   SEXP s = l ;
   SET_TYPEOF(s, LANGSXP) ;
