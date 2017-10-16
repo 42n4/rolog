@@ -46,7 +46,7 @@ SEXP pl2r_lang(PlTerm t)
       String name = as<String>(CAR(n)) ;
       SEXP a = CDR(n) ;
       SEXP arg = pl2r_leaf(CAR(a)) ;
-      l.push_back(Named(arg) = name) ;
+      l.push_back(Named(name) = arg) ;
       continue ;
     }
     
