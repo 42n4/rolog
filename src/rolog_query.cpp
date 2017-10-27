@@ -28,7 +28,7 @@ PlCompound leaf_lang(SEXP l)
     }
     
     Symbol argname = as<Symbol>(TAG(cons)) ;
-    v[i++] = PlCompound("=", PlTermv(PlAtom(argname), PlTerm(leaf(CAR(cons))))) ;
+    v[i++] = PlCompound("=", PlTermv(PlAtom(argname.c_str()), PlTerm(leaf(CAR(cons))))) ;
   }
   
   // Construct term
