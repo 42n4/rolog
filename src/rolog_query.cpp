@@ -20,8 +20,15 @@ PlCompound leaf_lang(SEXP l)
   PlTermv v(i) ;
   i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
+  {
+    if(TAG(CAR(cons)) != R_NilValue)
+    {
+      Symbol argname = as<Symbol>(TAG(CAR(cons))) ;
+      std::cout << argname.c_str() << std::endl ;
+    }
     v[i++] = PlTerm(leaf(CAR(cons))) ;
-
+  }
+  
   // Construct term
   Symbol pred = as<Symbol>(CAR(l)) ;
   return PlCompound(pred.c_str(), v) ;
