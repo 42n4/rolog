@@ -21,6 +21,7 @@ PlCompound leaf_lang(SEXP l)
   i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
   {
+    std::cout << "argument " << i << std::endl ;
     if(TAG(CAR(cons)) != R_NilValue)
     {
       Symbol argname = as<Symbol>(TAG(CAR(cons))) ;
