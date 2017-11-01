@@ -20,8 +20,17 @@ PlCompound leaf_lang(SEXP l)
   PlTermv v(i) ;
   i = 0 ;
   for(SEXP cons=CDR(l) ; cons != R_NilValue ; cons = CDR(cons))
-    v[i++] = PlTerm(leaf(CAR(cons))) ;
-
+  {
+    if(TAG(cons) == R_NilValue)
+    {
+      v[i++] = PlTerm(leaf(CAR(cons))) ;
+      continue ;
+    }
+    
+    Symbol argname = as<Symbol>(TAG(cons)) ;
+    v[i++] = PlCompound("=", PlTermv(PlAtom(argname.c_str()), PlTerm(leaf(CAR(cons))))) ;
+  }
+  
   // Construct term
   Symbol pred = as<Symbol>(CAR(l)) ;
   return PlCompound(pred.c_str(), v) ;
@@ -36,7 +45,20 @@ SEXP pl2r_lang(PlTerm t)
   Symbol pred = as<Symbol>(v) ;
   l.push_back(pred) ;
   for(int i=1 ; i<=t.arity() ; i++)
-    l.push_back(pl2r_leaf(t[i])) ;
+  {
+    // compounds like '='(x, y) are named arguments
+    if(PL_is_compound(t[i]) && t[i].name() == std::string("=") && t[i].arity() == 2)
+    {
+      PlTerm u = t[i] ;
+      l.push_back(Named(u[1].name()) = pl2r_leaf(u[2])) ;
+      continue ;
+    }
+      
+    // other arguments
+    SEXP leaf = pl2r_leaf(t[i]) ;
+    l.push_back(leaf) ;
+  }
+  
   SEXP s = l ;
   SET_TYPEOF(s, LANGSXP) ;
   return(s) ;
