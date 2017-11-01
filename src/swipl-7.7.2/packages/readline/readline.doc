@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+\usepackage{times}
+\usepackage{pl}
+\usepackage{html}
+\sloppy
+\makeindex
+
+\onefile
+\htmloutput{.}					% Output directory
+\htmlmainfile{readline}				% Main document file
+\bodycolor{white}				% Page colour
+
+\begin{document}
+
+\title{SWI-Prolog binding to GNU readline}
+\author{Jan Wielemaker \\
+	VU University Amsterdam \\
+	CWI, Amsterdam \\
+	The Netherlands \\
+	E-mail: \email{J.Wielemaker@vu.nl}}
+
+\maketitle
+
+\begin{abstract}
+This package enables editing commands in the Prolog toplevel using the
+\href{http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html}{GNU
+readline library.}
+\end{abstract}
+
+\pagebreak
+\tableofcontents
+
+\vfill
+\vfill
+
+\newpage
+
+\input{libreadline.tex}
+
+\printindex
+
+\end{document}
+
