@@ -1,0 +1,53 @@
+\documentclass[11pt]{article}
+\usepackage{times}
+\usepackage{pl}
+\usepackage{html}
+\sloppy
+\makeindex
+
+\onefile
+\htmloutput{.}					% Output directory
+\htmlmainfile{jpl}				% Main document file
+\bodycolor{white}				% Page colour
+
+\begin{document}
+
+\title{JPL: A bidirectional Prolog/Java interface}
+\author{Paul Singleton \& Fred Dushin}
+
+\maketitle
+
+\begin{abstract}
+JPL is a library using the SWI-Prolog foreign interface and the Java
+jni interface providing a bidirectional interface between Java and
+Prolog that can be used to embed Prolog in Java as well as for embedding
+Java in Prolog. In both setups it provides a reentrant bidirectional
+interface.
+\end{abstract}
+
+This version of the documentation is a quick and dirty collection of the
+available documentation. It contains errors, references to obsolete
+constructs, limitations that have been removed, etc.
+
+\begin{itemize}
+   \item \href{jpl/objectives.html}{Objectives}
+   \item \href{jpl/java_api/index.html}{Using Prolog from Java}
+   \item Using Java from Prolog
+   \begin{itemize}
+        \item The API is described in \secref{jpl}.
+	\item \href{jpl/prolog_api/overview.html}{User guide}
+	\item \href{jpl/prolog_api/gotchas.html}{Gotchas}
+   \end{itemize}
+   \item \href{jpl/installation.html}{Installation}
+   \item \href{jpl/release_notes.html}{Release notes}
+\end{itemize}
+
+\input{jpldoc.tex}
+
+\bibliographystyle{plain}
+\bibliography{jpl}
+
+\printindex
+
+\end{document}
+

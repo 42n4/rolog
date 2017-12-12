@@ -1,0 +1,1068 @@
+\documentclass[11pt]{article}
+\usepackage{times}
+\usepackage{pl}
+\usepackage{plpage}
+\usepackage{alltt}
+\usepackage{html}
+\usepackage{verbatim}
+\sloppy
+\makeindex
+
+\onefile
+\htmloutput{.}			% Output directory
+\htmlmainfile{semweb}		% Main document file
+\bodycolor{white}		% Page colour
+
+\renewcommand{\runningtitle}{SWI-Prolog Semantic Web Library (version 3)}
+
+\newcommand{\elem}[1]{{\tt\string<#1\string>}}
+
+\begin{document}
+
+\title{SWI-Prolog Semantic Web Library 3.0}
+\author{Jan Wielemaker \\
+	University of Amsterdam/VU University Amsterdam \\
+	The Netherlands \\
+	E-mail: \email{J.Wielemaker@vu.nl}}
+
+\maketitle
+
+\begin{abstract}
+
+This document describes the SWI-Prolog \jargon{semweb} package. The core
+of this package is an efficient main-memory based RDF store that is
+tightly connected to Prolog. Additional libraries provide reading and
+writing RDF/XML and Turtle data, caching loaded RDF documents and
+persistent storage. This package is the core of a ready-to-run platform
+for developing Semantic Web applications named
+\href{http://cliopatria.swi-prolog.org}{ClioPatria}, which is distributed
+seperately. The SWI-Prolog RDF store is amoung the most memory efficient
+main-memory stores for
+RDF\footnote{\url{http://cliopatria.swi-prolog.org/help/source/doc/home/vnc/prolog/src/ClioPatria/web/help/memusage.txt}}
+
+Version~3 of the RDF library enhances concurrent use of the library by
+allowing for lock-free reading and writing using short-held locks.  It
+provides Prolog compatible \jargon{logical update view} on the triple
+store and isolation using \jargon{transactions} and jargon{snapshots}.
+This version of the library provides near real-time modification and
+querying of RDF graphs, making it particularly interesting for handling
+streaming RDF and graph manipulation tasks.
+\end{abstract}
+
+\vfill
+\pagebreak
+\tableofcontents
+
+\newpage
+
+
+\section{Introduction}
+\label{sec:semweb-intro}
+
+The core of the SWI-Prolog package \file{semweb} is an efficient
+main-memory RDF store written in C that is tightly integrated with
+Prolog. It provides a fully logical predicate rdf/3 to query the RDF
+store efficiently by using multiple (currently 9) indexes. In addition,
+SWI-Prolog provides libraries for reading and writing XML/RDF and Turtle
+and a library that provides persistency using a combination of efficient
+binary snapshots and journals.
+
+Below, we describe a few usage scenarios that guides the current design
+of this Prolog-based RDF store.
+
+
+\paragraph{Application prototyping platform}
+
+Bundled with \href{http://cliopatria.swi-prolog.org}{ClioPatria}, the
+store is an efficient platform for prototyping a wide range of semantic
+web applications. Prolog, connected to the main-memory based store is a
+productive platform for writing application logic that can be made
+available through the SPARQL endpoint of ClioPatria, using an
+application specific API (typically based on JSON or XML) or as an HTML
+based end-user application. Prolog is more versatile than SPARQL, allows
+composing of the logic from small building blocks and does not suffer
+from the \jargon{Object-relational impedance mismatch}.
+
+
+\paragraph{Data integration}
+
+The SWI-Prolog store is optimized for entailment on the
+\const{rdfs:subPropertyOf} relation. The \const{rdfs:subPropertyOf}
+relation is crucial for integrating data from multiple sources while
+preserving the original richness of the sources because integration can
+be achieved by defining the native properties as sub-properties of
+properties from a unifying schema such as Dublin Core.
+
+
+\paragraph{Dynamic data}
+
+This RDF store is one of the few stores that is primarily based on
+\jargon{backward reasoning}. The big advantage of backward reasoning is
+that it can much easier deal with changes to the database because it
+does not have to take care of propagating the consequences. Backward
+reasoning reduces storage requirements. The price is more reasoning
+during querying. In many scenarios the extra reasoning using a main
+memory will outperform the fetching the precomputed results from
+external storage.
+
+
+\paragraph{Prototyping reasoning systems}
+
+Reasoning systems, not necessarily limited to entailment reasoning, can
+be prototyped efficiently on the Prolog based store. This includes
+`what-if' reasoning, which is supported by \jargon{snapshot} and
+\jargon{transaction} isolation. These features, together with the
+concurrent loading capabilities, make the platform well equiped to
+collect relevant data from large external stores for intensive
+reasoning. Finally, the
+\href{http://www.swi-prolog.org/pldoc/package/tipc.html}{TIPC} package
+can be used to create networks of cooperating RDF based agents.
+
+
+\paragraph{Streaming RDF}
+
+Transactions, snapshots, concurrent modifications and the database
+monitoring facilities (see rdf_monitor/2) make the platform well suited
+for prototyping systems that deal with streaming RDF data.
+
+
+\section{Scalability}
+\label{sec:semweb-scalability}
+
+Depending on the OS and further application restrictions, the SWI-Prolog
+RDF stores scales to about 15~million triples on 32-bit hardware. On
+64-bit hardware, the scalability is limited by the amount of physical
+memory, allowing for approximately 4~million triples per gigabyte. The
+other limiting factor for practical use is the time required to load
+data and/or restore the database from the persistent file backup.
+Performance depends highly on hardware, concurrent performance and
+whether or not the data is spread over multiple (named) graphs that can
+be loaded in parallel. Restoring over 20~million triples per minute is
+feasible on medium hardware (Intel i7/{2600} running Ubuntu 12.10).
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	     RDF API		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Two RDF APIs}
+\label{sec:semweb-rdfapi}
+
+The current `semweb' package provides two sets of interface predicates.
+The original set is described in \secref{semweb-rdf-db}. The new API is
+described in \secref{semweb-rdf11}. The original API was designed when
+RDF was not yet standardised and did not yet support data types and
+language indicators. The new API is designed from the RDF 1.1
+specification, introducing consistent naming and access to literals
+using the \jargon{value space}. The new API is currently defined on top
+of the old API, so both APIs can be mixed in a single application.
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	      RDF11		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{library(semweb/rdf11): The RDF database}
+\label{sec:semweb-rdf11}
+
+\input{rdf11}
+\input{rdf11containers}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	      RDF_DB		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{library(semweb/rdf_db): The RDF database}
+\label{sec:semweb-rdf-db}
+
+\input{rdfdb}
+
+
+\subsection{Monitoring the database}		\label{sec:rdfmonitor}
+
+The predicate rdf_monitor/2 allows registrations of call-backs with the
+RDF store. These call-backs are typically used to keep other databases
+in sync with the RDF store. For example,
+\pllib{library(semweb/rdf_persistency)} monitors the RDF store for
+maintaining a persistent copy in a set of files and
+\pllib{library(semweb/rdf_litindex)} uses added and deleted literal
+values to maintain a fulltext index of literals.
+
+\begin{description}
+    \predicate{rdf_monitor}{2}{:Goal, +Mask}
+\arg{Goal} is called for modifications of the database. It is called
+with a single argument that describes the modification. Defined
+events are:
+
+\begin{description}
+    \termitem{assert}{+S, +P, +O, +DB}
+A triple has been asserted.
+    \termitem{retract}{+S, +P, +O, +DB}
+A triple has been deleted.
+    \termitem{update}{+S, +P, +O, +DB, +Action}
+A triple has been updated.
+    \termitem{new_literal}{+Literal}
+A new literal has been created.  \arg{Literal} is the argument of
+\term{literal}{Arg} of the triple's object.  This event is introduced
+in version 2.5.0 of this library.
+    \termitem{old_literal}{+Literal}
+The literal \arg{Literal} is no longer used by any triple.
+    \termitem{transaction}{+BeginOrEnd, +Id}
+Mark begin or end of the \emph{commit} of a transaction started by
+rdf_transaction/2. \arg{BeginOrEnd} is \term{begin}{Nesting} or
+\term{end}{Nesting}. \arg{Nesting} expresses the nesting level of
+transactions, starting at `0' for a toplevel transaction. \arg{Id} is
+the second argument of rdf_transaction/2. The following transaction Ids
+are pre-defined by the library:
+
+    \begin{description}
+	\termitem{parse}{Id}
+A file is loaded using rdf_load/2.  \arg{Id} is one of \term{file}{Path}
+or \term{stream}{Stream}.
+	\termitem{unload}{DB}
+All triples with source \arg{DB} are being unloaded using rdf_unload/1.
+	\termitem{reset}{}
+Issued by rdf_reset_db/0.
+    \end{description}
+
+    \termitem{load}{+BeginOrEnd, +Spec}
+Mark begin or end of rdf_load_db/1 or load through rdf_load/2 from
+a cached file. \arg{Spec} is currently defined as \term{file}{Path}.
+    \termitem{rehash}{+BeginOrEnd}
+Marks begin/end of a re-hash due to required re-indexing or garbage
+collection.
+\end{description}
+
+\arg{Mask} is a list of events this monitor is interested in. Default
+(empty list) is to report all events. Otherwise each element is of the
+form +Event or -Event to include or exclude monitoring for certain
+events. The event-names are the functor names of the events described
+above. The special name \const{all} refers to all events and
+\term{assert}{load} to assert events originating from rdf_load_db/1. As
+loading triples using rdf_load_db/1 is very fast, monitoring this at the
+triple level may seriously harm performance.
+
+This predicate is intended to maintain derived data, such as a journal,
+information for \emph{undo}, additional indexing in literals, etc. There
+is no way to remove registered monitors. If this is required one should
+register a monitor that maintains a dynamic list of subscribers like the
+XPCE broadcast library. A second subscription of the same hook predicate
+only re-assignes the mask.
+
+The monitor hooks are called in the order of registration and in the
+same thread that issued the database manipulation. To process all
+changes in one thread they should be send to a thread message queue. For
+all updating events, the monitor is called while the calling thread has
+a write lock on the RDF store. This implies that these events are
+processed strickly synchronous, even if modifications originate from
+multiple threads. In particular, the \const{transaction} \emph{begin},
+\ldots{} \emph{updates} \ldots{} \emph{end} sequence is never
+interleaved with other events. Same for \const{load} and \const{parse}.
+\end{description}
+
+
+\subsection{Issues with rdf_db}				\label{sec:rdfissues}
+
+This RDF low-level module has been created after two year experimenting
+with a plain Prolog based module and a brief evaluation of a second
+generation pure Prolog implementation. The aim was to be able to handle
+upto about 5 million triples on standard (notebook) hardware and deal
+efficiently with \const{subPropertyOf} which was identified as a crucial
+feature of RDFS to realise fusion of different data-sets.
+
+The following issues are identified and not solved in suitable manner.
+
+\begin{description}
+    \item [\const{subPropertyOf} of \const{subPropertyOf}] is not
+supported.
+
+    \item [Equivalence]
+Similar to \const{subPropertyOf}, it is likely to be profitable to
+handle resource identity efficient.  The current system has no support
+for it.
+\end{description}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	     PLUGIN		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Plugin modules for rdf_db}
+\label{sec:plugin}
+
+The \pllib{rdf_db} module provides several hooks for extending its
+functionality. Database updates can be monitored and acted upon through
+the features described in \secref{rdfmonitor}. The predicate rdf_load/2
+can be hooked to deal with different formats such as \jargon{rdfturtle},
+different input sources (e.g.\ http) and different strategies for
+caching results.
+
+\subsection{Hooks into the RDF library}
+\label{sec:semweb-hooks}
+
+The hooks below are used to add new RDF file formats and sources from
+which to load data to the library. They are used by the modules
+described below and distributed with the package.  Please examine the
+source-code if you want to add new formats or locations.
+
+\begin{description}
+    \item[\pllib{library(semweb/turtle)}]
+Load files in the Turtle format.  See \secref{rdfturtle}.
+    \item[\pllib{library(semweb/rdf_zlib_plugin)}]
+Load \program{gzip} compressed files transparently. See
+\secref{semweb-zlib}.
+    \item[\pllib{library(semweb/rdf_http_plugin)}]
+Load RDF documents from HTTP servers.  See \secref{http}.
+    \item[\pllib{library(http/http_ssl_plugin)}]
+May be combined with \pllib{library(semweb/rdf_http_plugin)} to load
+RDF from HTTPS servers.
+    \item[\pllib{library(semweb/rdf_persistency)}]
+Provide persistent backup of the triple store.
+    \item[\pllib{library(semweb/rdf_cache)}]
+Provide caching RDF sources using fast load/safe files to speedup
+restarting an application.
+\end{description}
+
+\begin{description}
+    \predicate{rdf_db:rdf_open_hook}{3}{+Input, -Stream, -Format}
+Open an input. \arg{Input} is one of \term{file}{+Name},
+\term{stream}{+Stream} or \term{url}{Protocol, URL}.  If this hook
+succeeds, the RDF will be read from Stream using rdf_load_stream/3.
+Otherwise the default open functionality for file and stream are
+used.
+
+    \predicate{rdf_db:rdf_load_stream}{3}{+Format, +Stream, +Options}
+Actually load the RDF from \arg{Stream} into the RDF database.
+\arg{Format} describes the format and is produced either by
+rdf_input_info/3 or rdf_file_type/2.
+
+    \predicate{rdf_db:rdf_input_info}{3}{+Input, -Modified, -Format}
+Gather information on \arg{Input}. \arg{Modified} is the last
+modification time of the source as a POSIX time-stamp (see time_file/2).
+\arg{Format} is the RDF format of the file.  See rdf_file_type/2 for
+details. It is allowed to leave the output variables unbound. Ultimately
+the default modified time is `0' and the format is assumed to be
+\const{xml}.
+
+    \predicate{rdf_db:rdf_file_type}{2}{?Extension, ?Format}
+True if \arg{Format} is the default RDF file format for files
+with the given extension.  \arg{Extension} is lowercase and
+without a '.'.  E.g.\ \const{owl}.  \arg{Format} is either a
+built-in format (\const{xml} or \const{triples}) or a format
+understood by the rdf_load_stream/3 hook.
+
+    \predicate{rdf_db:url_protocol}{1}{?Protocol}
+True if \arg{Protocol} is a URL protocol recognised by rdf_load/2.
+\end{description}
+
+
+\subsection{library(semweb/rdf_zlib_plugin): Reading compressed RDF}
+\label{sec:semweb-zlib}
+
+\index{gz, format}\index{gzip}\index{compressed data}%
+This module uses the \pllib{zlib} library to load compressed files
+on the fly.  The extension of the file must be \fileext{gz}.  The
+file format is deduced by the extension after stripping the \fileext{gz}
+extension.  E.g.\ \exam{rdf_load('file.rdf.gz')}.
+
+
+\subsection{library(semweb/rdf_http_plugin): Reading RDF from a HTTP server}
+\label{sec:http}
+
+\index{xhtml}%
+This module allows for \exam{rdf_load('http://...')}. It exploits the
+library \pllib{http/http_open.pl}. The format of the URL is determined
+from the mime-type returned by the server if this is one of
+\const{text/rdf+xml}, \const{application/x-turtle} or
+\const{application/turtle}. As RDF mime-types are not yet widely
+supported, the plugin uses the extension of the URL if the claimed
+mime-type is not one of the above.  In addition, it recognises
+\const{text/html} and \const{application/xhtml+xml}, scanning
+the XML content for embedded RDF.
+
+\input{rdfcache.tex}
+
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	     LITINDEX		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{library(semweb/rdf_litindex): Indexing words in literals}
+\label{sec:rdflitindex}
+
+The library \pllib{semweb/rdf_litindex.pl} exploits the primitives
+of \secref{rdflitmap} and the NLP package to provide indexing on words
+inside literal constants.  It also allows for fuzzy matching using
+stemming and `sounds-like' based on the \jargon{double metaphone}
+algorithm of the NLP package.
+
+\begin{description}
+    \predicate{rdf_find_literals}{2}{+Spec, -ListOfLiterals}
+Find literals (without type or language specification) that satisfy
+\arg{Spec}. The required indices are created as needed and kept
+up-to-date using hooks registered with rdf_monitor/2.  Numerical
+indexing is currently limited to integers in the range $\pm 2^30$
+($\pm 2^62 on 64-bit platforms$).  \arg{Spec} is defined as:
+
+    \begin{description}
+	\termitem{and}{Spec1, Spec2}
+Intersection of both specifications.
+
+	\termitem{or}{Spec1, Spec2}
+Union of both specifications.
+
+	\termitem{not}{Spec}
+Negation of \arg{Spec}.  After translation of the full specification to
+\jargon{Disjunctive Normal Form} (DNF), negations are only allowed
+inside a conjunction with at least one positive literal.
+
+	\termitem{case}{Word}
+Matches all literals containing the word \arg{Word}, doing the match
+case insensitive and after removing diacritics.
+
+	\termitem{stem}{Like}
+Matches all literals containing at least one word that has the same stem
+as \arg{Like} using the Porter stem algorithm.  See NLP package for
+details.
+
+	\termitem{sounds}{Like}
+Matches all literals containing at least one word that `sounds like'
+\arg{Like} using the double metaphone algorithm.  See NLP package for
+details.
+
+	\termitem{prefix}{Prefix}
+Matches all literals containing at least one word that starts with
+Prefix, discarding diacritics and case.
+
+	\termitem{between}{Low, High}
+Matches all literals containing an integer token in the range
+\arg{Low}..\arg{High}, including the boundaries.
+
+	\termitem{ge}{Low}
+Matches all literals containing an integer token with value
+\arg{Low} or higher.
+
+	\termitem{le}{High}
+Matches all literals containing an integer token with value
+\arg{High} or lower.
+
+	\termitem{Token}{}
+Matches all literals containing the given token.  See tokenize_atom/2
+of the NLP package for details.
+    \end{description}
+
+    \predicate{rdf_token_expansions}{2}{+Spec, -Expansions}
+Uses the same database as rdf_find_literals/2 to find possible
+expansions of \arg{Spec}, i.e.\ which words `sound like', `have prefix',
+etc. \arg{Spec} is a compound expression as in rdf_find_literals/2.
+\arg{Expansions} is unified to a list of terms \term{sounds}{Like,
+Words}, \term{stem}{Like, Words} or \term{prefix}{Prefix, Words}. On
+compound expressions, only combinations that provide literals are
+returned.  Below is an example after loading the ULAN%
+	\footnote{Unified List of Artist Names from the Getty
+		  Foundation.}
+database and showing all words that sounds like `rembrandt' and
+appear together in a literal with the word `Rijn'.  Finding this
+result from the 228,710 literals contained in ULAN requires 0.54
+milliseconds (AMD 1600+).
+
+\begin{code}
+?- rdf_token_expansions(and('Rijn', sounds(rembrandt)), L).
+
+L = [sounds(rembrandt, ['Rambrandt', 'Reimbrant', 'Rembradt',
+			'Rembrand', 'Rembrandt', 'Rembrandtsz',
+			'Rembrant', 'Rembrants', 'Rijmbrand'])]
+\end{code}
+
+Here is another example, illustrating handling of diacritics:
+
+\begin{quote}\begin{alltt}
+?- rdf_token_expansions(case(cafe), L).
+
+L = [case(cafe, [cafe, caf\'e])]
+\end{alltt}\end{quote}
+
+    \predicate{rdf_tokenize_literal}{2}{+Literal, -Tokens}
+Tokenize a literal, returning a list of atoms and integers in the range
+$-1073741824 \ldots 1073741823$. As tokenization is in general domain
+and task-dependent this predicate first calls the hook
+\term{rdf_litindex:tokenization}{Literal, -Tokens}. On failure it
+calls tokenize_atom/2 from the NLP package and deletes the following:
+atoms of length 1, floats, integers that are out of range and the
+english words \const{and}, \const{an}, \const{or}, \const{of},
+\const{on}, \const{in}, \const{this} and \const{the}.  Deletion first
+calls the hook \term{rdf_litindex:exclude_from_index}{token, X}.  This
+hook is called as follows:
+
+\begin{code}
+no_index_token(X) :-
+	exclude_from_index(token, X), !.
+no_index_token(X) :-
+	...
+\end{code}
+\end{description}
+
+\subsubsection{Literal maps: Creating additional indices on literals}
+\label{sec:rdflitmap}
+
+`Literal maps' provide a relation between literal values, intended to
+create additional indexes on literals. The current implementation can
+only deal with integers and atoms (string literals). A literal map
+maintains an ordered set of \jargon{keys}. The ordering uses the same
+rules as described in \secref{rdflitindex}. Each key is associated with
+an ordered set of \jargon{values}. Literal map objects can be shared
+between threads, using a locking strategy that allows for multiple
+concurrent readers.
+
+Typically, this module is used together with rdf_monitor/2 on the
+channals \const{new_literal} and \const{old_literal} to maintain an
+index of words that appear in a literal. Further abstraction using
+Porter stemming or Metaphone can be used to create additional search
+indices. These can map either directly to the literal values, or
+indirectly to the plain word-map. The SWI-Prolog NLP package provides
+complimentary building blocks, such as a tokenizer, Porter stem and
+Double Metaphone.
+
+
+\begin{description}
+    \predicate{rdf_new_literal_map}{1}{-Map}
+Create a new literal map, returning an opaque handle.
+
+    \predicate{rdf_destroy_literal_map}{1}{+Map}
+Destroy a literal map. After this call, further use of the \arg{Map}
+handle  is illegal.  Additional synchronisation is needed if maps that
+are shared between threads are destroyed to guarantee the handle is
+no longer used.  In some scenarios rdf_reset_literal_map/1
+provides a safe alternative.
+
+    \predicate{rdf_reset_literal_map}{1}{+Map}
+Delete all content from the literal map.
+
+    \predicate{rdf_insert_literal_map}{3}{+Map, +Key, +Value}
+Add a relation between \arg{Key} and \arg{Value} to the map.  If
+this relation already exists no action is performed.
+
+    \predicate{rdf_insert_literal_map}{4}{+Map, +Key, +Value, -KeyCount}
+As rdf_insert_literal_map/3.  In addition, if \arg{Key} is a new key in
+\arg{Map}, unify \arg{KeyCount} with the number of keys in \arg{Map}.
+This serves two purposes.  Derived maps, such as the stem and metaphone
+maps need to know about new keys and it avoids additional foreign calls
+for doing the progress in \file{rdf_litindex.pl}.
+
+    \predicate{rdf_delete_literal_map}{2}{+Map, +Key}
+Delete \arg{Key} and all associated values from the map.  Succeeds
+always.
+
+    \predicate{rdf_delete_literal_map}{2}{+Map, +Key, +Value}
+Delete the association between \arg{Key} and \arg{Value} from the map.
+Succeeds always.
+
+    \predicate[det]{rdf_find_literal_map}{3}{+Map, +KeyList, -ValueList}
+Unify \arg{ValueList} with an ordered set of values associated to
+all keys from \arg{KeyList}.  Each key in \arg{KeyList} is either an
+atom, an integer or a term \term{not}{Key}.  If not-terms are provided,
+there must be at least one positive keywords.  The negations are tested
+after establishing the positive matches.
+
+    \predicate{rdf_keys_in_literal_map}{3}{+Map, +Spec, -Answer}
+Realises various queries on the key-set:
+
+    \begin{description}
+	\termitem{all}{}
+Unify \arg{Answer} with an ordered list of all keys.
+
+	\termitem{key}{+Key}
+Succeeds if \arg{Key} is a key in the map and unify \arg{Answer}
+with the number of values associated with the key.  This provides
+a fast test of existence without fetching the possibly large associated
+value set as with rdf_find_literal_map/3.
+
+	\termitem{prefix}{+Prefix}
+Unify \arg{Answer} with an ordered set of all keys that have the given
+prefix. \arg{Prefix} must be an atom. This call is intended for
+auto-completion in user interfaces.
+
+	\termitem{ge}{+Min}
+Unify \arg{Answer} with all keys that are larger or equal to the
+integer \arg{Min}.
+
+	\termitem{le}{+Max}
+Unify \arg{Answer} with all keys that are smaller or equal to the
+integer \arg{Max}.
+
+
+	\termitem{between}{+Min, +Max}
+Unify \arg{Answer} with all keys between \arg{Min} and \arg{Max}
+(including).
+    \end{description}
+
+    \predicate{rdf_statistics_literal_map}{2}{+Map, +Key(-Arg...)}
+Query some statistics of the map.  Provides keys are:
+    \begin{description}
+	\termitem{size}{-Keys, -Relations}
+Unify \arg{Keys} with the total key-count of the index and
+\arg{Relation} with the total \arg{Key}-\arg{Value} count.
+    \end{description}
+\end{description}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	    PERSISTENCY		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{library(semweb/rdf_persistency): Providing persistent storage}
+\label{sec:rdfpersistency}
+
+\index{Persistent store}%
+The \pllib{semweb/rdf_persistency} provides reliable persistent storage
+for the RDF data. The store uses a directory with files for each source
+(see rdf_source/1) present in the database. Each source is represented
+by two files, one in binary format (see rdf_save_db/2) representing the
+base state and one represented as Prolog terms representing the changes
+made since the base state. The latter is called the \jargon{journal}.
+
+
+\begin{description}
+    \predicate{rdf_attach_db}{2}{+Directory, +Options}
+Attach \arg{Directory} as the persistent database. If \arg{Directory}
+does not exist it is created. Otherwise all sources defined in the
+directory are loaded into the RDF database. Loading a source means
+loading the base state (if any) and replaying the journal (if any). The
+current implementation does not synchronise triples that are in the
+store before attaching a database. They are not removed from the
+database, nor added to the presistent store. Different merging options
+may be supported through the \arg{Options} argument later.  Currently
+defined options are:
+
+    \begin{description}
+	\termitem{concurrency}{+PosInt}
+Number of threads used to reload databased and journals from the
+files in \arg{Directory}.  Default is the number of physical CPUs
+determined by the Prolog flag \const{cpu_count} or 1 (one) on
+systems where this number is unknown.  See also concurrent/3.
+
+	\termitem{max_open_journals}{+PosInt}
+The library maintains a	pool of open journal files.  This option
+specifies the size of this pool.  The default is 10.  Raising the
+option can make sense if many writes occur on many different named
+graphs. The value can be lowered for scenarios where write operations
+are very infrequent.
+
+	\termitem{silent}{Boolean}
+If \const{true}, supress loading messages from rdf_attach_db/2.
+
+	\termitem{log_nested_transactions}{Boolean}
+If \const{true}, nested \emph{log} transactions are added to the journal
+information. By default (\const{false}), no log-term is added for nested
+transactions.
+    \end{description}
+
+The database is locked against concurrent access using a file
+\file{lock} in \arg{Directory}. An attempt to attach to a locked
+database raises a \const{permission_error} exception.  The error
+context contains a term \term{rdf_locked}{Args}, where args is
+a list containing \term{time}{Stamp} and \term{pid}{PID}.  The
+error can be caught by the application.  Otherwise it prints:
+
+\begin{code}
+ERROR: No permission to lock rdf_db `/home/jan/src/pl/packages/semweb/DB'
+ERROR: locked at Wed Jun 27 15:37:35 2007 by process id 1748
+\end{code}
+
+    \predicate{rdf_detach_db}{0}{}
+Detaches the persistent store.  No triples are removed from the RDF
+triple store.
+
+    \predicate{rdf_current_db}{1}{-Directory}
+Unify \arg{Directory} with the current database directory.  Fails if no
+persistent database is attached.
+
+    \predicate{rdf_persistency}{2}{+DB, +Bool}
+Change presistency of named database (4th argument of rdf/4). By default
+all databases are presistent. Using \const{false}, the journal and
+snapshot for the database are deleted and further changes to triples
+associated with \arg{DB} are not recorded. If \arg{Bool} is \const{true}
+a snapshot is created for the current state and further modifications
+are monitored.  Switching persistency does not affect the triples in the
+in-memory RDF database.
+
+    \predicate{rdf_flush_journals}{1}{+Options}
+Flush dirty journals.  With the option \term{min_size}{KB} only journals
+larger than \arg{KB} Kbytes are merged with the base state.  Flushing a
+journal takes the following steps, ensuring a stable state can be
+recovered at any moment.
+    \begin{enumerate}
+        \item	Save the current database in a new file using the
+		extension \fileext{new}.
+	\item	On success, delete the journal
+	\item	On success, atomically move the \fileext{new} file
+		over the base state.
+    \end{enumerate}
+
+Note that journals are \emph{not} merged automatically for two reasons.
+First of all, some applications may decide never to merge as the journal
+contains a complete \jargon{changelog} of the database.  Second, merging
+large databases can be slow and the application may wish to schedule
+such actions at quiet times or scheduled maintenance periods.
+\end{description}
+
+\subsubsection{Enriching the journals}
+\label{sec:enrich}
+
+The above predicates suffice for most applications. The predicates in
+this section provide access to the journal files and the base state
+files and are intented to provide additional services, such as reasoning
+about the journals, loaded files, etc.%
+    \footnote{A library \pllib{rdf_history} is under development
+	      exploiting these features supporting wiki style editing
+	      of RDF.}
+
+Using \term{rdf_transaction}{Goal, log(Message)}, we can add additional
+records to enrich the journal of affected databases with \arg{Term} and
+some additional bookkeeping information. Such a transaction adds a term
+\term{begin}{Id, Nest, Time, Message} before the change operations on
+each affected database and \term{end}{Id, Nest, Affected} after the
+change operations. Here is an example call and content of the journal
+file \file{mydb.jrn}.  A full explanation of the terms that appear in
+the journal is in the description of rdf_journal_file/2.
+
+\begin{code}
+?- rdf_transaction(rdf_assert(s,p,o,mydb), log(by(jan))).
+\end{code}
+
+\begin{code}
+start([time(1183540570)]).
+begin(1, 0, 1183540570.36, by(jan)).
+assert(s, p, o).
+end(1, 0, []).
+end([time(1183540578)]).
+\end{code}
+
+Using \term{rdf_transaction}{Goal, log(Message, DB)}, where \arg{DB} is
+an atom denoting a (possibly empty) named graph, the system guarantees
+that a non-empty transaction will leave a possibly empty transaction
+record in DB. This feature assumes named graphs are named after the user
+making the changes. If a user action does not affect the user's graph,
+such as deleting a triple from another graph, we still find record of
+all actions performed by some user in the journal of that user.
+
+\begin{description}
+    \predicate{rdf_journal_file}{2}{?DB, ?JournalFile} True if
+\arg{File} is the absolute file name of an existing named graph
+\arg{DB}. A journal file contains a sequence of Prolog terms of the
+following format.%
+	\footnote{Future versions of this library may use an XML
+		  based language neutral format.}
+
+\begin{description}
+    \termitem{start}{Attributes}
+Journal has been opened.  Currently \arg{Attributes} contains a
+term \term{time}{Stamp}.
+
+    \termitem{end}{Attributes}
+Journal was closed.  Currently \arg{Attributes} contains a
+term \term{time}{Stamp}.
+
+    \termitem{assert}{Subject, Predicate, Object}
+A triple \{Subject, Predicate, Object\} was added to the database.
+
+    \termitem{assert}{Subject, Predicate, Object, Line}
+A triple \{Subject, Predicate, Object\} was added to the database
+with given \arg{Line} context.
+
+    \termitem{retract}{Subject, Predicate, Object}
+A triple  \{Subject, Predicate, Object\} was deleted from the database.
+Note that an rdf_retractall/3 call can retract multiple triples.  Each
+of them have a record in the journal.  This allows for `undo'.
+
+    \termitem{retract}{Subject, Predicate, Object, Line}
+Same as above, for a triple with associated line info.
+
+    \termitem{update}{Subject, Predicate, Object, Action}
+See rdf_update/4.
+
+    \termitem{begin}{Id, Nest, Time, Message}
+Added before the changes in each database affected by a transaction
+with transaction identifier \term{log}{Message}.  \arg{Id} is an
+integer counting the logged transactions to this database.  Numbers
+are increasing and designed for binary search within the journal file.
+\arg{Nest} is the nesting level, where `0' is a toplevel transaction.
+\arg{Time} is a time-stamp, currently using float notation with two
+fractional digits.  \arg{Message} is the term provided by the user
+as argument of the \term{log}{Message} transaction.
+
+    \termitem{end}{Id, Nest, Others}
+Added after the changes in each database affected by a transaction with
+transaction identifier \term{log}{Message}. \arg{Id} and \arg{Nest}
+match the begin-term.  \arg{Others} gives a list of other databases
+affected by this transaction and the \arg{Id} of these records.  The
+terms in this list have the format \arg{DB}:\arg{Id}.
+\end{description}
+
+    \predicate{rdf_db_to_file}{2}{?DB, ?FileBase}
+Convert between \arg{DB} (see rdf_source/1) and file base-file used
+for storing information on this database.  The full file is located
+in the directory described by rdf_current_db/1 and has the extension
+\fileext{trp} for the base state and \fileext{jrn} for the journal.
+\end{description}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	      TURTLE		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{turtle.tex}
+\input{rdfntriples.tex}
+\input{rdfa.tex}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	       RDFS		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{library(semweb/rdfs): RDFS related queries}
+\label{sec:rdfs}
+
+\index{RDF-Schema}%
+The \pllib{semweb/rdfs} library adds interpretation of the triple store
+in terms of concepts from RDF-Schema (RDFS). There are two ways to
+provide support for more high level languages in RDF. One is to view
+such languages as a set of \jargon{entailment rules}. In this model the
+rdfs library would provide a predicate \predref{rdfs}{3} providing the
+same functionality as rdf/3 on union of the raw graph and triples that
+can be derived by applying the RDFS entailment rules.
+
+Alternatively, RDFS provides a view on the RDF store in terms of
+individuals, classes, properties, etc., and we can provide predicates
+that query the database with this view in mind.  This is the approach
+taken in the \pllib{semweb/rdfs.p}l library, providing calls like
+\term{rdfs_individual_of}{?Resource, ?Class}.%
+	\footnote{The SeRQL language is based on querying the deductive
+		  closure of the triple set. The SWI-Prolog SeRQL
+		  library provides \jargon{entailment modules} that
+		  take the approach outlined above.}
+
+
+\subsection{Hierarchy and class-individual relations}
+\label{sec:semweb-rdfs-classes}
+
+The predicates in this section explore the \const{rdfs:subPropertyOf},
+\const{rdfs:subClassOf} and \const{rdf:type} relations.  Note that the
+most fundamental of these, \const{rdfs:subPropertyOf}, is also used
+by rdf_has/[3,4].
+
+\begin{description}
+    \predicate{rdfs_subproperty_of}{2}{?SubProperty, ?Property}
+True if \arg{SubProperty} is equal to \arg{Property} or \arg{Property}
+can be reached from \arg{SubProperty} following the
+\const{rdfs:subPropertyOf} relation. It can be used to test as well as
+generate sub-properties or super-properties. Note that the commonly used
+semantics of this predicate is wired into rdf_has/[3,4].%
+	\bug{The current implementation cannot deal with
+	     cycles}.%
+	\bug{The current implementation cannot deal with predicates
+	     that are an \const{rdfs:subPropertyOf} of
+	     \const{rdfs:subPropertyOf}, such as
+	     \const{owl:samePropertyAs}.}
+
+    \predicate{rdfs_subclass_of}{2}{?SubClass, ?Class}
+True if \arg{SubClass} is equal to \arg{Class} or \arg{Class}
+can be reached from \arg{SubClass} following the
+\const{rdfs:subClassOf} relation. It can be used to test as
+well as generate sub-classes or super-classes.%
+	\bug{The current implementation cannot deal with
+	     cycles}.
+
+    \predicate{rdfs_class_property}{2}{+Class, ?Property}
+True if the domain of \arg{Property} includes \arg{Class}.  Used to
+generate all properties that apply to a class.
+
+    \predicate{rdfs_individual_of}{2}{?Resource, ?Class}
+True if \arg{Resource} is an indivisual of \arg{Class}.  This implies
+\arg{Resource} has an \const{rdf:type} property that refers to
+\arg{Class} or a sub-class thereof.  Can be used to test, generate
+classes \arg{Resource} belongs to or generate individuals described
+by \arg{Class}.
+\end{description}
+
+\subsection{Collections and Containers}
+\label{sec:semweb-rdfs-containers}
+
+\index{parseType,Collection}%
+\index{Collection,parseType}%
+The RDF construct \const{rdf:parseType}=\const{Collection} constructs
+a list using the \const{rdf:first} and \const{rdf:next} relations.
+
+\begin{description}
+    \predicate{rdfs_member}{2}{?Resource, +Set}
+Test or generate the members of \arg{Set}.  \arg{Set} is either an
+individual of \const{rdf:List} or \const{rdfs:Container}.
+
+    \predicate{rdfs_list_to_prolog_list}{2}{+Set, -List}
+Convert \arg{Set}, which must be an individual of \const{rdf:List} into
+a Prolog list of objects.
+
+    \predicate{rdfs_assert_list}{2}{+List, -Resource}
+Equivalent to rdfs_assert_list/3 using \arg{DB} = \const{user}.
+
+    \predicate{rdfs_assert_list}{3}{+List, -Resource, +DB}
+If \arg{List} is a list of resources, create an RDF list \arg{Resource}
+that reflects these resources.  \arg{Resource} and the sublist resources
+are generated with rdf_bnode/1.  The new triples are associated with the
+database \arg{DB}.
+\end{description}
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	     LIBRARY		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{rdflib.tex}
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	  PLDOC LIBRARIES	%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sparqlclient.tex}
+\input{rdfcompare.tex}
+\input{rdfportray.tex}
+
+
+\section{Related packages}
+\label{sec:semweb-related-packages}
+
+\index{ClioPatria}\index{SPARQL}%
+The core infrastructure for storing and querying RDF is provided by this
+package, which is distributed as a core package with SWI-Prolog.
+\href{http://cliopatria.swi-prolog.org}{ClioPatria} provides a
+comprehensive server infrastructure on top of the \textit{semweb} and
+\textit{http} packages. ClioPatria provides a SPARQL~1.1 endpoint,
+linked open data (LOD) support, user management, a web interface and an
+extension infrastructure for programming (semantic) web applications.
+
+\index{Thea}\index{OWL2}%
+\href{http://www.semanticweb.gr/TheaOWLLib/}{Thea} provides access to OWL
+ontologies at the level of the abstract syntax. Can interact with
+external DL reasoner using DIG.
+
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	    VERSION 3		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Version 3 release notes}
+\label{sec:semweb-version3}
+
+RDF-DB version 3 is a major redesign of the SWI-Prolog RDF
+infrastructure. Nevertheles, version~3 is almost perfectly upward
+compatible with version~2. Below are some issues to take into
+consideration when upgrading.
+
+Version~2 did not allow for modifications while read operations were in
+progress, for example due to an open choice point. As a consequence,
+operations that both queried and modified the database had to be wrapped
+in a transaction or the modifications had to be buffered as Prolog data
+structures. In both cases, the RDF store was not modified during the
+query phase. In version~3, modifications are allowed while read
+operations are in progress and follow the Prolog \textbf{logical update
+view} semantics. This is different from using a transaction in
+version~2, where the view for all read operations was frozen at the
+start of the transaction. In version~3, every read operation sees the
+store frozen at the moment that the operation was started.
+
+We illustrate the difference by writing a forwards entailment rule that
+adds a \jargon{sibling} relation. In \textbf{version~2}, we could
+perform this operation using one of the following:
+
+\begin{code}
+add_siblings_1 :-
+	findall(S-O,
+		( rdf(S, f:parent, P),
+		  rdf(O, f:parent, P),
+		  S \== O
+		),
+		Pairs),
+	forall(member(S-O, Pairs), rdf_assert(S,f:sibling,O)).
+
+add_siblings_2 :-
+	rdf_transaction(
+	    forall(( rdf(S, f:parent, P),
+		     rdf(O, f:parent, P),
+		     S \== O
+		   ),
+		   rdf_assert(S, f:sibling, O))).
+\end{code}
+
+In \textbf{version~3}, we can write this in the natural Prolog style
+below. In itself, this may not seem a big advantage because wrapping
+such operations in a transaction is often a good style anyway. The story
+changes with more complicated constrol structures that combine
+iterations with steps that depend on triples asserted in previous steps.
+Such scenarios can be programmed naturally in the current version.
+
+\begin{code}
+add_siblings_3 :-
+	forall(( rdf(S, f:parent, P),
+		 rdf(O, f:parent, P),
+		 S \== O
+	       ),
+	       rdf_assert(S, f:sibling, O)).
+\end{code}
+
+In version~3, code that combines queries with modification has the same
+semantics whether executed inside or outside a transaction. This
+property makes reusing such predicates predictable.
+
+
+\begin{description}
+    \item [rdf_statistics/2]
+Various statistics have been renamed or changed:
+    \begin{shortlist}
+        \item \const{sources} is renamed into \const{graphs}
+        \item \const{triples_by_file} is renamed into
+	      \const{triples_by_graph}
+	\item \const{gc} has additional arguments
+	\item \const{core} is removed.
+    \end{shortlist}
+
+    \item [rdf_generation/1]
+Generations inside a transaction are represented as
+\arg{BaseGeneration}+\arg{TransactionGeneration}, where
+\arg{BaseGeneration} is the global generation where the transaction
+started and \arg{TransactionGeneration} expresses the generation within
+the transaction. Counting generation has changed as well. In particular,
+comitting a transaction steps the generation only by one.
+
+    \item [rdf_current_ns/1, rdf_register_ns/2, rdf_register_ns/3]
+These predicates are renamed into rdf_current_prefix/1,
+rdf_register_prefix/2, rdf_register_prefix/3.  The old predicates
+are still available as deprecated predicates.
+
+    \item [rdf_unload/1] now only accepts a source location and
+deletes the associated graph using rdf_unload_graph/1.
+\end{description}
+
+
+\section*{Acknowledgements}
+
+This research was supported by the following projects: MIA and
+MultimediaN project (www.multimedian.nl) funded through the BSIK
+programme of the Dutch Government, the FP-6 project HOPS of the European
+Commission, the COMBINE project supported by the ONR Global NICOP grant
+N62909-11-1-7060 and the Dutch national program COMMIT.
+
+
+
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		 %	      FOOTER		%
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\printindex
+
+\end{document}
+
+
