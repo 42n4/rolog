@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/Matthias/rolog/src/swipl-7.7.5/src'
+ac_pwd='/home/matthias/rolog/src/swipl-7.7.6/src'
 srcdir='.'
 INSTALL='/bin/install -c'
 AWK='gawk'
@@ -611,8 +611,8 @@ cat >>"$ac_tmp/subs1.awk" <<\_ACAWK &&
 S["LTLIBOBJS"]=""
 S["LIBOBJS"]=""
 S["ALLOCA"]=""
-S["EGREP"]="/bin/grep -E"
-S["GREP"]="/bin/grep"
+S["EGREP"]="/mingw/bin/grep -E"
+S["GREP"]="/mingw/bin/grep"
 S["CPP"]="gcc -E"
 S["INSTALL_DATA"]="${INSTALL} -m 644"
 S["INSTALL_SCRIPT"]="${INSTALL}"
@@ -625,7 +625,7 @@ S["ac_ct_WINDRES"]="windres"
 S["ac_ct_RANLIB"]="ranlib"
 S["RANLIB"]="ranlib"
 S["ac_ct_AR"]="ar"
-S["MAKE"]="gmake"
+S["MAKE"]="make"
 S["EXEEXT_FOR_BUILD"]=".exe"
 S["CC_FOR_BUILD"]="gcc"
 S["host_os"]="mingw32"
@@ -680,15 +680,15 @@ S["EXTRAOBJ"]="pl-nt.o pl-ntconsole.o pl-dde.o"
 S["INSTALLTARGET"]="dv-install"
 S["COUTOPT"]="-o $@"
 S["VPATH"]="vpath %.c"
-S["PLLIBDIR"]="swipl-7.7.5"
-S["PLNVERSION"]="7.7.5"
-S["PLVERSION"]="7.7.5"
+S["PLLIBDIR"]="swipl-7.7.6"
+S["PLNVERSION"]="7.7.6"
+S["PLVERSION"]="7.7.6"
 S["PL"]="swipl"
 S["PLTHREADS"]="yes"
 S["PLSHARED"]="yes"
 S["INSTALL_PLARCH"]=""
 S["PLARCH"]="i386-win32"
-S["PLBASE"]="/usr/local/swipl-7.7.5"
+S["PLBASE"]="/usr/local/swipl-7.7.6"
 S["PLBUILD"]="i386-win32"
 S["SUBSYSTEMFLAGS"]="-Wl,--subsystem,windows"
 S["STACKFLAGS"]="-Wl,--stack,4000000"

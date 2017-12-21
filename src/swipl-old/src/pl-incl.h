@@ -1157,15 +1157,13 @@ typedef struct atom_table
 #define ATOM_TYPE_INVALID	((PL_blob_t*)0x007)
 
 #ifdef O_DEBUG_ATOMGC
+extern IOSTREAM *atomLogFd;
 #define PL_register_atom(a) \
 	_PL_debug_register_atom(a, __FILE__, __LINE__, __PRETTY_FUNCTION__)
 #define PL_unregister_atom(a) \
 	_PL_debug_unregister_atom(a, __FILE__, __LINE__, __PRETTY_FUNCTION__)
-#undef atomValue
-#define atomValue(a) _PL_debug_atom_value(a)
-extern Atom _PL_debug_atom_value(atom_t a);
 #endif
-#else
+#else /*!O_ATOMGC*/
 #define PL_register_atom(a)
 #define PL_unregister_atom(a)
 #endif
@@ -1480,6 +1478,13 @@ struct clause_choice
 	     LD->thread.info->access.predicate = def; } while(0)
 #define release_def(def) \
 	do { LD->thread.info->access.predicate = NULL; } while(0)
+#define acquire_def2(def, store) \
+	do { store = LD->thread.info->access.predicate; \
+	     DEBUG(CHK_SECURE, assert(!store || store == def)); \
+	     LD->thread.info->access.predicate = def; } while(0)
+#define release_def2(def, store) \
+	do { LD->thread.info->access.predicate = store; } while(0)
+
 #else
 #define acquire_def(def) (void)0
 #define release_def(def) (void)0

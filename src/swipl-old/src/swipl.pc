@@ -3,7 +3,7 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-PLBASE=/usr/local/swipl-7.7.5
+PLBASE=/usr/local/swipl-7.7.6
 PLARCH=i386-win32
 INSTALL_PLARCH=
 PLLIBS=-limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32 
@@ -14,6 +14,6 @@ PLSOEXT=dll
 
 Name: swipl
 Description: ISO/Edinburgh-style Prolog compiler
-Version: 7.7.5
-Libs: ${PLLDFLAGS}  -L/usr/local/swipl-7.7.5/lib/ -lswipl
-Cflags: ${PLCFLAGS} -I/usr/local/swipl-7.7.5/include
+Version: 7.7.6
+Libs: ${PLLDFLAGS}  -L/usr/local/swipl-7.7.6/lib/ -lswipl
+Cflags: ${PLCFLAGS} -I/usr/local/swipl-7.7.6/include

@@ -1088,7 +1088,7 @@ lingerClauseRef(ClauseRef cref)
 
 static int activePredicate(const Definition *defs, const Definition def);
 
-void
+static void
 gcClauseRefs(void)
 { ClauseRef cref;
 
@@ -1396,15 +1396,38 @@ void
 unallocClause(Clause c)
 { ATOMIC_SUB(&GD->statistics.codes, c->code_size);
   ATOMIC_DEC(&GD->statistics.clauses);
+
+#ifdef ALLOC_DEBUG
+#define ALLOC_FREE_MAGIC 0xFB
+  size_t size = sizeofClause(c->code_size);
+  memset(c, ALLOC_FREE_MAGIC, size);
+#endif
+
   PL_free(c);
 }
 
+
+#ifdef O_DEBUG_ATOMGC
+void
+unregister_atom_clause(atom_t a)
+{ PL_unregister_atom(a);
+}
+
+void
+register_atom_clause(atom_t a)
+{ PL_register_atom(a);
+}
+#endif
 
 void
 freeClause(Clause c)
 {
 #ifdef O_ATOMGC
+#ifdef O_DEBUG_ATOMGC
+  forAtomsInClause(c, unregister_atom_clause);
+#else
   forAtomsInClause(c, PL_unregister_atom);
+#endif
 #endif
 
   if ( true(c, DBREF_CLAUSE) )		/* will be freed from symbol */
@@ -2512,15 +2535,12 @@ PRED_IMPL("retract", 1, retract,
 	fail;				/* no clauses */
       }
 
-      startCritical;
       enterDefinition(def);			/* reference the predicate */
-      pushPredicateAccess(def, generationFrame(environment_frame));
+      setGenerationFrameVal(environment_frame, pushPredicateAccess(def));
       cref = firstClause(argv, environment_frame, def, &ctxbuf.chp PASS_LD);
       if ( !cref )
       { popPredicateAccess(def);
 	leaveDefinition(def);
-	if ( !endCritical )
-	  fail;
 	fail;
       }
 
@@ -2530,29 +2550,18 @@ PRED_IMPL("retract", 1, retract,
     } else
     { ctx  = CTX_PTR;
       cref = nextClause(&ctx->chp, argv, environment_frame, ctx->def);
-      startCritical;
     }
 
     if ( !(fid = PL_open_foreign_frame()) )
     { free_retract_context(ctx PASS_LD);
-      endCritical;
       return FALSE;
     }
-
-    /* ctx->cref is the first candidate; next is the next one */
 
     while( cref )
     { if ( decompile(cref->value.clause, cl, 0) )
       { if ( retractClauseDefinition(ctx->def, cref->value.clause) ||
 	     CTX_CNTRL != FRG_FIRST_CALL )
-	{ if ( !endCritical )
-	  { free_retract_context(ctx PASS_LD);
-	    PL_close_foreign_frame(fid);
-
-	    return FALSE;
-	  }
-
-	  if ( !ctx->chp.cref )		/* deterministic last one */
+	{ if ( !ctx->chp.cref )		/* deterministic last one */
 	  { free_retract_context(ctx PASS_LD);
 	    PL_close_foreign_frame(fid);
 	    return TRUE;
@@ -2577,7 +2586,6 @@ PRED_IMPL("retract", 1, retract,
 
     PL_close_foreign_frame(fid);
     free_retract_context(ctx PASS_LD);
-    endCritical;
     return FALSE;
   }
 }
@@ -2647,7 +2655,7 @@ pl_retractall(term_t head)
 
   startCritical;
   enterDefinition(def);
-  pushPredicateAccess(def, generationFrame(environment_frame));
+  setGenerationFrameVal(environment_frame, pushPredicateAccess(def));
   fid = PL_open_foreign_frame();
 
   DEBUG(CHK_SECURE, checkDefinition(def));
@@ -3325,7 +3333,11 @@ PRED_IMPL("copy_predicate_clauses", 2, copy_predicate_clauses, PL_FA_TRANSPARENT
       if ( def->module != copy_def->module )
 	remoduleClause(copy, def->module, copy_def->module);
 #ifdef O_ATOMGC
+#ifdef O_DEBUG_ATOMGC
+      forAtomsInClause(copy, register_atom_clause);
+#else
       forAtomsInClause(copy, PL_register_atom);
+#endif
 #endif
       assertProcedure(to, copy, CL_END PASS_LD);
     }
@@ -3379,9 +3391,10 @@ checkDefinition(Definition def)
   unsigned int nc, indexed = 0;
   ClauseRef cref;
   unsigned int erased = 0;
+  Definition old;
 
 						/* check basic clause list */
-  acquire_def(def);
+  acquire_def2(def, old);
   for(nc=0, cref = def->impl.clauses.first_clause; cref; cref=cref->next)
   { Clause clause = cref->value.clause;
 
@@ -3393,7 +3406,7 @@ checkDefinition(Definition def)
     { erased++;
     }
   }
-  release_def(def);
+  release_def2(def, old);
 
   assert(nc == def->impl.clauses.number_of_clauses);
   assert(erased == def->impl.clauses.erased_clauses);

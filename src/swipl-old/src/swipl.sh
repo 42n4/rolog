@@ -16,7 +16,7 @@
 # install chrpath (if available) or remove   the installed system before
 # rebuilding.
 
-bdir=/home/Matthias/rolog/src/swipl-7.7.5/src
+bdir=/home/matthias/rolog/src/swipl-7.7.6/src
 bdir=$BDIR
 lib=$bdir/../lib/i386-win32
 libso=$lib/libswipl.dll

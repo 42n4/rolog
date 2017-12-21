@@ -22,13 +22,13 @@ CNFG=
 
 # Values filled from the main SWI-Prolog configure
 
-MAKE=gmake
+MAKE=make
 prefix=/usr/local
 exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 PL=swipl
-PLVERSION=7.7.5
-PLBASE=/usr/local/swipl-7.7.5
+PLVERSION=7.7.6
+PLBASE=/usr/local/swipl-7.7.6
 PKGDOC=$(PLBASE)/doc/packages
 PLLIBS=-limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32 
 PLARCH=i386-win32

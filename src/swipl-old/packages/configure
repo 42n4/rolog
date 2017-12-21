@@ -11,13 +11,13 @@
 # If  you  also  plan  to  share  the  packages  for  both  single-  and
 # multi-threaded SWI-Prolog they must be built for multi-threading.
 
-MAKE=gmake
+MAKE=make
 
 # Setup the environment, so that targets of configure can find the shared
 # objects of Prolog
 
 BUILDDIR=src
-srcdir=`echo /home/Matthias/rolog/src/swipl-7.7.5/src/../packages | sed 's=/../packages$=='`
+srcdir=`echo /home/matthias/rolog/src/swipl-7.7.6/src/../packages | sed 's=/../packages$=='`
 PLARCH=i386-win32
 PL=swipl
 bdir=$srcdir/../$BUILDDIR

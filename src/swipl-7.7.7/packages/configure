@@ -17,7 +17,7 @@ MAKE=make
 # objects of Prolog
 
 BUILDDIR=src
-srcdir=`echo /home/matthias/rolog/src/swipl-7.7.6/src/../packages | sed 's=/../packages$=='`
+srcdir=`echo /home/matthias/rolog/src/swipl-7.7.7/src/../packages | sed 's=/../packages$=='`
 PLARCH=i386-win32
 PL=swipl
 bdir=$srcdir/../$BUILDDIR

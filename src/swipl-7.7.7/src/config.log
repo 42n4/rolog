@@ -798,8 +798,8 @@ configure: failed program was:
 configure:6358: result: no
 configure:6371: checking for shl_load
 configure:6371: gcc -o conftest.exe -g -O2   conftest.c  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccjJ6Rjj.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:56: undefined reference to `shl_load'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccmmWHNN.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:56: undefined reference to `shl_load'
 collect2.exe: error: ld returned 1 exit status
 configure:6371: $? = 1
 configure: failed program was:
@@ -1130,8 +1130,8 @@ configure: failed program was:
 configure:7394: result: no
 configure:7407: checking for sema_init
 configure:7407: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cci2h5J5.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:70: undefined reference to `sema_init'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccymAfSQ.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:70: undefined reference to `sema_init'
 collect2.exe: error: ld returned 1 exit status
 configure:7407: $? = 1
 configure: failed program was:
@@ -1211,8 +1211,8 @@ configure: failed program was:
 configure:7407: result: no
 configure:7420: checking for pthread_mutexattr_setkind_np
 configure:7420: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cclFTyQL.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:70: undefined reference to `pthread_mutexattr_setkind_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccxADhAJ.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:70: undefined reference to `pthread_mutexattr_setkind_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7420: $? = 1
 configure: failed program was:
@@ -1304,8 +1304,8 @@ configure:7432: $? = 0
 configure:7432: result: yes
 configure:7432: checking for pthread_timedjoin_np
 configure:7432: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccoX0zlR.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:73: undefined reference to `pthread_timedjoin_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc8RYFvi.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:73: undefined reference to `pthread_timedjoin_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7432: $? = 1
 configure: failed program was:
@@ -1388,8 +1388,8 @@ configure: failed program was:
 configure:7432: result: no
 configure:7444: checking for pthread_getname_np
 configure:7444: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccGyTmYA.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:73: undefined reference to `pthread_getname_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccr0UC2q.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:73: undefined reference to `pthread_getname_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7444: $? = 1
 configure: failed program was:
@@ -1472,8 +1472,8 @@ configure: failed program was:
 configure:7444: result: no
 configure:7444: checking for pthread_setname_np
 configure:7444: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc5axV9V.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:73: undefined reference to `pthread_setname_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccssTCIG.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:73: undefined reference to `pthread_setname_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7444: $? = 1
 configure: failed program was:
@@ -1556,8 +1556,8 @@ configure: failed program was:
 configure:7444: result: no
 configure:7453: checking for pthread_setname_np(const char*)
 configure:7468: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccQtg1z9.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:45: undefined reference to `pthread_setname_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccbX3UVz.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:45: undefined reference to `pthread_setname_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7468: $? = 1
 configure: failed program was:
@@ -1614,8 +1614,8 @@ configure:7481: checking whether mutex support recursive locking
 configure:7485: result: yes
 configure:7510: checking for pthread_sigmask
 configure:7510: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccGMc4FK.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:74: undefined reference to `pthread_sigmask'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccC0aSBs.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:74: undefined reference to `pthread_sigmask'
 collect2.exe: error: ld returned 1 exit status
 configure:7510: $? = 1
 configure: failed program was:
@@ -1703,8 +1703,8 @@ configure:7510: $? = 0
 configure:7510: result: yes
 configure:7521: checking for pthread_attr_setaffinity_np
 configure:7521: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccSSecKe.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:75: undefined reference to `pthread_attr_setaffinity_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccRNgAXQ.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:75: undefined reference to `pthread_attr_setaffinity_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7521: $? = 1
 configure: failed program was:
@@ -1789,8 +1789,8 @@ configure: failed program was:
 configure:7521: result: no
 configure:7533: checking for pthread_getw32threadhandle_np
 configure:7533: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccuOMZs9.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:75: undefined reference to `pthread_getw32threadhandle_np'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccL30hF7.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:75: undefined reference to `pthread_getw32threadhandle_np'
 collect2.exe: error: ld returned 1 exit status
 configure:7533: $? = 1
 configure: failed program was:
@@ -1875,8 +1875,8 @@ configure: failed program was:
 configure:7533: result: no
 configure:7533: checking for sched_setaffinity
 configure:7533: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccySrSK7.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:75: undefined reference to `sched_setaffinity'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc6na2n5.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:75: undefined reference to `sched_setaffinity'
 collect2.exe: error: ld returned 1 exit status
 configure:7533: $? = 1
 configure: failed program was:
@@ -1961,8 +1961,8 @@ configure: failed program was:
 configure:7533: result: no
 configure:7545: checking for sysconf
 configure:7545: gcc -o conftest.exe -g -O2   conftest.c -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc9hZhmB.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:75: undefined reference to `sysconf'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccK4leX4.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:75: undefined reference to `sysconf'
 collect2.exe: error: ld returned 1 exit status
 configure:7545: $? = 1
 configure: failed program was:
@@ -5698,8 +5698,8 @@ configure:8052: $? = 0
 configure:8052: result: yes
 configure:8052: checking for fchmod
 configure:8052: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccTT25tR.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:91: undefined reference to `fchmod'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccuEN9Ld.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:91: undefined reference to `fchmod'
 collect2.exe: error: ld returned 1 exit status
 configure:8052: $? = 1
 configure: failed program was:
@@ -5804,8 +5804,8 @@ configure:8052: $? = 0
 configure:8052: result: yes
 configure:8052: checking for dossleep
 configure:8052: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cckJYqbg.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:92: undefined reference to `dossleep'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccXD7oQA.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:92: undefined reference to `dossleep'
 collect2.exe: error: ld returned 1 exit status
 configure:8052: $? = 1
 configure: failed program was:
@@ -5911,8 +5911,8 @@ configure:8052: $? = 0
 configure:8052: result: yes
 configure:8052: checking for readlink
 configure:8052: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cci2m0F2.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:93: undefined reference to `readlink'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccMlj7Jq.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:93: undefined reference to `readlink'
 collect2.exe: error: ld returned 1 exit status
 configure:8052: $? = 1
 configure: failed program was:
@@ -6015,8 +6015,8 @@ configure: failed program was:
 configure:8052: result: no
 configure:8052: checking for getwd
 configure:8052: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cckAZqZT.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:93: undefined reference to `getwd'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc8fr2At.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:93: undefined reference to `getwd'
 collect2.exe: error: ld returned 1 exit status
 configure:8052: $? = 1
 configure: failed program was:
@@ -6127,8 +6127,8 @@ configure:8064: $? = 0
 configure:8064: result: yes
 configure:8064: checking for getpwnam
 configure:8064: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccpwZdrc.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:95: undefined reference to `getpwnam'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccwFC1OF.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:95: undefined reference to `getpwnam'
 collect2.exe: error: ld returned 1 exit status
 configure:8064: $? = 1
 configure: failed program was:
@@ -6233,8 +6233,8 @@ configure: failed program was:
 configure:8064: result: no
 configure:8064: checking for getrlimit
 configure:8064: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccdAauXF.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:95: undefined reference to `getrlimit'
+C:\Users\MATTHI~1\AppData\Local\Temp\cciiqccS.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:95: undefined reference to `getrlimit'
 collect2.exe: error: ld returned 1 exit status
 configure:8064: $? = 1
 configure: failed program was:
@@ -6357,8 +6357,8 @@ configure:8076: $? = 0
 configure:8076: result: yes
 configure:8076: checking for random
 configure:8076: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccI5aRey.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:99: undefined reference to `random'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccRS1WOq.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:99: undefined reference to `random'
 collect2.exe: error: ld returned 1 exit status
 configure:8076: $? = 1
 configure: failed program was:
@@ -6479,8 +6479,8 @@ configure:8076: $? = 0
 configure:8076: result: yes
 configure:8076: checking for fcntl
 configure:8076: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc5hKdTH.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:102: undefined reference to `fcntl'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccwV53wD.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:102: undefined reference to `fcntl'
 collect2.exe: error: ld returned 1 exit status
 configure:8076: $? = 1
 configure: failed program was:
@@ -6592,8 +6592,8 @@ configure: failed program was:
 configure:8076: result: no
 configure:8076: checking for getrusage
 configure:8076: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccLFNSOX.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:102: undefined reference to `getrusage'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccH4n3W7.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:102: undefined reference to `getrusage'
 collect2.exe: error: ld returned 1 exit status
 configure:8076: $? = 1
 configure: failed program was:
@@ -6709,8 +6709,8 @@ configure:8088: $? = 0
 configure:8088: result: yes
 configure:8088: checking for sigset
 configure:8088: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccGKjJBP.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:103: undefined reference to `sigset'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccbW91Kt.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:103: undefined reference to `sigset'
 collect2.exe: error: ld returned 1 exit status
 configure:8088: $? = 1
 configure: failed program was:
@@ -6823,8 +6823,8 @@ configure: failed program was:
 configure:8088: result: no
 configure:8088: checking for sigprocmask
 configure:8088: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccMrSRia.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:103: undefined reference to `sigprocmask'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccyP2GM1.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:103: undefined reference to `sigprocmask'
 collect2.exe: error: ld returned 1 exit status
 configure:8088: $? = 1
 configure: failed program was:
@@ -6949,8 +6949,8 @@ configure:8088: $? = 0
 configure:8088: result: yes
 configure:8088: checking for srandom
 configure:8088: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccvwHGPU.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:106: undefined reference to `srandom'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccCLtHxI.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:106: undefined reference to `srandom'
 collect2.exe: error: ld returned 1 exit status
 configure:8088: $? = 1
 configure: failed program was:
@@ -7085,8 +7085,8 @@ configure:8100: $? = 0
 configure:8100: result: yes
 configure:8100: checking for sigaction
 configure:8100: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cclC2eg0.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:110: undefined reference to `sigaction'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc5m3gtN.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:110: undefined reference to `sigaction'
 collect2.exe: error: ld returned 1 exit status
 configure:8100: $? = 1
 configure: failed program was:
@@ -7206,8 +7206,8 @@ configure: failed program was:
 configure:8100: result: no
 configure:8100: checking for sigsetmask
 configure:8100: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccOjhlOJ.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:110: undefined reference to `sigsetmask'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccynka73.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:110: undefined reference to `sigsetmask'
 collect2.exe: error: ld returned 1 exit status
 configure:8100: $? = 1
 configure: failed program was:
@@ -7327,8 +7327,8 @@ configure: failed program was:
 configure:8100: result: no
 configure:8100: checking for siggetmask
 configure:8100: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc4LfeCJ.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:110: undefined reference to `siggetmask'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccCT9CWx.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:110: undefined reference to `siggetmask'
 collect2.exe: error: ld returned 1 exit status
 configure:8100: $? = 1
 configure: failed program was:
@@ -7448,8 +7448,8 @@ configure: failed program was:
 configure:8100: result: no
 configure:8100: checking for sigblock
 configure:8100: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccda6GXE.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:110: undefined reference to `sigblock'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc9ho8e0.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:110: undefined reference to `sigblock'
 collect2.exe: error: ld returned 1 exit status
 configure:8100: $? = 1
 configure: failed program was:
@@ -7576,8 +7576,8 @@ configure:8112: $? = 0
 configure:8112: result: yes
 configure:8112: checking for aint
 configure:8112: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cca8QxRf.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:111: undefined reference to `aint'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccgtaEUO.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:111: undefined reference to `aint'
 collect2.exe: error: ld returned 1 exit status
 configure:8112: $? = 1
 configure: failed program was:
@@ -7722,8 +7722,8 @@ configure:8112: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 
 conftest.c:103:6: warning: conflicting types for built-in function 'isinf'
  char isinf ();
       ^
-C:\Users\MATTHI~1\AppData\Local\Temp\ccBS8SxI.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:114: undefined reference to `isinf'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc0UDWmk.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:114: undefined reference to `isinf'
 collect2.exe: error: ld returned 1 exit status
 configure:8112: $? = 1
 configure: failed program was:
@@ -7847,8 +7847,8 @@ configure: failed program was:
 configure:8112: result: no
 configure:8112: checking for tcsetattr
 configure:8112: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccHLvL2n.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:114: undefined reference to `tcsetattr'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccjGjGpZ.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:114: undefined reference to `tcsetattr'
 collect2.exe: error: ld returned 1 exit status
 configure:8112: $? = 1
 configure: failed program was:
@@ -7972,8 +7972,8 @@ configure: failed program was:
 configure:8112: result: no
 configure:8112: checking for cfmakeraw
 configure:8112: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc0wfS5J.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:114: undefined reference to `cfmakeraw'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccQ8ZZLO.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:114: undefined reference to `cfmakeraw'
 collect2.exe: error: ld returned 1 exit status
 configure:8112: $? = 1
 configure: failed program was:
@@ -8105,8 +8105,8 @@ configure:8124: $? = 0
 configure:8124: result: yes
 configure:8124: checking for tgetent
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccetQnU7.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:116: undefined reference to `tgetent'
+C:\Users\MATTHI~1\AppData\Local\Temp\cchoHudX.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:116: undefined reference to `tgetent'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8232,8 +8232,8 @@ configure: failed program was:
 configure:8124: result: no
 configure:8124: checking for times
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccQyBNBx.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:116: undefined reference to `times'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccXYBVB4.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:116: undefined reference to `times'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8359,8 +8359,8 @@ configure: failed program was:
 configure:8124: result: no
 configure:8124: checking for unsetenv
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc5WHoZM.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:116: undefined reference to `unsetenv'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccRx5r9Z.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:116: undefined reference to `unsetenv'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8486,8 +8486,8 @@ configure: failed program was:
 configure:8124: result: no
 configure:8124: checking for grantpt
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccqnYUey.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:116: undefined reference to `grantpt'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccImsRzM.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:116: undefined reference to `grantpt'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8617,8 +8617,8 @@ configure:8124: $? = 0
 configure:8124: result: yes
 configure:8124: checking for waitpid
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cci0AsBq.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:117: undefined reference to `waitpid'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccxUocVy.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:117: undefined reference to `waitpid'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8745,8 +8745,8 @@ configure: failed program was:
 configure:8124: result: no
 configure:8124: checking for kill
 configure:8124: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccVXpECI.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:117: undefined reference to `kill'
+C:\Users\MATTHI~1\AppData\Local\Temp\cciAONTf.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:117: undefined reference to `kill'
 collect2.exe: error: ld returned 1 exit status
 configure:8124: $? = 1
 configure: failed program was:
@@ -8877,8 +8877,8 @@ configure:8136: $? = 0
 configure:8136: result: yes
 configure:8136: checking for fpgetmask
 configure:8136: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccNFAQCR.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `fpgetmask'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc9wT9wW.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `fpgetmask'
 collect2.exe: error: ld returned 1 exit status
 configure:8136: $? = 1
 configure: failed program was:
@@ -9006,8 +9006,8 @@ configure: failed program was:
 configure:8136: result: no
 configure:8136: checking for fpresetsticky
 configure:8136: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccWQV7VE.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `fpresetsticky'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc3rkXfz.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `fpresetsticky'
 collect2.exe: error: ld returned 1 exit status
 configure:8136: $? = 1
 configure: failed program was:
@@ -9135,8 +9135,8 @@ configure: failed program was:
 configure:8136: result: no
 configure:8136: checking for mtrace
 configure:8136: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccfuvJuc.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `mtrace'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccw4orMP.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `mtrace'
 collect2.exe: error: ld returned 1 exit status
 configure:8136: $? = 1
 configure: failed program was:
@@ -9264,8 +9264,8 @@ configure: failed program was:
 configure:8136: result: no
 configure:8136: checking for localtime_r
 configure:8136: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccN9pVCc.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `localtime_r'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccxDeDmJ.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `localtime_r'
 collect2.exe: error: ld returned 1 exit status
 configure:8136: $? = 1
 configure: failed program was:
@@ -9393,8 +9393,8 @@ configure: failed program was:
 configure:8136: result: no
 configure:8136: checking for asctime_r
 configure:8136: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccDS9mvy.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `asctime_r'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccXYEX1P.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `asctime_r'
 collect2.exe: error: ld returned 1 exit status
 configure:8136: $? = 1
 configure: failed program was:
@@ -9522,8 +9522,8 @@ configure: failed program was:
 configure:8136: result: no
 configure:8148: checking for ctime_r
 configure:8148: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccWiXlkF.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `ctime_r'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccqTMQ0e.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `ctime_r'
 collect2.exe: error: ld returned 1 exit status
 configure:8148: $? = 1
 configure: failed program was:
@@ -9651,8 +9651,8 @@ configure: failed program was:
 configure:8148: result: no
 configure:8148: checking for mmap
 configure:8148: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccOwsu6J.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `mmap'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccheknih.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `mmap'
 collect2.exe: error: ld returned 1 exit status
 configure:8148: $? = 1
 configure: failed program was:
@@ -9780,8 +9780,8 @@ configure: failed program was:
 configure:8148: result: no
 configure:8148: checking for confstr
 configure:8148: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccknLneK.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:118: undefined reference to `confstr'
+C:\Users\MATTHI~1\AppData\Local\Temp\cchqWKRy.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:118: undefined reference to `confstr'
 collect2.exe: error: ld returned 1 exit status
 configure:8148: $? = 1
 configure: failed program was:
@@ -9916,8 +9916,8 @@ configure:8148: $? = 0
 configure:8148: result: yes
 configure:8148: checking for mbscoll
 configure:8148: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccVe4D4p.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:119: undefined reference to `mbscoll'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc5GSjHc.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:119: undefined reference to `mbscoll'
 collect2.exe: error: ld returned 1 exit status
 configure:8148: $? = 1
 configure: failed program was:
@@ -10046,8 +10046,8 @@ configure: failed program was:
 configure:8148: result: no
 configure:8148: checking for mbscasecoll
 configure:8148: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccduhAer.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:119: undefined reference to `mbscasecoll'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccXvoTwN.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:119: undefined reference to `mbscasecoll'
 collect2.exe: error: ld returned 1 exit status
 configure:8148: $? = 1
 configure: failed program was:
@@ -10180,8 +10180,8 @@ configure:8148: $? = 0
 configure:8148: result: yes
 configure:8160: checking for setenv
 configure:8160: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cco1hDQ4.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:120: undefined reference to `setenv'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccUFzdHy.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:120: undefined reference to `setenv'
 collect2.exe: error: ld returned 1 exit status
 configure:8160: $? = 1
 configure: failed program was:
@@ -10311,8 +10311,8 @@ configure: failed program was:
 configure:8160: result: no
 configure:8160: checking for posix_openpt
 configure:8160: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc8cO4yi.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:120: undefined reference to `posix_openpt'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccIRmCeE.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:120: undefined reference to `posix_openpt'
 collect2.exe: error: ld returned 1 exit status
 configure:8160: $? = 1
 configure: failed program was:
@@ -10446,8 +10446,8 @@ configure:8160: $? = 0
 configure:8160: result: yes
 configure:8160: checking for sysctlbyname
 configure:8160: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cc8tdu5P.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:121: undefined reference to `sysctlbyname'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccj4jzIe.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:121: undefined reference to `sysctlbyname'
 collect2.exe: error: ld returned 1 exit status
 configure:8160: $? = 1
 configure: failed program was:
@@ -10578,8 +10578,8 @@ configure: failed program was:
 configure:8160: result: no
 configure:8160: checking for mbsnrtowcs
 configure:8160: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccrNUwLi.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:121: undefined reference to `mbsnrtowcs'
+C:\Users\MATTHI~1\AppData\Local\Temp\cclxqTgr.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:121: undefined reference to `mbsnrtowcs'
 collect2.exe: error: ld returned 1 exit status
 configure:8160: $? = 1
 configure: failed program was:
@@ -10718,8 +10718,8 @@ configure:8172: $? = 0
 configure:8172: result: yes
 configure:8172: checking for localtime_s
 configure:8172: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccjizUEm.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:123: undefined reference to `localtime_s'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc4DcF6T.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:123: undefined reference to `localtime_s'
 collect2.exe: error: ld returned 1 exit status
 configure:8172: $? = 1
 configure: failed program was:
@@ -10856,8 +10856,8 @@ configure:8172: $? = 0
 configure:8172: result: yes
 configure:8172: checking for poll
 configure:8172: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccc89qmO.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:124: undefined reference to `poll'
+C:\Users\MATTHI~1\AppData\Local\Temp\cco0qLru.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:124: undefined reference to `poll'
 collect2.exe: error: ld returned 1 exit status
 configure:8172: $? = 1
 configure: failed program was:
@@ -10991,8 +10991,8 @@ configure: failed program was:
 configure:8172: result: no
 configure:8172: checking for WSAPoll
 configure:8172: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccwI54YN.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:124: undefined reference to `WSAPoll'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccAOFDaS.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:124: undefined reference to `WSAPoll'
 collect2.exe: error: ld returned 1 exit status
 configure:8172: $? = 1
 configure: failed program was:
@@ -11126,8 +11126,8 @@ configure: failed program was:
 configure:8172: result: no
 configure:8172: checking for qsort_r
 configure:8172: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccj2mvIY.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:124: undefined reference to `qsort_r'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccTwM8uM.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:124: undefined reference to `qsort_r'
 collect2.exe: error: ld returned 1 exit status
 configure:8172: $? = 1
 configure: failed program was:
@@ -11933,8 +11933,8 @@ configure:8452: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 
 conftest.c:117:6: warning: conflicting types for built-in function 'fork'
  char fork ();
       ^
-C:\Users\MATTHI~1\AppData\Local\Temp\cc9CNzXz.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:128: undefined reference to `fork'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccO6OpFN.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:128: undefined reference to `fork'
 collect2.exe: error: ld returned 1 exit status
 configure:8452: $? = 1
 configure: failed program was:
@@ -12072,8 +12072,8 @@ configure: failed program was:
 configure:8452: result: no
 configure:8452: checking for vfork
 configure:8452: gcc -o conftest.exe -g -O2   conftest.c -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccFn9PUi.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:128: undefined reference to `vfork'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccrREu9i.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:128: undefined reference to `vfork'
 collect2.exe: error: ld returned 1 exit status
 configure:8452: $? = 1
 configure: failed program was:
@@ -13054,8 +13054,8 @@ configure: failed program was:
 configure:9505: result: no
 configure:9590: checking for dladdr
 configure:9590: gcc -o conftest.exe -g -O2   conftest.c -limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\cckaEkBP.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:135: undefined reference to `dladdr'
+C:\Users\MATTHI~1\AppData\Local\Temp\cc3qWdy7.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:135: undefined reference to `dladdr'
 collect2.exe: error: ld returned 1 exit status
 configure:9590: $? = 1
 configure: failed program was:
@@ -14421,8 +14421,8 @@ configure: failed program was:
 configure:10490: result: void
 configure:10501: checking "for BSD signal handlers"
 configure:10529: gcc -o conftest.exe -g -O2   conftest.c -limagehlp -ldbghelp -lm -lpthread -lwsock32 -lwinmm -lshell32  >&5
-C:\Users\MATTHI~1\AppData\Local\Temp\ccOl0QhI.o: In function `main':
-C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.6\src/conftest.c:127: undefined reference to `kill'
+C:\Users\MATTHI~1\AppData\Local\Temp\ccdGW6S1.o: In function `main':
+C:\Rtools\msys\1.0\home\matthias\rolog\src\swipl-7.7.7\src/conftest.c:127: undefined reference to `kill'
 collect2.exe: error: ld returned 1 exit status
 configure:10529: $? = 1
 configure: program exited with status 1
@@ -15735,15 +15735,15 @@ PATH_SEPARATOR=':'
 PERL='/bin/perl'
 PL='swipl'
 PLARCH='i386-win32'
-PLBASE='/usr/local/swipl-7.7.6'
+PLBASE='/usr/local/swipl-7.7.7'
 PLBUILD='i386-win32'
 PLLIB='libswipl.a'
-PLLIBDIR='swipl-7.7.6'
-PLNVERSION='7.7.6'
+PLLIBDIR='swipl-7.7.7'
+PLNVERSION='7.7.7'
 PLSHARED='yes'
 PLSO='libswipl.dll'
 PLTHREADS='yes'
-PLVERSION='7.7.6'
+PLVERSION='7.7.7'
 PROGLDFLAGS=''
 RANLIB='ranlib'
 RLPREFIX=''

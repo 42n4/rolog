@@ -782,6 +782,7 @@ rec_error(CompileInfo info)
     }
     default:
       assert(0);
+      return FALSE;
   }
 }
 
@@ -1749,6 +1750,14 @@ markAtomsRecord(Record record)
 }
 
 
+#ifdef O_DEBUG_ATOMGC
+void
+unregister_atom_rec(atom_t a)
+{ PL_unregister_atom(a);
+}
+#endif
+
+
 bool
 freeRecord(Record record)
 { if ( true(record, R_DUPLICATE) && --record->references > 0 )
@@ -1762,7 +1771,11 @@ freeRecord(Record record)
 
     ci.base = ci.data = dataRecord(record);
     ci.version_map = NULL;
+#ifdef O_DEBUG_ATOMGC
+    scanAtomsRecord(&ci, unregister_atom_rec);
+#else
     scanAtomsRecord(&ci, PL_unregister_atom);
+#endif
     assert(ci.data == addPointer(record, record->size));
   }
 #endif

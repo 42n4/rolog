@@ -49,11 +49,11 @@ smandir=$(mandir)/man$(mansec)
 lmandir=$(mandir)/man$(lmansec)
 plmandir=$(PLBASE)/man
 
-PLVERSION=7.7.5
-PLNVERSION=7.7.5
+PLVERSION=7.7.6
+PLNVERSION=7.7.6
 PL=swipl
 PLWIN=swipl-win
-PLBASE=/usr/local/swipl-7.7.5
+PLBASE=/usr/local/swipl-7.7.6
 BOOTFILE=boot64.prc
 
 CC=gcc

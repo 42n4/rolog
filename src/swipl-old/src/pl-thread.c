@@ -39,13 +39,10 @@
 					/* compile clean with glibc.  Can */
 					/* this do any harm? */
 
-#if defined(__MINGW32__)
+#if __MINGW32__
 #define __try
 #define __except(_) if (0)
 #define __finally
-#endif
-
-#ifdef __MINGW32__
 #include <winsock2.h>
 #include <windows.h>
 #include <errno.h>			/* must be before pl-incl.h */
@@ -57,6 +54,11 @@
 #include "pl-prof.h"
 #include <stdio.h>
 #include <math.h>
+
+#if __MINGW32__				/* this is a stub.  Should be detected */
+#undef HAVE_PTHREAD_SETNAME_NP		/* in configure.ac */
+#endif
+
 #ifdef O_PLMT
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -395,7 +397,7 @@ PRED_IMPL("mutex_statistics", 0, mutex_statistics, 0)
     lc = (cm == &_PL_mutexes[L_MUTEX] ? 1 : 0);
 
     if ( cm->lock_count > lc )
-      Sdprintf(" LOCKS: %d\n", cm->count - lc);
+      Sdprintf(" LOCKS: %d\n", cm->lock_count - lc);
     else
       Sdprintf("\n");
   }
@@ -6681,8 +6683,9 @@ cgcActivatePredicate__LD(Definition def, gen_t gen ARG_LD)
   }
 }
 
-int
-pushPredicateAccess__LD(Definition def, gen_t gen ARG_LD)
+
+gen_t
+pushPredicateAccess__LD(Definition def ARG_LD)
 { definition_refs *refs = &LD->predicate_references;
   definition_ref *dref;
   size_t top = refs->top+1;
@@ -6706,14 +6709,15 @@ pushPredicateAccess__LD(Definition def, gen_t gen ARG_LD)
   enterDefinition(def);			/* probably not needed in the end */
   dref = &refs->blocks[idx][top];
   dref->predicate  = def;
-  dref->generation = gen;
-
-  if ( GD->clauses.cgc_active )
-    cgcActivatePredicate__LD(def, gen PASS_LD);
+  do
+  { dref->generation = global_generation();
+    if ( unlikely(GD->clauses.cgc_active) )
+      cgcActivatePredicate__LD(def, dref->generation PASS_LD);
+  } while ( dref->generation != global_generation() );
 
   refs->top = top;
 
-  return TRUE;
+  return dref->generation;
 }
 
 
@@ -6817,14 +6821,11 @@ markAccessedPredicates(PL_local_data_t *ld)
 
   for(i=1; i<=refs->top; i++)
   { int idx = MSB(i);
-    DirtyDefInfo ddi;
-    definition_ref dref = refs->blocks[idx][i];
+    volatile definition_ref *drefp = &refs->blocks[idx][i];
+    definition_ref dref = *drefp;	/* struct copy */
 
-    if ( is_pointer_like(dref.predicate) &&
-	 (ddi=lookupHTable(GD->procedures.dirty, dref.predicate)) )
-    { if ( dref.generation < ddi->oldest_generation )
-	ddi->oldest_generation = dref.generation;
-    }
+    if ( is_pointer_like(dref.predicate) )
+      cgcActivatePredicate__LD(dref.predicate, dref.generation PASS_LD);
   }
 }
 

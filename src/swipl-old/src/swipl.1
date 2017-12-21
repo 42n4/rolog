@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
 .TH swipl 1 "Apr 10, 2015" "SWI-Prolog 7"
 .SH NAME
-swipl \- SWI-Prolog 7.7.5
+swipl \- SWI-Prolog 7.7.6
 .SH SYNOPSIS
 .B swipl
 .RB [ \-\-help | \-\-version | \-\-arch | \-\-dump\-runtime\-variables ]
@@ -403,35 +403,35 @@ If both exist
 .I .swiplrc
 is used.
 .TP
-.I /usr/local/lib/swipl-7.7.5/bin/i386-win32/
+.I /usr/local/lib/swipl-7.7.6/bin/i386-win32/
 Location for the executables.
 .TP
-.I /usr/local/lib/swipl-7.7.5/include/
+.I /usr/local/lib/swipl-7.7.6/include/
 Location for the include files.  If writable, SWI-Prolog.h is also
 copied to /usr/local/include/SWI-Prolog.h.
 .TP
-.I /usr/local/lib/swipl-7.7.5/library/
+.I /usr/local/lib/swipl-7.7.6/library/
 SWI-Prolog user libraries.
 .TP
-.I /usr/local/lib/swipl-7.7.5/boot/
+.I /usr/local/lib/swipl-7.7.6/boot/
 SWI-Prolog kernel parts written in Prolog.  The startup file
-/usr/local/lib/swipl-7.7.5/boot64.prc may be recreated using
-the command from the directory /usr/local/lib/swipl-7.7.5:
+/usr/local/lib/swipl-7.7.6/boot64.prc may be recreated using
+the command from the directory /usr/local/lib/swipl-7.7.6:
 .RS
 .TP
 bin/i386-win32/swipl \-O \-o boot64.prc \-b boot/init.pl
 .RE
 .TP
-.I /usr/local/lib/swipl-7.7.5/doc/packages
+.I /usr/local/lib/swipl-7.7.6/doc/packages
 HTML and/or PDF documentation on the installed add-ons.
 .TP
-.I /usr/local/lib/swipl-7.7.5/boot64.prc
+.I /usr/local/lib/swipl-7.7.6/boot64.prc
 Default startup file.  This is a `intermediate code' file containing
 precompiled code from the boot directory.  The
 .BI \-x bootfile
 option may be used to select a different file.
 .TP
-.I /usr/local/lib/swipl-7.7.5/runtime/i386-win32/libpl.a
+.I /usr/local/lib/swipl-7.7.6/runtime/i386-win32/libpl.a
 SWI-Prolog library for embedding.  See also
 .I plld(1).
 .SH SEE ALSO
@@ -444,7 +444,7 @@ Jan\ Wielemaker
 .I http://www.swi-prolog.org/pldoc/index.html
 .PP
 Documentation on the add-on packages in
-.I /usr/local/lib/swipl-7.7.5/boot/doc
+.I /usr/local/lib/swipl-7.7.6/boot/doc
 .PP
 William\ F.\ Clocksin & Christopher\ S.\ Mellish,
 .IR "Programming in Prolog" ,
