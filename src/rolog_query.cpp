@@ -39,6 +39,9 @@ PlCompound leaf_lang(SEXP l)
   
   PlTerm tt ;
   int r = PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)) ;
+  if(!r)
+    return(PlCompound c(pred.c_str(), v)) ;
+  
   return(tt) ;
 }
 
