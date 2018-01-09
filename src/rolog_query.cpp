@@ -34,9 +34,12 @@ PlCompound leaf_lang(SEXP l)
   // Construct term
   Symbol pred = as<Symbol>(CAR(l)) ;
   PlCompound c(pred.c_str(), v) ;
-  if(i == 0)
-    PL_unify_compound(c, PL_new_functor(PL_new_atom(pred.c_str()), 0)) ;
-  return(c) ;
+  if(i > 0)
+    return(PlCompound c(pred.c_str(), v)) ;
+  
+  PlTerm tt ;
+  int r = PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)) ;
+  return(tt) ;
 }
 
 // translate Prolog compound to R expression
