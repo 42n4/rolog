@@ -37,12 +37,11 @@ PlTerm leaf_lang(SEXP l)
   if(i > 0)
     return(PlCompound(pred.c_str(), v)) ;
   
-  PlCompound tt ;
-  int r = PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)) ;
-  if(!r)
-    return(PlCompound(pred.c_str(), v)) ;
+  PlTerm tt ;
+  if(PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)))
+    return(tt) ;
   
-  return(tt) ;
+  return(PlCompound(pred.c_str(), v))) ;
 }
 
 // translate Prolog compound to R expression
