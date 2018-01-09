@@ -9,7 +9,7 @@ PlTerm leaf(SEXP l) ;
 SEXP pl2r_leaf(PlTerm t) ;
 
 // translate R expression to Prolog compound
-PlCompound leaf_lang(SEXP l)
+PlTerm leaf_lang(SEXP l)
 {
   // Count number of arguments
   int i = 0 ;
@@ -37,7 +37,7 @@ PlCompound leaf_lang(SEXP l)
   if(i > 0)
     return(PlCompound(pred.c_str(), v)) ;
   
-  PlTerm tt ;
+  PlCompound tt ;
   int r = PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)) ;
   if(!r)
     return(PlCompound(pred.c_str(), v)) ;
