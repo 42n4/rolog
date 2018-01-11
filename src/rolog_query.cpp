@@ -206,17 +206,14 @@ SEXP pl2r_leaf(PlTerm t)
   if(PL_is_string(t))
     return pl2r_string(t) ;
   
-  if(PL_is_compound(t))
-    return pl2r_lang(t) ;
-  
   if(PL_is_atom(t))
     return leaf_symbol(t) ;
   
   if(PL_is_list(t))
     return pl2r_list(t) ;
 
-//  if(PL_is_compound(t))
-//    return pl2r_lang(t) ;
+  if(PL_is_compound(t))
+    return pl2r_lang(t) ;
 
   return leaf_na(t) ;
 }
