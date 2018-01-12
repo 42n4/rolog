@@ -1,0 +1,848 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<title>SWI-Prolog C++ Proxy</title>
+<style type="text/css">
+
+/* Style sheet for SWI-Prolog latex2html
+*/
+
+dd.defbody
+{ margin-bottom: 1em;
+}
+
+dt.pubdef
+{ background-color: #c5e1ff;
+}
+
+dt.multidef
+{ background-color: #c8ffc7;
+}
+
+.bib dd
+{ margin-bottom: 1em;
+}
+
+.bib dt
+{ float: left;
+margin-right: 1.3ex;
+}
+
+pre.code
+{ margin-left: 1.5em;
+margin-right: 1.5em;
+border: 1px dotted;
+padding-top: 5px;
+padding-left: 5px;
+padding-bottom: 5px;
+background-color: #f8f8f8;
+}
+
+div.navigate
+{ text-align: center;
+background-color: #f0f0f0;
+border: 1px dotted;
+padding: 5px;
+}
+
+div.title
+{ text-align: center;
+padding-bottom: 1em;
+font-size: 200%;
+font-weight: bold;
+}
+
+div.author
+{ text-align: center;
+font-style: italic;
+}
+
+div.abstract
+{ margin-top: 2em;
+background-color: #f0f0f0;
+border: 1px dotted;
+padding: 5px;
+margin-left: 10%; margin-right:10%;
+}
+
+div.abstract-title
+{ text-align: center;
+padding: 5px;
+font-size: 120%;
+font-weight: bold;
+}
+
+div.toc-h1
+{ font-size: 200%;
+font-weight: bold;
+}
+
+div.toc-h2
+{ font-size: 120%;
+font-weight: bold;
+margin-left: 2em;
+}
+
+div.toc-h3
+{ font-size: 100%;
+font-weight: bold;
+margin-left: 4em;
+}
+
+div.toc-h4
+{ font-size: 100%;
+margin-left: 6em;
+}
+
+span.sec-nr
+{
+}
+
+span.sec-title
+{
+}
+
+span.pred-ext
+{ font-weight: bold;
+}
+
+span.pred-tag
+{ float: right;
+padding-top: 0.2em;
+font-size: 80%;
+font-style: italic;
+color: #202020;
+}
+
+/* Footnotes */
+
+sup.fn { color: blue; text-decoration: underline; }
+span.fn-text { display: none; }
+sup.fn span {display: none;}
+sup:hover span
+{ display: block !important;
+position: absolute; top: auto; left: auto; width: 80%;
+color: #000; background: white;
+border: 2px solid;
+padding: 5px; margin: 10px; z-index: 100;
+font-size: smaller;
+}
+
+/* Lists */
+
+dl.latex
+{ margin-top: 1ex;
+margin-bottom: 0.5ex;
+}
+
+dl.latex dl.latex dd.defbody
+{ margin-bottom: 0.5ex;
+}
+
+/* PlDoc Tags */
+
+dl.tags
+{ font-size: 90%;
+margin-left: 5ex;
+margin-top: 1ex;
+margin-bottom: 0.5ex;
+}
+
+dl.tags dt
+{ margin-left: 0pt;
+font-weight: bold;
+}
+
+dl.tags dd
+{ margin-left: 3ex;
+}
+
+td.param
+{ font-style: italic;
+font-weight: bold;
+}
+
+/* Index */
+
+dt.index-sep
+{ font-weight: bold;
+font-size: +1;
+margin-top: 1ex;
+}
+</style>
+</head>
+<body bgcolor="white"> 
+<div class="title">SWI-Prolog C++ Proxy</div>
+<div class="author">Jan Wielemaker <br>
+HCS, <br>
+University of Amsterdam <br>
+The Netherlands <br>
+E-mail: <a class="url" href="mailto:J.Wielemaker@vu.nl">J.Wielemaker@vu.nl</a></div>
+<div class="abstract">
+<div class="abstract-title">Abstract</div> This document describes an 
+infrastructure for calling Prolog from C++ that allows for controlled 
+access from C++ based on a generated
+<em>proxy</em> class. In our first target the proxy class talks to a 
+multi-threaded Prolog server using TCP/IP sockets. In future versions 
+this will be extended with SSL sockets, pipes and native DLL embedding. 
+The C++ and Prolog sourcecode for all these scenarios is identical, 
+except for the code that initialises the system.
+</div>
+
+<h1><a name="document-contents">Table of Contents</a></h1>
+
+<div class="toc">
+<div class="toc-h2"><a class="sec" href="#sec:1"><span class="sec-nr">1</span> <span class="sec-title">Introduction</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:2"><span class="sec-nr">2</span> <span class="sec-title">Overview</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:3"><span class="sec-nr">3</span> <span class="sec-title">Related 
+techniques</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:3.1"><span class="sec-nr">3.1</span> <span class="sec-title">Prolog 
+Portability</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:4"><span class="sec-nr">4</span> <span class="sec-title">Defining 
+the interface</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:5"><span class="sec-nr">5</span> <span class="sec-title">Compound 
+data as seen from C++</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:6"><span class="sec-nr">6</span> <span class="sec-title">Generating 
+the C++ proxy</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:7"><span class="sec-nr">7</span> <span class="sec-title">Using 
+the proxy classes</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:7.1"><span class="sec-nr">7.1</span> <span class="sec-title">Passing 
+primitive datatypes</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:7.2"><span class="sec-nr">7.2</span> <span class="sec-title">Passing 
+compound data</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:7.3"><span class="sec-nr">7.3</span> <span class="sec-title">Non-deterministic 
+queries</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:7.4"><span class="sec-nr">7.4</span> <span class="sec-title">Nesting 
+queries</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:8"><span class="sec-nr">8</span> <span class="sec-title">Running 
+the server</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:9"><span class="sec-nr">9</span> <span class="sec-title">Putting 
+it all together: a complete example</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:10"><span class="sec-nr">10</span> <span class="sec-title">Status</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:10.1"><span class="sec-nr">10.1</span> <span class="sec-title">Portability</span></a></div>
+<div class="toc-h2"><a class="sec" href="#sec:11"><span class="sec-nr">11</span> <span class="sec-title">Installation</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:11.1"><span class="sec-nr">11.1</span> <span class="sec-title">Unix 
+systems</span></a></div>
+<div class="toc-h3"><a class="sec" href="#sec:11.2"><span class="sec-nr">11.2</span> <span class="sec-title">Windows 
+system</span></a></div>
+</div>
+
+<p>
+
+<h2><a name="sec:1"><span class="sec-nr">1</span> <span class="sec-title">Introduction</span></a></h2>
+
+<p>SWI-Prolog is well suitable for writing a wide range of complete 
+applications without introducing other languages into the system and an 
+even wider range when linking C/C++ coded shared objects to access 
+external resources, in real-life Prolog is often embedded in systems 
+written in other languages. The reasons vary. Re-use of existing code, 
+expertise in the development team or external requirements are commonly 
+encountered motivations.
+
+<p>Embedding Prolog is not a logical choice in our view. An important 
+part of the power of Prolog can be found in its development system where 
+retrying goals and reloading patched code on the running system speedup 
+development considerably. In embedded system these features are often 
+lost or severely limited due to lack of access to the interactive Prolog 
+toplevel or inability of the rest of the application to stay 
+synchronised with the dynamic nature of the Prolog part of the 
+application.
+
+<p>If you have to embed there are several options for doing so, each 
+with specific advantages and disadvantages.
+
+<p>
+<ul class="latex">
+<li><i>Linking as library</i><br>
+Linking Prolog as a library is attractive as it allows for two-way 
+communication at very low overhead. It is also the most complicated 
+approach, often loosing access to the Prolog toplevel entirely, 
+introducing possibly threading and (on POSIX systems) signal 
+synchronisation problems, link conflicts and difficulty to localise 
+bugs.
+
+<p>
+<li><i>Using pipes</i><br>
+By using anonymous pipes between the hosting system and Prolog we 
+introduce a seperation that makes it easier to localise problems and 
+reliably stop and start Prolog. The price is -again- loosing the Prolog 
+toplevel, slower communication and pipes only provide a single 
+communication channal.
+
+<p>
+<li><i>Using sockets</i><br>
+Using sockets connecting to a continuously running multi-threaded Prolog 
+server does keep access to the Prolog toplevel, offers very short 
+startup times and allows to distribute the applications over multiple 
+hosts on the network. The price is that it is way harder to setup the 
+communication (something must ensure the server is running and allocate 
+a port for it) and the server must be written thread-safe.
+</ul>
+
+<h2><a name="sec:2"><span class="sec-nr">2</span> <span class="sec-title">Overview</span></a></h2>
+
+<p>This packages consists of the following components:
+
+<p>
+<ul class="latex">
+<li><i> Interface definition</i><br>
+The library <code>cpp_interface.pl</code> and <code>typedef.pl</code> 
+define directives that allow you to specify the predicates that are 
+callable from C++ and their types. Only specified predicates can be 
+called and only with matching types. Restricting what can be called 
+greatly improves security when used in a server setting. <a class="sec" href="#sec:4">Section 
+4</a> describes these declarations.
+
+<p>
+<li><i> Code generation</i><br>
+The library <code>cpp_codegen.pl</code> defines the code generator. The 
+code generator is used to create the C++ source for a proxy class that 
+is used in the C++ client to talk to Prolog. <a class="sec" href="#sec:6">Section 
+6</a> describes generating the C++ proxy.
+
+<p>
+<li><i> Prolog server</i><br>
+When using sockets, the library <code>cpp_server.pl</code> defines the 
+Prolog server. See <a class="sec" href="#sec:8">section 8</a> for 
+details.
+
+<p>
+<li><i> C++ client library</i><br>
+The file <code>SWI-proxy.cpp</code> and <code>SWI-Proxy.h</code> provide 
+the base classes for the client proxy.
+</ul>
+
+<h2><a name="sec:3"><span class="sec-nr">3</span> <span class="sec-title">Related 
+techniques</span></a></h2>
+
+<p>The technique used in this package are not new nor unique. 
+Inter-language communication has been a topic in ICT for a long period, 
+resulting in various widespread and well established solutions. The 
+power of this solution is that it is tailured to Prolog's features such 
+as non-deterministic predicates, lightweight, simple and fast. The 
+weakness is of course being bound to Prolog and, currently, C++. Proxy 
+generators can be defined for other languages, reusing most of the 
+infrastructure except for the details of the code generation.
+
+<p>
+<ul class="latex">
+<li><i>CORBA</i><br>
+CORBA generates language specific proxies from a language neutral (IDL) 
+specification. There are no bindings for Prolog. We once wrote a proxy 
+generator between the C++ proxy and Prolog. This design is fairly 
+elegant and produces fast interprocess communication. CORBA however is a 
+complicated big system that require considerable resources for doing 
+even the smallest tasks.
+
+<p>
+<li><i>HTTP (optionally with SOAP)</i><br>
+Using the Prolog HTTP server is another alternative. HTTP provides the 
+basic message <em>envelope</em>. The message content is still undefined. 
+SOAP (an XML based content format) can be used here. Backtracking over 
+solutions is hard to implement based on the stateless HTTP protocol. The 
+approach is much more complicated and the various protocol layers 
+require much more data and processing time. Experience show latency 
+times of approx. a few milliseconds, where our server shows latency 
+times of approx. 0.1 millisecond (AMD 1600+, SuSE Linux).
+
+<p>
+<li><i>InterProlog</i><br>
+InterProlog is a stream-based connection to Java. I have no experience 
+with it.
+
+<p>
+<li><i>SWI-Prolog C++ interface</i><br>
+Using the native SWI-Prolog C++ interface does not provide network 
+transparency and is much harder to program. The advantage is that it 
+allows for mutual calling, more threading alternatives and many more.
+</ul>
+
+<h3><a name="sec:3.1"><span class="sec-nr">3.1</span> <span class="sec-title">Prolog 
+Portability</span></a></h3>
+
+<p>The design can work with other Prolog systems. The server exploits 
+multi-threading, but with some limitations this can be changed to run in 
+a single thread. The proxy generator is portable with some effort and it 
+is also possible to generate the proxy with SWI-Prolog and use it with a 
+server written in another Prolog system. The proxy itself is pure C++, 
+knowing nothing about Prolog.
+
+<h2><a name="sec:4"><span class="sec-nr">4</span> <span class="sec-title">Defining 
+the interface</span></a></h2>
+
+<a name="sec:itfdecl"></a>
+
+<p>The interface definition defines the C++ callable predicates as well 
+as their types and modes. The interface only deals with ground terms. 
+The type language syntax is defined in the library <code>typedef.pl</code> 
+and is based on the Mycroft/O'Keefe type language.
+
+<dl class="latex">
+<dt class="pubdef"><a name="type/1">:- <strong>type</strong>(<var>TypeSpec</var>)</a></dt>
+<dd class="defbody">
+If <var>TypeSpec</var> is of the form <var>Alias</var> = <var>Type</var>,
+<var>Alias</var> is an alias for the type named <var>Type</var>. If <var>TypeSpec</var> 
+is of the form <var>Type</var> <tt>-&gt;</tt> <var>Def</var>, <var>Def</var> 
+is the definition of <var>Type</var>. Polymorphism is expressed using 
+multiple definitions seperated by the <code>|</code> (vertical bar) 
+symbol.<sup class="fn">1<span class="fn-text">The design allows for 
+limited polymorphism, but this is not yet part of the current 
+implementation.</span></sup> A single definition is a term whose 
+arguments define the types of the arguments.
+
+<p>There are three <em>primitive</em> types: <code>integer</code>, <code>float</code> 
+and <code>atom</code>.
+</dd>
+</dl>
+
+<p>Valid type declarations for our C++ interface do not use polymorphism 
+and a fully expanded type definition consists of structures and 
+primitive types. The argument <em>names</em> for compound types are 
+derived from the type-name and usually bound to a real type using a 
+type-alias. Here is an example:
+
+<pre class="code">
+:- type first_name = atom.
+:- type last_name  = atom.
+:- type age        = integer.
+
+:- type person -&gt; person(first_name, last_name, age).
+</pre>
+
+<p>The callable predicates are specified using the library
+<code>cpp_interface.pl</code>, which defines two directives.
+
+<dl class="latex">
+<dt class="pubdef"><a name="cpp_callable/1">:- <strong>cpp_callable</strong>(<var>Head 
+[= Attributes], ...</var>)</a></dt>
+<dd class="defbody">
+Defines <var>Head</var> to be callable from C++. <var>Head</var> has the 
+same number of argument as the predicate that must be callable. Each 
+argument is of the form +<var>Type</var> or -<var>Type</var> for resp. an
+<em>input</em> and <em>output</em> argument. <var>Attributes</var> is a 
+list of attributes. Currently defined attributes are:
+
+<dl class="latex">
+<dt><strong>one</strong></dt>
+<dd class="defbody">
+Predicate succeeds exactly ones. Failure is an error. If the predicate 
+succeeds non-deterministically the choicepoints are discarded (cut). 
+Such predicates are mapped to a <code>void</code> method on the C++ 
+proxy class. If the predicate fails this is mapped to a C++ exception. 
+This is the default.</dd>
+<dt><strong>zero_or_one</strong></dt>
+<dd class="defbody">
+Predicates fails or succeeds ones. If the predicate succeeds 
+non-deterministically the choicepoints are discarded (cut). Such 
+predicates are mapped to an <code>int</code> method on the C++ proxy 
+class returning <code>FALSE</code> if the predicate fails and <code>TRUE</code> 
+if it succeeds.</dd>
+<dt><strong>zero_or_more</strong></dt>
+<dd class="defbody">
+Predicate is non-deterministic. Such predicates are mapped to a subclass 
+of class <b>PlQuery</b>.</dd>
+<dt><strong>as</strong>(<var>Name</var>)</dt>
+<dd class="defbody">
+If present, the predicate is mapped to a C++ method or query class named <var>Name</var> 
+instead of the name of the predicate. This allows for mapping different 
+calling patterns of the same predicate to different C++ methods or 
+classes.
+</dd>
+</dl>
+
+</dd>
+<dt class="pubdef"><a name="cpp_type/1">:- <strong>cpp_type</strong>(<var>CName 
+= Functor</var>)</a></dt>
+<dd class="defbody">
+Specifies that the Prolog type <var>Functor</var> is represented by the 
+C++ class CName. This allows for different naming conventions in the 
+Prolog and C++ world.
+</dd>
+</dl>
+
+<p>The examples below depend on the type examples above.
+
+<pre class="code">
+:- cpp_callable
+        version(-atom) = [one],
+        find_person_younger_than(+age, -person) = [zero_or_more].
+
+version('0.0').
+
+find_person_younger_than(MaxAge, person(FirstName, LastName, Age)) :-
+        person(FirstName, LastName, Age),
+        Age =&lt; MaxAge.
+</pre>
+
+<h2><a name="sec:5"><span class="sec-nr">5</span> <span class="sec-title">Compound 
+data as seen from C++</span></a></h2>
+
+<a name="cppcompound"></a>
+
+<p>Compound data that is to be communicated to Prolog is represented as 
+a C++ class. This class must provide methods to fetch the components for 
+use as a predicate input argument and with a method to create fill an 
+instance of this class for predicate output arguments. These methods 
+are:
+
+<dl class="latex">
+<dt class="pubdef"><a name="initialize()"><var>void</var> <strong>initialize</strong>(<var>t1 
+a1, t2 a2, ...</var>)</a></dt>
+<dd class="defbody">
+The initialize method is called with as many objects of the proper type 
+as there are arguments in the Prolog term. The primitive types are
+<code>long</code>, (for Prolog integers) <code>double</code> (for Prolog 
+floats) and the C++ <em>std</em> class <code>string</code> for atoms.
+
+<p>For each named field (see <a class="sec" href="#sec:4">section 4</a>) 
+a function must be provided that extracts the field and returns the 
+appropriate type. For atom typed fields the return value can be an std <code>string</code> 
+or a plain C <code>char*</code>.
+</dd>
+</dl>
+
+<p>Below is a possible implementation for the above defined person 
+class.
+
+<pre class="code">
+class person
+{
+public:
+  char *first_name;
+  char *last_name;
+  int age;
+
+  person()
+  { first_name = NULL;
+    last_name = NULL;
+    age = -1;
+  };
+  ~person()
+  { if ( first_name ) free(first_name);
+    if ( last_name ) free(last_name);
+  }
+
+  char *get_first_name() const { return first_name; }
+  char *get_last_name() const  { return last_name; }
+  long  get_age() const  { return age; }
+
+  void initialize(string fn, string ln, long years)
+  { if ( first_name ) free(first_name);
+    if ( last_name  ) free(last_name);
+
+    first_name = strdup(fn.c_str());
+    last_name  = strdup(ln.c_str());
+    age = years;
+  }
+};
+</pre>
+
+<h2><a name="sec:6"><span class="sec-nr">6</span> <span class="sec-title">Generating 
+the C++ proxy</span></a></h2>
+
+<a name="sec:codegen"></a>
+
+<p>The C++ proxy class is automatically generated from the Prolog 
+declarations using the library <code>cpp_codegen.pl</code>. To generate 
+the code load this library in a Prolog process that has all the
+<a name="idx:cppcallable1:1"></a><a class="pred" href="#cpp_callable/1">cpp_callable/1</a> 
+and type declarations in place and invoke the predicate
+<a name="idx:cppservercode2:2"></a><a class="pred" href="#cpp_server_code/2">cpp_server_code/2</a>:
+
+<dl class="latex">
+<dt class="pubdef"><a name="cpp_server_code/2"><strong>cpp_server_code</strong>(<var>+File, 
++Options</var>)</a></dt>
+<dd class="defbody">
+Generate the C++ proxy class to access the deterministic predicates and 
+the query classes for the non-deterministic predicates and write them to 
+the given <var>File</var>. <var>Options</var> consists of
+
+<dl class="latex">
+<dt><strong>server_class</strong>(<var>Name</var>)</dt>
+<dd class="defbody">
+Name of the proxy class. If omitted it is called <code>MyProxy</code>.
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2><a name="sec:7"><span class="sec-nr">7</span> <span class="sec-title">Using 
+the proxy classes</span></a></h2>
+
+<h3><a name="sec:7.1"><span class="sec-nr">7.1</span> <span class="sec-title">Passing 
+primitive datatypes</span></a></h3>
+
+<p>Primitive data are the Prolog types integer, float and atom.
+
+<h3><a name="sec:7.2"><span class="sec-nr">7.2</span> <span class="sec-title">Passing 
+compound data</span></a></h3>
+
+<p>Compound data is represented as a compound term in Prolog and, unless 
+renamed using <a name="idx:cpptype2:3"></a><span class="pred-ext">cpp_type/2</span>, 
+an equally named class in C++.
+
+<h3><a name="sec:7.3"><span class="sec-nr">7.3</span> <span class="sec-title">Non-deterministic 
+queries</span></a></h3>
+
+<a name="sec:ndet"></a>
+
+<p>The proxy for a non-deterministic predicates is a subclass of
+<code>PlQuery</code>. The name of the class is the name of the 
+predicate, unless modified using the <code>as(Name)</code> attribute 
+with <a name="idx:cppcallable1:4"></a><a class="pred" href="#cpp_callable/1">cpp_callable/1</a>. 
+A query is started by creating an instance of this class using a pointer 
+to the proxy as argument. The only method defined on this class is 
+::next_solution(). This method uses the same arguments as the proxy 
+methods that represent deterministic queries. The following example 
+fetches all functors with arity 3 defined in Prolog:
+
+<pre class="code">
+:- use_module(library(typedef)).
+:- use_module(library(cpp_interface)).
+
+:- cpp_callable
+        current_functor(-atom, +integer) = [zero_or_more].
+</pre>
+
+<pre class="code">
+#include &lt;iostream&gt;
+#include "myproxy.h&gt;
+
+int
+main(int argc, char **argv)
+{ MyProxy proxy("localhost", 4224);
+
+  try
+  { between q(&amp;proxy);
+    string name;
+
+    while ( q.next_solution(name, 3) )
+    { cout &lt;&lt; name &lt;&lt; endl;
+    }
+  } catch ( PlException &amp;ex )
+  { cerr &lt;&lt; (char *)ex;
+  }
+
+  return 0;
+}
+</pre>
+
+<h3><a name="sec:7.4"><span class="sec-nr">7.4</span> <span class="sec-title">Nesting 
+queries</span></a></h3>
+
+<a name="sec:nestquery"></a>
+
+<p>Non-deterministic queries are initiated by creating an instance of 
+its class. The query is said to be <em>open</em> as long as the query 
+object is not destroyed. New queries, both deterministic and 
+non-deterministic can be started while another query is still open. The <em>nested</em> 
+query however must be closed before more solutions can be asked from the 
+query it is nested in.
+
+<p>The example below computes a table of all square roots for the 
+numbers 1 to 100 using prolog to generate the numbers on backtracking 
+using
+<a name="idx:between3:5"></a><span class="pred-ext">between/3</span> and 
+access to <a name="idx:sqrt2:6"></a><span class="pred-ext">sqrt/2</span>. 
+First the Prolog code, followed by the C++ code.
+
+<pre class="code">
+:- use_module(library(typedef)).
+:- use_module(library(cpp_interface)).
+
+:- cpp_callable
+        between(+integer, +integer, -integer) = [zero_or_more],
+        sqrt(+float, -float).
+
+sqrt(In, Out) :- Out is sqrt(In).
+</pre>
+
+<pre class="code">
+#include &lt;iostream&gt;
+#include "myproxy.h&gt;
+
+int
+main(int argc, char **argv)
+{ SqrtProxy proxy("localhost", 4224);
+
+  try
+  { between q(&amp;proxy);
+    long l = 1;
+    long h = 100;
+    long i;
+
+    while ( q.next_solution(l, h, i) )
+    { double ifloat = (double)i;
+      double rval;
+
+      proxy.sqrt(ifloat, rval);
+      cout &lt;&lt; "sqrt(" &lt;&lt; i &lt;&lt; ") = " &lt;&lt; rval &lt;&lt; endl;
+    }
+  } catch ( PlException &amp;ex )
+  { cerr &lt;&lt; ex;
+  }
+
+  return 0;
+}
+</pre>
+
+<h2><a name="sec:8"><span class="sec-nr">8</span> <span class="sec-title">Running 
+the server</span></a></h2>
+
+<a name="sec:server"></a>
+
+<p>For running the server we need a Prolog process with the actual 
+predicates and their declarations loaded. We load the library
+<code>cpp_server</code> and invoke <a name="idx:cppserver1:7"></a><a class="pred" href="#cpp_server/1">cpp_server/1</a>:
+
+<dl class="latex">
+<dt class="pubdef"><a name="cpp_server/1"><strong>cpp_server</strong>(<var>+Options</var>)</a></dt>
+<dd class="defbody">
+Start the C++ server in the current process. This creates a small thread 
+with the alias <code>cpp_accept</code> that accepts new connections and, 
+for each new connection, starts a new thread that handles the queries 
+for the client. Options include:
+
+<dl class="latex">
+<dt><strong>port</strong>(<var>Port</var>)</dt>
+<dd class="defbody">
+Port on which to bind the server. Default is 4224.
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2><a name="sec:9"><span class="sec-nr">9</span> <span class="sec-title">Putting 
+it all together: a complete example</span></a></h2>
+
+<a name="sec:example"></a>
+
+<p>The base-classes for the runtime system are installed in the 
+SWI-Prolog include directory as <code>SWI-proxy.cpp</code> and its 
+header
+<code>SWI-proxy.h</code>. These files are <em>not</em> compiled into a 
+library. Considering compatibility between different compilers and 
+compilation models (threading, etc.) it is thought to be easier to 
+include this code into the target project using the source-code.
+
+<p>The directory examples (installed as
+<code>.../pl/doc/packages/examples/cppproxy</code>) contains some 
+stand-alone examples as well as a <code>README</code> explaining how to 
+compile and run the examples.
+
+<h2><a name="sec:10"><span class="sec-nr">10</span> <span class="sec-title">Status</span></a></h2>
+
+<p>The current implementation is a demonstrator. Issues to be resolved 
+in future versions of this package include
+
+<p>
+<ul class="latex">
+<li><i>Handle arrays</i><br>
+Provide automatic conversion of C++ arrays and/or std library vectors to 
+Prolog lists. Currently sets can be extracted from Prolog by enumerating 
+a non-deterministic predicate and send to Prolog using repetitive calls. 
+Both imply sending many small packages over the wire.
+
+<p>
+<li><i>Authentication and security</i><br>
+Currently the server is `wide open', Limiting the IP for connecting 
+hosts is a first step. Other steps are login using password 
+challenge/response. Sequence numbers to avoid man-in-the-middle attacks 
+and the use of SSL.
+
+<p>
+<li><i>Alternative communication channals</i><br>
+Currently only the TCP/IP version is implemented. See introduction.
+
+<p>
+<li><i>Error recovery</i><br>
+Protocol errors (which can be caused by incompatible proxy and Prolog 
+server type declarations) crash the connection. Re-synchronisation is 
+difficult to implement. We could do a version check by computing a hash 
+from the Prolog interface specification and validate this on 
+communication startup.
+</ul>
+
+<h3><a name="sec:10.1"><span class="sec-nr">10.1</span> <span class="sec-title">Portability</span></a></h3>
+
+<p>The system is designed to be portable using any modern C++ compiler. 
+It has been tested on Linux using g++ 3.3.4 and MS-Windows using MSVC 6.
+
+<h2><a name="sec:11"><span class="sec-nr">11</span> <span class="sec-title">Installation</span></a></h2>
+
+<h3><a name="sec:11.1"><span class="sec-nr">11.1</span> <span class="sec-title">Unix 
+systems</span></a></h3>
+
+<p>Installation on Unix system uses the commonly found <em>configure</em>,
+<em>make</em> and <em>make install</em> sequence. SWI-Prolog should be 
+installed before building this package. If SWI-Prolog is not installed 
+as <b>pl</b>, the environment variable <code>PL</code> must be set to 
+the name of the SWI-Prolog executable. Installation is now accomplished 
+using:
+
+<pre class="code">
+% ./configure
+% make
+% make install
+</pre>
+
+<p>This installs the foreign library <code>serialize</code> in
+<code>$PLBASE/lib/$PLARCH</code> and the Prolog library files in
+<code>$PLBASE/library</code> and the files <code>SWI-proxy.cpp</code> 
+and
+<code>SWI-proxy.h</code> in <code>$PLBASE/include</code>, where
+<code>$PLBASE</code> refers to the SWI-Prolog `home-directory'.
+
+<h3><a name="sec:11.2"><span class="sec-nr">11.2</span> <span class="sec-title">Windows 
+system</span></a></h3>
+
+<p>If you have successfully installed the system from source you can 
+install this package using
+
+<pre class="code">
+% nmake /f Makefile.mak
+% nmake /f Makefile.mak install
+</pre>
+
+<p>If not, compile serialize.c using the command below and install the 
+files by hand or using the makefile after setting the variable PLBASE to 
+the base of the installed Prolog system.
+
+<pre class="code">
+% plld -o serialize serialize.c
+</pre>
+
+<h1><a name="document-index">Index</a></h1>
+
+<dl>
+<dt class="index-sep">?</dt>
+<dt>between/3</dt>
+<dd>
+<a class="idx" href="#idx:between3:5">7.4</a></dd>
+<dt><a class="idx" href="#cpp_callable/1">cpp_callable/1</a></dt>
+<dd>
+<a class="idx" href="#idx:cppcallable1:1">6</a> <a class="idx" href="#idx:cppcallable1:4">7.3</a></dd>
+<dt><a class="idx" href="#cpp_server/1">cpp_server/1</a></dt>
+<dd>
+<a class="idx" href="#idx:cppserver1:7">8</a></dd>
+<dt><a class="idx" href="#cpp_server_code/2">cpp_server_code/2</a></dt>
+<dd>
+<a class="idx" href="#idx:cppservercode2:2">6</a></dd>
+<dt><a class="idx" href="#cpp_type/1">cpp_type/1</a></dt>
+<dt>cpp_type/2</dt>
+<dd>
+<a class="idx" href="#idx:cpptype2:3">7.2</a></dd>
+<dt><a class="idx" href="#initialize()">initialize()</a></dt>
+<dt>sqrt/2</dt>
+<dd>
+<a class="idx" href="#idx:sqrt2:6">7.4</a></dd>
+<dt><a class="idx" href="#type/1">type/1</a></dt>
+<dt>PlQuery</dt>
+<dd>
+<a class="sec" href="#sec:4">4</a></dd>
+</dl>
+
+</body></html>
