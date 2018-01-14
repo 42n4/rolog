@@ -38,13 +38,6 @@ PlTerm leaf_lang(SEXP l)
     return(PlCompound(pred.c_str(), v)) ;
   
   return(PlCompound(pred.c_str(), (size_t) 0)) ;
-/*
-  PlTerm tt ;
-  if(PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)))
-    return(tt) ;
-  
-  return(PlCompound(pred.c_str(), v)) ;
-  */
 }
 
 // translate Prolog compound to R expression
@@ -101,11 +94,18 @@ SEXP leaf_na(PlTerm l)
 }
 
 // real number
-PlTerm leaf_real(SEXP l)
+PlTerm pl2r_real(SEXP l)
 {
-  NumericVector v(1) ;
-  v[0] = as<double>(l) ;
-  return PlTerm((double) (v[0])) ;
+  NumericVector v = as<NumericVector>(l) ;
+  if(l.Length() == 1)
+    return(PlTerm((double) v[0])) ;
+  
+  PlTerm list ;
+  PlTail t(list) ;
+  for(int i=0 ; i<l.Length() ; i++)
+    t.append(PlTerm((double) v[i])) ;
+  t.close() ;
+  return list ;
 }
 
 // real number
