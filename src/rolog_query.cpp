@@ -200,7 +200,7 @@ PlTerm leaf(SEXP l)
     return leaf_symbol(l) ;
 
   if(TYPEOF(l) == STRSXP)
-    return leaf_string(l) ;
+    return r2pl_string(l) ;
   
   return leaf_na(l) ;
 }
