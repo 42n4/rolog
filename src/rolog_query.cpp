@@ -97,12 +97,12 @@ SEXP leaf_na(PlTerm l)
 PlTerm pl2r_real(SEXP l)
 {
   NumericVector v = as<NumericVector>(l) ;
-  if(l.Length() == 1)
+  if(v.Length() == 1)
     return(PlTerm((double) v[0])) ;
   
   PlTerm list ;
   PlTail t(list) ;
-  for(int i=0 ; i<l.Length() ; i++)
+  for(int i=0 ; i<v.Length() ; i++)
     t.append(PlTerm((double) v[i])) ;
   t.close() ;
   return list ;
@@ -204,7 +204,7 @@ SEXP pl2r_leaf(PlTerm t)
     return(pl2r_int(t)) ;
 
   if(PL_is_number(t))
-    return(leaf_real(t)) ;
+    return(pl2r_real(t)) ;
   
   if(PL_is_string(t))
     return pl2r_string(t) ;
