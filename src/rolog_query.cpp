@@ -165,12 +165,12 @@ SEXP leaf_symbol(PlTerm l)
 PlTerm r2pl_string(CharacterVector l)
 {
   if(l.size() == 1)
-    return PlTerm(String(l[0]).get_cstring()) ;
+    return PlString(String(l[0]).get_cstring()) ;
   
   PlTerm list ;
   PlTail t(list) ;
   for(int i=0 ; i<l.size() ; i++)
-    t.append(PlTerm(String(l[i]).get_cstring())) ;
+    t.append(PlString(String(l[i]).get_cstring())) ;
   t.close() ;
   return list ;
 }
