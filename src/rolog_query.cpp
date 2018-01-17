@@ -165,10 +165,7 @@ SEXP leaf_symbol(PlTerm l)
 PlTerm r2pl_string(CharacterVector l)
 {
   if(l.size() == 1)
-  {
-    std::cout << String(l[0]).get_cstring() << std::endl ;
     return PlTerm(String(l[0]).get_cstring()) ;
-  }
   
   PlTerm list ;
   PlTail t(list) ;
