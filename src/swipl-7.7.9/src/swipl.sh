@@ -17,6 +17,7 @@
 # rebuilding.
 
 bdir=/home/matthias/rolog/src/swipl-7.7.9/src
+bdir=$BDIR
 lib=$bdir/../lib/i386-win32
 libso=$lib/libswipl.dll
 sep=":"
