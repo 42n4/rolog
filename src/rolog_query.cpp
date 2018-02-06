@@ -37,11 +37,7 @@ PlTerm leaf_lang(SEXP l)
   if(i > 0)
     return(PlCompound(pred.c_str(), v)) ;
   
-  PlTerm tt ;
-  if(PL_unify_compound(tt, PL_new_functor(PL_new_atom(pred.c_str()), 0)))
-    return(tt) ;
-  
-  return(PlCompound(pred.c_str(), v)) ;
+  return(PlCompound(pred.c_str(), (size_t) 0)) ;
 }
 
 // translate Prolog compound to R expression
@@ -98,11 +94,18 @@ SEXP leaf_na(PlTerm l)
 }
 
 // real number
-PlTerm leaf_real(SEXP l)
+PlTerm r2pl_real(SEXP l)
 {
-  NumericVector v(1) ;
-  v[0] = as<double>(l) ;
-  return PlTerm((double) (v[0])) ;
+  NumericVector v = as<NumericVector>(l) ;
+  if(v.size() == 1)
+    return(PlTerm((double) v[0])) ;
+  
+  PlTerm list ;
+  PlTail t(list) ;
+  for(int i=0 ; i<v.size() ; i++)
+    t.append(PlTerm((double) v[i])) ;
+  t.close() ;
+  return list ;
 }
 
 // real number
@@ -158,11 +161,18 @@ SEXP leaf_symbol(PlTerm l)
   return s ;  
 }
 
-PlTerm leaf_string(StringVector l)
+// String
+PlTerm r2pl_string(CharacterVector l)
 {
-  StringVector v(1) ;
-  v[0] = l[0] ;
-  return PlString(String(v[0]).get_cstring()) ;
+  if(l.size() == 1)
+    return PlString(String(l[0]).get_cstring()) ;
+  
+  PlTerm list ;
+  PlTail t(list) ;
+  for(int i=0 ; i<l.size() ; i++)
+    t.append(PlString(String(l[i]).get_cstring())) ;
+  t.close() ;
+  return list ;
 }
 
 SEXP pl2r_string(PlTerm l)
@@ -178,7 +188,7 @@ PlTerm leaf(SEXP l)
     return leaf_lang(l) ;
   
   if(TYPEOF(l) == REALSXP)
-    return leaf_real(l) ;
+    return r2pl_real(l) ;
 
   if(TYPEOF(l) == LGLSXP)
     return leaf_logical(l) ;
@@ -190,7 +200,7 @@ PlTerm leaf(SEXP l)
     return leaf_symbol(l) ;
 
   if(TYPEOF(l) == STRSXP)
-    return leaf_string(l) ;
+    return r2pl_string(l) ;
   
   return leaf_na(l) ;
 }
