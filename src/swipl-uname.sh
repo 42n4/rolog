@@ -1,3 +1,3 @@
-cd swipl-7.7.9/src
+cd swipl-7.7.10/src
 sh configure > /dev/null
 echo `sh swipl.sh --arch`
