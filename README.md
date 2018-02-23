@@ -2,7 +2,7 @@
 
  library(devtools)
 
- install_github('mgondan/rolog')
+ install_github('42n4/rolog')
 
  library(rolog)
 
