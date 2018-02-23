@@ -1,7 +1,7 @@
 .PHONY: all mylibs
 
 PKG_CPPFLAGS=-Iswipl-7.7.10/src -Iswipl-7.7.10/packages/cpp
-PKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.7.10/lib/`sh swipl-uname.sh` -lswipl
+PKG_LIBS=-L$(PWD)/../inst/swipl/lib/swipl-7.7.10/lib/`sh swipl-uname.sh` -lswipl -lgmp
 
 all: $(SHLIB)
 $(SHLIB): mylibs
